@@ -18,6 +18,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// for parsing json objects
 app.use(express.json());
+
+// for management of image files
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
