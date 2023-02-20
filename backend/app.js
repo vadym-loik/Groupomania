@@ -1,10 +1,8 @@
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
-const db = require('./config/db');
 
 const app = express();
-
 app.use(helmet());
 
 app.use((req, res, next) => {

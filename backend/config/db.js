@@ -1,21 +1,29 @@
 const mariadb = require('mariadb');
 
 const pool = mariadb.createPool({
-  database: process.env.DB_NAME,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   connectionLimit: 5,
 });
 
-// async function asyncFunction() {
-//   let conn;
-//   try {
-//     conn = await pool.getConnection();
-//   } finally {
-//     if (conn) conn.release(); //release to pool
-//     console.log('Connected!');
-//   }
-// }
+// connect and check for errors
+pool.getConnection((err, connection) => {
+  if (err) {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.error('Database connection lost');
+    }
+    if (err.code === 'ER_CON_COUNT_ERROR') {
+      console.error('Database has to many connections');
+    }
+    if (err.code === 'ECONNREFUSED') {
+      console.error('Database connection was refused');
+    }
+  }
+  if (connection) connection.release();
 
-module.exports = pool.promise(console.log('Connected DB'));
+  return;
+});
+
+module.exports = pool;
