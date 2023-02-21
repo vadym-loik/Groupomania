@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const pool = require('../config/db');
 
 router.get('/:id', async function (req, res) {
   try {
@@ -10,7 +11,7 @@ router.get('/:id', async function (req, res) {
     res.status(400).send(error.message);
   }
 
-  res.status(200).json({ id: req.params.id });
+  // res.status(200).json({ id: req.params.id });
 });
 
 module.exports = router;
