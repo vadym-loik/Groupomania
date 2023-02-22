@@ -53,3 +53,12 @@ exports.login = (req, res, next) => {
     }
   });
 };
+
+// get all users
+exports.getAll = (req, res, next) => {
+  User.findAll((users) => {
+    res.send(users);
+  }).catch((err) => {
+    console.log(err);
+  });
+};
