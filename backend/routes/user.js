@@ -1,17 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../config/db');
+const validEmail = require('../middleware/email_validator');
+const validPassword = require('../middleware/password_validator');
+const userCtrl = require('../controllers/user');
 
-router.get('/:id', async function (req, res) {
-  try {
-    const sqlQuery = 'SELECT id, email, password FROM user WHERE id=?';
-    const rows = await pool.query(sqlQuery, req.params.id);
-    res.status(200).json(rows);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-
-  res.status(200).json({ id: req.params.id });
-});
-
-module.exports = router;
+router.post('/signup', validEmail, validPassword, userCtrl.signup);
+router.post('/login', userCtrl.login);

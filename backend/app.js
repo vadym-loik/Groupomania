@@ -1,7 +1,8 @@
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
-const userRoutes = require('./routes/user');
+const db = require('./config/db');
+// const userRoutes = require('./routes/user');
 
 const app = express();
 app.use(helmet());
@@ -22,7 +23,7 @@ app.use((req, res, next) => {
 // for parsing json objects
 app.use(express.json());
 
-app.use('/user', userRoutes);
+// app.use('/user', userRoutes);
 
 // for management of image files
 app.use('/images', express.static(path.join(__dirname, 'images')));
