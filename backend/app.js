@@ -23,7 +23,9 @@ app.use((req, res, next) => {
 // for parsing json objects
 app.use(express.json());
 
-app.use('/api/auth', userRoutes);
+app.use('/signup', userRoutes);
+app.use('/login', userRoutes);
+app.use('/', userRoutes);
 
 // for management of image files
 app.use('/images', express.static(path.join(__dirname, 'images')));
