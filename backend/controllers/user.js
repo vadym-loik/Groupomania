@@ -8,22 +8,23 @@ const User = require('../models/user');
 // };
 
 // SIGNUP
-exports.signup = async function (req, res, next) {
-  const { name, email, password } = req.body;
+exports.signup = function (req, res, next) {
+  const userObject = req.body;
+  console.log(userObject);
 
-  const newUser = {
-    name: name,
-    email: email,
-    password: password,
-  };
-
-  await User.create(newUser)
-    .then(() => {
-      res.status(201).json({ message: 'User created successfully' });
+  bcrypt.hash(req.body.password, 10).then((hash) => {
+    User.create({
+      ...userObject,
+      password: hash,
+      admin: false,
     })
-    .catch((error) => {
-      res.status(400).json({ error });
-    });
+      .then(() => {
+        res.status(201).json({ message: 'User created successfully' });
+      })
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
+  });
 };
 
 // exports.signup = (req, res, next) => {
