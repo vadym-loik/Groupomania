@@ -26,6 +26,7 @@ app.use(express.json());
 app.use('/signup', userRoutes);
 app.use('/login', userRoutes);
 app.use('/', userRoutes);
+app.use('/user/:id', userRoutes);
 
 // for management of image files
 app.use('/images', express.static(path.join(__dirname, 'images')));
