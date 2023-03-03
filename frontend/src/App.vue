@@ -1,32 +1,22 @@
 <template>
   <div id="app">
-    <Header></Header>
     <div class="content">
-      <Container>
-        <Button>Enter</Button>
-        <CustomInput></CustomInput>
-      </Container>
+      <Header />
+      <router-view></router-view>
     </div>
-    <Footer></Footer>
+    <Footer />
   </div>
-  <router-view></router-view>
 </template>
 
 <script>
-import Button from './components/Button.vue';
-import CustomInput from './shared/CustomInput.vue';
-import Footer from './shared/Footer.vue';
-import Container from './shared/Container.vue';
-import Header from './shared/Header.vue';
+import Header from './components/shared/Header.vue';
+import Footer from './components/shared/Footer.vue';
 
 export default {
   name: 'app',
   components: {
-    Container,
-    Button,
-    CustomInput,
-    Footer,
     Header,
+    Footer,
   },
 };
 </script>
@@ -46,6 +36,5 @@ export default {
 
 .content {
   flex-grow: 1;
-  padding-top: 120px;
 }
 </style>
