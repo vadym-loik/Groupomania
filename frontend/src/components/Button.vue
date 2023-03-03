@@ -1,6 +1,6 @@
 <template>
   <button class="btn" v-bind:type="type">
-    <slot></slot>
+    <slot>Enter</slot>
   </button>
 </template>
 
