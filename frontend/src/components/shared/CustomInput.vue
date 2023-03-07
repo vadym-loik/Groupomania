@@ -95,7 +95,7 @@ export default {
 @import '../../assets/scss/variables.scss';
 .wrapper-input {
   position: relative;
-  display: inline-flex;
+  margin-bottom: 20px;
 }
 .custom-input {
   height: 40px;
@@ -106,12 +106,15 @@ export default {
   outline: none;
   line-height: inherit;
   padding: 8px 15px;
+
   &::placeholder {
     color: inherit;
   }
+
   &--error {
     border-color: red;
   }
+
   &__error {
     position: absolute;
     top: 100%;
