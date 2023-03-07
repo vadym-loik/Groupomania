@@ -18,7 +18,7 @@ export default {
 
 <style lang="scss" scoped>
 .btn {
-  width: 150px;
+  width: 100%;
   height: 40px;
 
   cursor: pointer;
