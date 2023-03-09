@@ -19,7 +19,6 @@ export default {
   justify-content: center;
   min-height: calc(100vh - 30px);
   z-index: 1;
-
   &::before {
     content: '';
     position: absolute;
