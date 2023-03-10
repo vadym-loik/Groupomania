@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'FormItem',
+  name: 'Form',
   provide() {
     return {
       form: this,

@@ -5,9 +5,21 @@ import HomePage from '../pages/HomePage.vue';
 // import ErrorPage from '../pages/ErrorPage.vue';
 
 const routes = [
-  { path: '/login', name: 'login', component: Login },
-  { path: '/registration', name: 'registration', component: Registration },
-  { path: '/', name: 'homepage', component: HomePage },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+  },
+  {
+    path: '/registration',
+    name: 'registration',
+    component: Registration,
+  },
+  {
+    path: '/',
+    name: 'homepage',
+    component: HomePage,
+  },
   //   { path: '*', name: 'error-page', component: ErrorPage },
 ];
 

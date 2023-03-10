@@ -1,25 +1,25 @@
 <template>
   <AuthContainer class="login">
     <MainTitle class="login__title">Login</MainTitle>
-    <Form class="login__form">
+    <Form ref="form" class="login__form" @submit.prevent="handleSubmit">
       <CustomInput
         v-model="formData.email"
-        name="email"
-        placeholder="E-mail"
+        placeholder="Email"
         autocomplete="email"
+        name="email"
         :rules="emailRules"
         class="login__input"
       />
       <CustomInput
         v-model="formData.password"
-        name="password"
+        placeholder="Password"
         autocomplete="current-password"
         type="password"
-        placeholder="Password"
+        name="password"
         :rules="passwordRules"
         class="login__input"
       />
-      <Button class="login__btn" type="submit">Enter</Button>
+      <Button class="login__btn" type="submit" :loading="loading">Enter</Button>
     </Form>
   </AuthContainer>
 </template>
@@ -39,11 +39,11 @@ import {
 export default {
   name: 'Login',
   components: {
-    AuthContainer,
-    MainTitle,
     Form,
     CustomInput,
     Button,
+    AuthContainer,
+    MainTitle,
   },
   data() {
     return {
@@ -67,6 +67,15 @@ export default {
     },
     passwordRules() {
       return [this.rules.isRequired];
+    },
+  },
+  methods: {
+    handleSubmit() {
+      const isFormValid = this.$refs.form.validate();
+
+      if (isFormValid) {
+        console.log(this.formData);
+      }
     },
   },
 };

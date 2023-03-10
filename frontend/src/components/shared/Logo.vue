@@ -1,8 +1,9 @@
 <template>
   <img
     src="../../assets/icon-left-font-monochrome-white.svg"
-    alt="logo"
-    class="logo"
+    alt=""
+    width=""
+    height=""
   />
 </template>
 
