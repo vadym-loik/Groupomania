@@ -1,16 +1,9 @@
 <template>
-  <img
-    src="../../assets/icon-left-font-monochrome-white.svg"
-    alt=""
-    width=""
-    height=""
-  />
+  <div></div>
 </template>
 
 <script>
-export default {
-  name: 'Logo',
-};
+export default {};
 </script>
 
 <style lang="scss" scoped></style>

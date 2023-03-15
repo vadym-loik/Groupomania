@@ -1,5 +1,5 @@
 <template>
-  <button v-on="$listeners" class="btn" v-bind:type="type">
+  <button v-bind="$attrs" class="btn" v-bind:type="type">
     <slot>Enter</slot>
   </button>
 </template>
@@ -17,6 +17,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/scss/variables.scss';
 .btn {
   width: 100%;
   height: 40px;
@@ -30,7 +31,7 @@ export default {
   font-size: 16px;
 
   color: #fff;
-  background: #ff662d;
+  background: $main-color;
 
   &:hover {
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),

@@ -1,5 +1,5 @@
 <template>
-  <form v-on="$listeners" class="form">
+  <form class="form">
     <slot></slot>
   </form>
 </template>
@@ -36,5 +36,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

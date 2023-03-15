@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper-input">
     <input
-      v-on="listeners"
       v-bind="$attrs"
       @blur="blurHandler"
       :value="value"
@@ -45,7 +44,6 @@ export default {
   computed: {
     listeners() {
       return {
-        ...this.$listeners,
         input: (event) => this.$emit('input', event.target.value),
       };
     },
@@ -68,6 +66,7 @@ export default {
     validate() {
       this.isValid = this.rules.every((rule) => {
         const { hasPassed, message } = rule(this.value);
+        console.log(this.value);
         if (!hasPassed) {
           this.error = message || this.errorMessage;
         }
@@ -77,6 +76,9 @@ export default {
     },
     blurHandler() {
       if (this.isFirstInput) {
+        console.log(this);
+        console.log(this.target.value);
+
         this.validate();
       }
       this.isFirstInput = false;
