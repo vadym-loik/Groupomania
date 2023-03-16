@@ -69,15 +69,7 @@ export default {
       return [this.rules.isRequired];
     },
   },
-  methods: {
-    handleSubmit() {
-      const isFormValid = this.$refs.form.validate();
-
-      if (isFormValid) {
-        console.log(this.formData);
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 

@@ -41,13 +41,6 @@ export default {
       default: () => [],
     },
   },
-  computed: {
-    listeners() {
-      return {
-        input: (event) => this.$emit('input', event.target.value),
-      };
-    },
-  },
   watch: {
     value() {
       if (this.isFirstInput) return;
