@@ -1,13 +1,12 @@
 <template>
   <AuthContainer class="login">
     <MainTitle class="login__title">Login</MainTitle>
-    <Form ref="form" class="login__form" @submit.prevent="handleSubmit">
+    <Form ref="form" class="login__form">
       <CustomInput
         v-model="formData.email"
         placeholder="Email"
         autocomplete="email"
         name="email"
-        :rules="emailRules"
         class="login__input"
       />
       <CustomInput
@@ -16,7 +15,6 @@
         autocomplete="current-password"
         type="password"
         name="password"
-        :rules="passwordRules"
         class="login__input"
       />
       <Button class="login__btn" type="submit" :loading="loading">Enter</Button>
@@ -30,11 +28,6 @@ import MainTitle from './MainTitle.vue';
 import Form from './Form.vue';
 import CustomInput from './CustomInput.vue';
 import Button from './Button.vue';
-import {
-  emailValidation,
-  passwordValidation,
-  isRequired,
-} from '../utils/validationRules';
 
 export default {
   name: 'Login',
@@ -54,22 +47,6 @@ export default {
       },
     };
   },
-  computed: {
-    rules() {
-      return {
-        emailValidation,
-        passwordValidation,
-        isRequired,
-      };
-    },
-    emailRules() {
-      return [this.rules.isRequired, this.rules.emailValidation];
-    },
-    passwordRules() {
-      return [this.rules.isRequired];
-    },
-  },
-  methods: {},
 };
 </script>
 
