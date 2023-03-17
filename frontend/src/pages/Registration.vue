@@ -10,8 +10,8 @@
 
 <script>
 // import SectionWithHeaderSpacer from '../components/shared/SectionWithHeaderSpacer.vue';
-import AuthSection from '../components/auth/AuthSection.vue';
-import RegistrationForm from '../components/auth/registration/index.vue';
+import AuthSection from '../components/AuthSection.vue';
+import RegistrationForm from '../components/RegistrationForm.vue';
 
 export default {
   name: 'RegistrationPage',

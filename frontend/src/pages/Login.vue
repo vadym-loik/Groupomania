@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import LoginForm from '../components/auth/login/index.vue';
-import AuthSection from '../components/auth/AuthSection.vue';
+import LoginForm from '../components/LoginForm.vue';
+import AuthSection from '../components/AuthSection.vue';
 
 export default {
   name: 'LoginPage',

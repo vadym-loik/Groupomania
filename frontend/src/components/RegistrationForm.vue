@@ -42,16 +42,16 @@
 </template>
 
 <script>
-import AuthContainer from '../AuthContainer.vue';
-import MainTitle from '../../shared/MainTitle.vue';
-import Form from '../../shared/form/index.vue';
-import CustomInput from '../../shared/CustomInput.vue';
-import Button from '../../Button.vue';
+import AuthContainer from './AuthContainer.vue';
+import MainTitle from './MainTitle.vue';
+import Form from './Form.vue';
+import CustomInput from './CustomInput.vue';
+import Button from './Button.vue';
 import {
   emailValidation,
   passwordValidation,
   isRequired,
-} from '../../../utils/validationRules';
+} from '../utils/validationRules';
 
 export default {
   name: 'Registration',
