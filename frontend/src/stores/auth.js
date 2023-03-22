@@ -1,25 +1,37 @@
 import { defineStore } from 'pinia';
-import { getUsers } from '../services/auth';
+// import { getUsers } from '../services/getUser';
+// import { signupUser } from '../services/signupUser';
 
-export const useUserAuth = defineStore('userAuth', {
+export const useSignupUser = defineStore({
+  id: 'signupUser',
   state: () => {
     return {
       name: null,
       email: null,
-      photo: null,
     };
   },
   actions: {
-    handleUsers() {
-      //   this.name = user.name;
-      //   this.email = user.email;
-      //   this.photo = user.photo;
-      return getUsers().then((response) => {
-        this.name = 'vad';
-        this.email = 'vad@vad.fr';
-        this.photo = 'vad.jpg';
-        console.log(response);
-      });
+    handleUser() {
+      this.name = '';
+      this.email = '';
+      console.log(response);
     },
   },
 });
+
+// export const useUserAuth = defineStore({
+//   id: 'userAuth',
+//   state: () => {
+//     return {
+//       name: null,
+//       email: null,
+//     };
+//   },
+//   actions: {
+//     handleUser() {
+//       this.name = 'vad';
+//       this.email = 'vad@vad.fr';
+//       console.log(response);
+//     },
+//   },
+// });

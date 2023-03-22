@@ -1,73 +1,92 @@
 <template>
   <AuthContainer class="registration">
     <MainTitle class="registration__title">Registration</MainTitle>
-    <Form class="registration__form">
-      <CustomInput
-        v-model="formData.name"
-        name="name"
-        placeholder="Name"
-        autocomplete="username"
-        class="registration__input"
-      />
-      <CustomInput
-        v-model="formData.email"
-        name="email"
-        placeholder="E-mail"
-        autocomplete="email"
-        class="registration__input"
-      />
-      <CustomInput
-        v-model="formData.password"
-        name="password"
-        autocomplete="current-password"
-        type="password"
-        placeholder="Password"
-        class="registration__input"
-      />
-      <CustomInput
-        v-model="formData.password"
-        name="password"
-        autocomplete="current-password"
-        type="password"
-        placeholder="Confirm password"
-        class="registration__input"
-      />
-      <Button class="registration__btn" type="submit">Enter</Button>
-    </Form>
+    <form @submit.prevent="onSubmit" class="login__form">
+      <div class="registration__input--wrapper">
+        <input
+          class="registration__input"
+          type="text"
+          placeholder="Email"
+          v-model="email"
+        />
+        <span v-if="v$.email.$error"> {{ v$.email.$errors[0].$message }}</span>
+      </div>
+      <div class="registration__input--wrapper">
+        <input
+          class="registration__input"
+          type="password"
+          placeholder="Password"
+          v-model="password"
+        />
+        <span v-if="v$.password.$error">
+          {{ v$.password.$errors[0].$message }}</span
+        >
+      </div>
+      <div class="registration__input--wrapper">
+        <input
+          class="registration__input"
+          type="password"
+          placeholder="Confirm password"
+          v-model="confirm_password"
+        />
+        <span v-if="v$.confirm_password.$error">
+          {{ v$.confirm_password.$errors[0].$message }}</span
+        >
+      </div>
+      <Button class="registration__btn" @click="submitForm">Enter</Button>
+    </form>
   </AuthContainer>
 </template>
 
 <script>
 import AuthContainer from './AuthContainer.vue';
 import MainTitle from './MainTitle.vue';
-import Form from './Form.vue';
-import CustomInput from './CustomInput.vue';
 import Button from './Button.vue';
+
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, minLength, sameAs } from '@vuelidate/validators';
 
 export default {
   name: 'Registration',
   components: {
     AuthContainer,
     MainTitle,
-    Form,
-    CustomInput,
     Button,
+  },
+  setup() {
+    return {
+      v$: useVuelidate(),
+    };
   },
   data() {
     return {
-      loading: false,
-      formData: {
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      },
+      email: '',
+      password: '',
+      confirm_password: '',
+    };
+  },
+  methods: {
+    submitForm() {
+      this.v$.$validate();
+      if (!this.v$.$error) {
+        alert('OK');
+      } else {
+        alert('Some error');
+      }
+    },
+  },
+  validations() {
+    return {
+      email: { required, email },
+      password: { required, minlength: minLength(8) },
+      confirm_password: { required, sameAs: sameAs(this.pass) },
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/scss/variables.scss';
 .registration {
   &__form {
     display: block;
@@ -79,13 +98,27 @@ export default {
   }
 
   &__input {
-    margin-bottom: 20px;
+    height: 40px;
     width: 100%;
+    border: 2px solid $main-color;
+    border-radius: 8px;
+    font-size: 18px;
+    outline: none;
+    line-height: inherit;
+    padding: 8px 15px;
+
+    &::placeholder {
+      color: inherit;
+    }
   }
 
   &__btn {
     width: 100%;
     margin-top: 15px;
+  }
+
+  &__input--wrapper {
+    margin-bottom: 20px;
   }
 }
 </style>

@@ -1,56 +1,80 @@
 <template>
   <AuthContainer class="login">
     <MainTitle class="login__title">Login</MainTitle>
-    <Form ref="form" class="login__form">
-      <CustomInput
-        v-model="formData.email"
-        placeholder="Email"
-        autocomplete="email"
-        name="email"
-        class="login__input"
-      />
-      <CustomInput
-        v-model="formData.password"
-        placeholder="Password"
-        autocomplete="current-password"
-        type="password"
-        name="password"
-        class="login__input"
-      />
-      <Button class="login__btn" type="submit" :loading="loading">Enter</Button>
-    </Form>
+    <form @submit.prevent="onSubmit" class="login__form">
+      <div class="login__input--wrapper">
+        <input
+          class="login__input"
+          type="text"
+          placeholder="Email"
+          v-model="email"
+        />
+        <span v-if="v$.email.$error"> {{ v$.email.$errors[0].$message }}</span>
+      </div>
+      <div class="login__input--wrapper">
+        <input
+          class="login__input"
+          type="password"
+          placeholder="Password"
+          v-model="password"
+        />
+        <span v-if="v$.password.$error">
+          {{ v$.password.$errors[0].$message }}</span
+        >
+      </div>
+      <Button class="login__btn" @click="submitForm">Enter</Button>
+    </form>
   </AuthContainer>
 </template>
 
 <script>
 import AuthContainer from './AuthContainer.vue';
 import MainTitle from './MainTitle.vue';
-import Form from './Form.vue';
-import CustomInput from './CustomInput.vue';
 import Button from './Button.vue';
+
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, minLength } from '@vuelidate/validators';
 
 export default {
   name: 'Login',
   components: {
-    Form,
-    CustomInput,
     Button,
     AuthContainer,
     MainTitle,
   },
+  setup() {
+    return {
+      v$: useVuelidate(),
+    };
+  },
   data() {
     return {
-      loading: false,
-      formData: {
-        email: '',
-        password: '',
-      },
+      email: '',
+      password: '',
+    };
+  },
+  methods: {
+    submitForm() {
+      this.v$.$validate();
+      if (!this.v$.$error) {
+        alert('OK');
+      } else {
+        alert('Some error');
+      }
+    },
+  },
+  validations() {
+    return {
+      email: { required, email },
+      password: { required, minlength: minLength(8) },
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/scss/variables.scss';
+
 .login {
   &__form {
     display: block;
@@ -62,13 +86,27 @@ export default {
   }
 
   &__input {
-    margin-bottom: 20px;
+    height: 40px;
     width: 100%;
+    border: 2px solid $main-color;
+    border-radius: 8px;
+    font-size: 18px;
+    outline: none;
+    line-height: inherit;
+    padding: 8px 15px;
+
+    &::placeholder {
+      color: inherit;
+    }
   }
 
   &__btn {
     width: 100%;
     margin-top: 15px;
+  }
+
+  &__input--wrapper {
+    margin-bottom: 20px;
   }
 }
 </style>

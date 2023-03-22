@@ -20,7 +20,6 @@ const routes = [
     name: 'home',
     component: HomePage,
   },
-  //   { path: '*', name: 'error-page', component: ErrorPage },
 ];
 
 const router = createRouter({
