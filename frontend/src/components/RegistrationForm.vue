@@ -9,7 +9,9 @@
           placeholder="Email"
           v-model="email"
         />
-        <span v-if="v$.email.$error"> {{ v$.email.$errors[0].$message }}</span>
+        <span class="registration__input--error" v-if="v$.email.$error">
+          {{ v$.email.$errors[0].$message }}</span
+        >
       </div>
       <div class="registration__input--wrapper">
         <input
@@ -18,7 +20,7 @@
           placeholder="Password"
           v-model="password"
         />
-        <span v-if="v$.password.$error">
+        <span class="registration__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
         >
       </div>
@@ -29,7 +31,10 @@
           placeholder="Confirm password"
           v-model="confirm_password"
         />
-        <span v-if="v$.confirm_password.$error">
+        <span
+          class="registration__input--error"
+          v-if="v$.confirm_password.$error"
+        >
           {{ v$.confirm_password.$errors[0].$message }}</span
         >
       </div>
@@ -42,7 +47,10 @@
 import AuthContainer from './AuthContainer.vue';
 import MainTitle from './MainTitle.vue';
 import Button from './Button.vue';
+import axios from '../axios';
+import router from '../router';
 
+// import { reactive, computed } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
 
@@ -68,10 +76,23 @@ export default {
   methods: {
     submitForm() {
       this.v$.$validate();
+
+      axios
+        .post(`/auth/signup`, {
+          email: this.email,
+          password: this.password,
+        })
+        .then(() => {
+          this.$router.push('/');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       if (!this.v$.$error) {
-        alert('OK');
+        alert('Registration was successful');
       } else {
-        alert('Some error');
+        alert('Filled in all inputs please');
       }
     },
   },
@@ -79,7 +100,7 @@ export default {
     return {
       email: { required, email },
       password: { required, minlength: minLength(8) },
-      confirm_password: { required, sameAs: sameAs(this.pass) },
+      confirm_password: { required, sameAs: sameAs(this.password) },
     };
   },
 };
@@ -119,6 +140,10 @@ export default {
 
   &__input--wrapper {
     margin-bottom: 20px;
+  }
+
+  &__input--error {
+    color: red;
   }
 }
 </style>

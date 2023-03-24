@@ -9,7 +9,9 @@
           placeholder="Email"
           v-model="email"
         />
-        <span v-if="v$.email.$error"> {{ v$.email.$errors[0].$message }}</span>
+        <span class="login__input--error" v-if="v$.email.$error">
+          {{ v$.email.$errors[0].$message }}</span
+        >
       </div>
       <div class="login__input--wrapper">
         <input
@@ -18,7 +20,7 @@
           placeholder="Password"
           v-model="password"
         />
-        <span v-if="v$.password.$error">
+        <span class="login__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
         >
       </div>
@@ -57,9 +59,9 @@ export default {
     submitForm() {
       this.v$.$validate();
       if (!this.v$.$error) {
-        alert('OK');
+        alert('Login was successful');
       } else {
-        alert('Some error');
+        alert('Please fill in all fields correctly');
       }
     },
   },
@@ -107,6 +109,10 @@ export default {
 
   &__input--wrapper {
     margin-bottom: 20px;
+  }
+
+  &__input--error {
+    color: red;
   }
 }
 </style>

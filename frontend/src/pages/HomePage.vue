@@ -1,17 +1,22 @@
 <template>
-  <Container>
-    <SectionSpacer />
-    <div>
-      <button @click="getUser.handleUser">Get user</button>
-      <div v-if="getUser.name">{{ getUser.name }}</div>
-      <div v-if="getUser.email">{{ getUser.email }}</div>
-    </div>
-  </Container>
+  <main class="home">
+    <Container>
+      <SectionSpacer />
+    </Container>
+  </main>
 </template>
 
-<script setup>
+<script>
 import SectionSpacer from '../components/SectionWithHeaderSpacer.vue';
 import Container from '../components/Container.vue';
+
+export default {
+  name: 'HomePage',
+  components: {
+    Container,
+    SectionSpacer,
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>
