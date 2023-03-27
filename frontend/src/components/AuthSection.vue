@@ -17,7 +17,6 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: url('../../assets/icon.svg') no-repeat;
   background-size: cover;
   background-position: center;
   min-height: calc(100vh - 30px);

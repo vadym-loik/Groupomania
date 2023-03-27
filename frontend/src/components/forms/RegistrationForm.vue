@@ -44,15 +44,14 @@
 </template>
 
 <script>
-import AuthContainer from './AuthContainer.vue';
-import MainTitle from './MainTitle.vue';
-import Button from './Button.vue';
-import axios from '../axios';
-import router from '../router';
+import AuthContainer from '../AuthContainer.vue';
+import MainTitle from '../MainTitle.vue';
+import Button from '../Button.vue';
 
-// import { reactive, computed } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
+import { storeToRefs } from 'pinia';
+import { useStore } from '@/stores';
 
 export default {
   name: 'Registration',
@@ -60,6 +59,7 @@ export default {
     AuthContainer,
     MainTitle,
     Button,
+    useStore,
   },
   setup() {
     return {
@@ -77,17 +77,19 @@ export default {
     submitForm() {
       this.v$.$validate();
 
-      axios
-        .post(`/auth/signup`, {
-          email: this.email,
-          password: this.password,
-        })
-        .then(() => {
-          this.$router.push('/');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      storeToRefs(useStore);
+
+      // axios
+      //   .post(`/auth/signup`, {
+      //     email: this.email,
+      //     password: this.password,
+      //   })
+      //   .then(() => {
+      //     this.$router.push('/');
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
 
       if (!this.v$.$error) {
         alert('Registration was successful');
@@ -107,7 +109,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/variables.scss';
+@import '@/assets/scss/variables.scss';
 .registration {
   &__form {
     display: block;

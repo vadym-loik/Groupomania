@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import AuthContainer from './AuthContainer.vue';
-import MainTitle from './MainTitle.vue';
-import Button from './Button.vue';
+import AuthContainer from '../AuthContainer.vue';
+import MainTitle from '../MainTitle.vue';
+import Button from '../Button.vue';
 
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/variables.scss';
+@import '@/assets/scss/variables.scss';
 
 .login {
   &__form {
