@@ -1,6 +1,6 @@
 <template>
   <Container>
-    <div class="posts__list">
+    <div class="posts-list">
       <PostCard />
     </div>
   </Container>
@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.posts__list {
+.posts-list {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -19,6 +19,6 @@ library.add(faUserSecret);
 
 createApp(App)
   .component('font-awesome-icon', FontAwesomeIcon)
-  .use(router)
   .use(createPinia())
+  .use(router)
   .mount('#app');

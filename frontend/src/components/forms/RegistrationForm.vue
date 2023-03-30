@@ -50,8 +50,6 @@ import Button from '../Button.vue';
 
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
-import { storeToRefs } from 'pinia';
-import { useStore } from '@/stores';
 
 export default {
   name: 'Registration',
@@ -59,7 +57,6 @@ export default {
     AuthContainer,
     MainTitle,
     Button,
-    useStore,
   },
   setup() {
     return {
@@ -76,20 +73,6 @@ export default {
   methods: {
     submitForm() {
       this.v$.$validate();
-
-      storeToRefs(useStore);
-
-      // axios
-      //   .post(`/auth/signup`, {
-      //     email: this.email,
-      //     password: this.password,
-      //   })
-      //   .then(() => {
-      //     this.$router.push('/');
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
 
       if (!this.v$.$error) {
         alert('Registration was successful');
@@ -111,11 +94,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/scss/variables.scss';
 .registration {
-  &__form {
-    display: block;
-    flex-direction: column;
-  }
-
   &__title {
     text-align: center;
   }

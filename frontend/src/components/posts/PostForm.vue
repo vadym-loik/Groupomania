@@ -7,35 +7,71 @@
           class="post-form__text"
           name="postContent"
           id="postContent"
+          v-model="content"
           cols="150"
           rows="8"
           placeholder="Write your text here"
+          required
         ></textarea>
       </div>
+      <div class="post-form__wrap">
+        <label class="post-form__add--text" for="file"
+          >Add image (png, jpg, jpeg)</label
+        >
+        <input
+          class="post-form__choose"
+          type="file"
+          accept=".png, .jpg, .jpeg"
+          id="file"
+          name="image"
+          @change="upload($event)"
+        />
 
-      <label class="post-form__add--text" for="file"
-        >Add image (png, jpg, jpeg)</label
-      >
-      <input
-        class="post-form__choose"
-        type="file"
-        accept=".png, .jpg, .jpeg"
-        id="file"
-        name="image"
-        @change="upload($event)"
-      />
-
-      <Button type="submit" class="post-form__button">Publish</Button>
+        <Button
+          type="submit"
+          class="post-form__button"
+          @click:prevent="submitPost"
+          >Create post</Button
+        >
+      </div>
     </form>
   </div>
 </template>
 
 <script>
 import Button from '../Button.vue';
+import axios from '@/axios';
 
 export default {
   name: 'PostForm',
   components: { Button },
+  data() {
+    return {
+      content: '',
+    };
+  },
+  methods: {
+    upload(event) {
+      this.file = event.target.files[0];
+    },
+    submitPost() {
+      // make API call to create post
+      axios
+        .post('/api/posts', {
+          content: this.content,
+        })
+        .then((response) => {
+          // handle successful response
+          console.log(response.data);
+          // reset form fields
+          this.content = '';
+        })
+        .catch((error) => {
+          // handle error
+          console.log(error);
+        });
+    },
+  },
 };
 </script>
 
@@ -49,6 +85,7 @@ export default {
 
   &__form {
     max-width: 60%;
+    padding-top: 10px;
   }
 
   &__label--title {
@@ -68,6 +105,11 @@ export default {
 
   &__wrapper {
     padding: 15px 0 15px 0;
+  }
+
+  &__wrap {
+    display: flex;
+    align-items: center;
   }
 
   &__button {

@@ -6,6 +6,13 @@
       <router-link :to="{ name: 'registration' }" class="nav__link">
         Registration</router-link
       >
+      <router-link :to="{ name: 'profile-page' }" class="nav__link"
+        >Account</router-link
+      >
+      /
+      <router-link :to="{ name: 'login' }" class="nav__link"
+        >Logout</router-link
+      >
     </nav>
   </div>
 </template>

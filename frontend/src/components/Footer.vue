@@ -18,6 +18,11 @@ export default {
   flex-direction: column;
   background: $secondary-color;
   height: 30px;
+  /* position: fixed; */
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  z-index: 100;
 
   &__text {
     text-align: center;

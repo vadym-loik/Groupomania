@@ -28,9 +28,8 @@ export default {
 @import '../assets/scss/variables.scss';
 
 .header {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   z-index: 100;
 
