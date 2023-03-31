@@ -39,7 +39,7 @@ export default {
   justify-content: center;
   background-size: cover;
   background-position: center;
-  background-color: #f8f8f8;
+  background-color: #e6e1e1;
   min-height: calc(100vh - 30px);
   z-index: 1;
 

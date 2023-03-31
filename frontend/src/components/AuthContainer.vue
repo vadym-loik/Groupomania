@@ -17,7 +17,7 @@ export default {
   max-width: 410px;
   width: 100%;
   background: #fff;
-  background-color: #f8f8f8;
+  background-color: #e6e1e1;
   border: 2px solid $main-color;
   border-radius: 8px;
 }

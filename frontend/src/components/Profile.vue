@@ -7,7 +7,6 @@
           class="profile-picture"
           alt="Profile Picture"
         />
-        <img src="../assets/icons/close.png" class="profile-close" alt="" />
       </div>
     </div>
     <div class="profile-header">
@@ -16,6 +15,7 @@
     </div>
     <div class="profile-buttons">
       <Button class="profile-edit__btn">Edit</Button>
+      <Button class="profile-edit__btn">Save</Button>
       <Button>Delete</Button>
     </div>
   </div>
@@ -47,7 +47,7 @@ export default {
   max-width: 500px;
 
   align-items: center;
-  background-color: #f8f8f8;
+  background-color: #e6e1e1;
   border: 2px solid $main-color;
   border-radius: 8px;
   padding: 20px;

@@ -104,7 +104,7 @@ export default {
   }
 
   &__wrapper {
-    padding: 15px 0 15px 0;
+    padding: 10px 0;
   }
 
   &__wrap {

@@ -9,6 +9,7 @@
       <router-link :to="{ name: 'profile-page' }" class="nav__link"
         >Account</router-link
       >
+      <router-link :to="{ name: 'home' }" class="nav__link">Home</router-link>
       /
       <router-link :to="{ name: 'login' }" class="nav__link"
         >Logout</router-link
