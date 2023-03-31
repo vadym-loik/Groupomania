@@ -5,7 +5,9 @@ module.exports = (req, res, next) => {
   if (!validEmail.validate(req.body.email)) {
     return res
       .status(400)
-      .json({ message: 'Please enter a valid email address!' });
+      .json({
+        message: req.body.email + 'Please enter a valid email address!',
+      });
   } else {
     next();
   }

@@ -23,7 +23,7 @@ export default {
       currentUser: {
         name: 'Vad',
         email: 'vad@fr.fr',
-        picture: '../assets/icons/user.png',
+        picture: 'assets/icons/user.png',
       },
     };
   },

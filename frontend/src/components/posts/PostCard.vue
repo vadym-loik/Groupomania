@@ -14,6 +14,10 @@
       src="../../assets/images/2A2A9295crop.jpg"
       alt="post image"
     />
+    <div class="post-like">
+      <img src="../../assets/icons/heart.png" alt="" class="like-icon" />
+      <img src="../../assets/icons/heart_black.png" alt="" class="like-icon" />
+    </div>
     <MainTitle>Comments</MainTitle>
     <div class="post-comments">
       <img
@@ -25,11 +29,9 @@
         class="post-comment__content"
         placeholder="Write your comment here"
       ></textarea>
-    </div>
-    <div class="post-like">
-      <font-awesome-icon :icon="['fal', 'thumbs-up']" style="color: #ff662d" />
       <Button class="post-comment__btn">Add comment</Button>
     </div>
+
     <div class="post-comment">
       <img
         src="../../assets/icons/user.png"
@@ -102,9 +104,7 @@ export default {
   }
 
   &-like {
-    display: flex;
-    justify-content: end;
-    align-items: center;
+    margin-bottom: 10px;
   }
 
   &-img {
@@ -123,7 +123,6 @@ export default {
 
   &-comment__btn {
     width: 100px;
-    margin-bottom: 10px;
   }
 
   &-comment__content {
@@ -146,7 +145,7 @@ export default {
     border: none;
     background-color: #e6e1e1;
     border-radius: 8px;
-    padding: 10px;
+    padding: 10px 25px 10px 10px;
   }
 }
 </style>
