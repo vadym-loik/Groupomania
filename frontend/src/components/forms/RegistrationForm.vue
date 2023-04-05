@@ -1,13 +1,13 @@
 <template>
   <AuthContainer class="registration">
     <MainTitle class="registration__title">Registration</MainTitle>
-    <form @submit.prevent="onSubmit" class="login__form">
+    <form @submit.prevent="submitForm" class="login__form">
       <div class="registration__input--wrapper">
         <input
           class="registration__input"
           type="text"
           placeholder="Email"
-          v-model="email"
+          v-model="store.email"
         />
         <span class="registration__input--error" v-if="v$.email.$error">
           {{ v$.email.$errors[0].$message }}</span
@@ -18,7 +18,7 @@
           class="registration__input"
           type="password"
           placeholder="Password"
-          v-model="password"
+          v-model="store.password"
         />
         <span class="registration__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
@@ -29,7 +29,7 @@
           class="registration__input"
           type="password"
           placeholder="Confirm password"
-          v-model="confirm_password"
+          v-model="store.confirm_password"
         />
         <span
           class="registration__input--error"
@@ -38,7 +38,7 @@
           {{ v$.confirm_password.$errors[0].$message }}</span
         >
       </div>
-      <Button class="registration__btn" @click="submitForm">Enter</Button>
+      <Button class="registration__btn" type="submit">Enter</Button>
     </form>
   </AuthContainer>
 </template>
@@ -48,6 +48,7 @@ import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
 
+import { useRegistrationStore } from '../../stores/registerStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
 
@@ -59,8 +60,11 @@ export default {
     Button,
   },
   setup() {
+    const store = useRegistrationStore();
+
     return {
       v$: useVuelidate(),
+      store,
     };
   },
   data() {
@@ -71,14 +75,8 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      this.v$.$validate();
-
-      if (!this.v$.$error) {
-        alert('Registration was successful');
-      } else {
-        alert('Filled in all inputs please');
-      }
+    async submitForm() {
+      await this.store.submitForm();
     },
   },
   validations() {

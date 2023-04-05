@@ -1,5 +1,9 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const Sequelize = require('sequelize');
+const { DataTypes } = Sequelize;
 const sequelize = require('../config/db');
+const Post = require('./Post');
+const Comment = require('./Comments');
+const Like = require('./Likes');
 
 const User = sequelize.define(
   'user',
@@ -23,12 +27,13 @@ const User = sequelize.define(
       type: DataTypes.STRING,
     },
     password: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    admin: {
+    isAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      default: 0,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -43,5 +48,34 @@ const User = sequelize.define(
   },
   { tableName: 'user' }
 );
+
+User.hasMany(Post, {
+  foreignKey: {
+    name: 'userId',
+    allowNull: false,
+  },
+});
+Post.belongsTo(User);
+
+User.hasMany(Comment, {
+  foreignKey: {
+    name: 'userId',
+    allowNull: false,
+  },
+});
+Comment.belongsTo(User);
+
+User.hasMany(Like, {
+  foreignKey: {
+    name: 'userId',
+    allowNull: false,
+  },
+});
+Like.belongsTo(User);
+
+(async () => {
+  await sequelize.sync({ alter: true });
+  // Code here
+})();
 
 module.exports = User;

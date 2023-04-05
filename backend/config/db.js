@@ -1,29 +1,3 @@
-// const mariadb = require('mariadb');
-// const dotenv = require('dotenv').config();
-
-// const pool = mariadb.createPool({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   database: process.env.DB_NAME,
-//   password: process.env.DB_PASSWORD,
-//   connectionLimit: 5,
-// });
-
-// async function asyncFunction() {
-//   let conn;
-//   try {
-//     conn = await pool.getConnection();
-//     console.log(conn);
-//   } catch (err) {
-//     throw err;
-//   } finally {
-//     if (conn) return conn.end();
-//   }
-// }
-// asyncFunction();
-
-// module.exports = pool;
-
 const Sequelize = require('sequelize');
 require('dotenv').config();
 

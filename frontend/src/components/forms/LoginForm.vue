@@ -64,11 +64,13 @@ export default {
         alert('Please fill in all fields correctly');
       }
 
-      const $auth = useAuthStore();
+      const auth = useAuthStore();
       const email = this.email;
       const password = this.password;
 
-      await $auth.login(email, password);
+      await auth.login(email, password);
+      console.log(email);
+      console.log(password);
     },
   },
   validations() {

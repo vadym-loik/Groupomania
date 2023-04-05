@@ -5,6 +5,10 @@
       <MainTitle class="user-name">Vad</MainTitle>
     </div>
     <img src="../../assets/icons/edit.png" class="post-edit" alt="" />
+    <font-awesome-icon
+      :icon="['fas', 'pen-to-square']"
+      style="color: #ff662d"
+    />
     <article class="post-text">
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, sequi.
       Consequuntur provident assumenda libero veniam.
@@ -15,8 +19,7 @@
       alt="post image"
     />
     <div class="post-like">
-      <img src="../../assets/icons/heart.png" alt="" class="like-icon" />
-      <img src="../../assets/icons/heart_black.png" alt="" class="like-icon" />
+      <font-awesome-icon :icon="['far', 'heart']" style="color: #ff662d" />
     </div>
     <MainTitle>Comments</MainTitle>
     <div class="post-comments">

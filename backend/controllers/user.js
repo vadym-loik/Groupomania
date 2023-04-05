@@ -3,10 +3,6 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const User = require('../models/user');
 
-// exports.sendMessage = (req, res) => {
-//   res.send('Salut Vadym!');
-// };
-
 // SIGNUP
 exports.signup = function (req, res, next) {
   const userObject = req.body;
@@ -73,11 +69,21 @@ exports.login = (req, res, next) => {
   });
 };
 
+//get one user
+exports.getOneUser = (req, res, next) => {
+  User.findOne({
+    attributes: ['userId', 'name', 'email', 'isAdmin'],
+    where: { userId: req.params.id },
+  })
+    .then((user) => res.status(200).json({ user }))
+    .catch((error) => res.status(404).json({ error }));
+};
+
 // get all users
 exports.getAllUsers = (req, res, next) => {
   User.findAll({ attributes: ['userId', 'name', 'email'] })
-    .then((User) => {
-      res.status(200).json(User);
+    .then((users) => {
+      res.status(200).json({ users });
     })
     .catch((error) => {
       res.status(400).json({ error });

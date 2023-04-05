@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from '@/stores';
-import axios from '../axios';
+import Axios from '../axios';
 
 const baseUrl = `${import.meta.env.BASE_URL}/users`;
 
@@ -12,11 +12,11 @@ export const useUsersStore = defineStore({
   }),
   actions: {
     async signup(user) {
-      await axios.post(`${baseUrl}/signup`, user);
+      await Axios.post(`${baseUrl}/signup`, user);
     },
 
     async update(id, params) {
-      await axios.put(`${baseUrl}/${id}`, params);
+      await Axios.put(`${baseUrl}/${id}`, params);
 
       // update stored user if the logged in user updated their own record
       const authStore = useAuthStore();
@@ -29,11 +29,12 @@ export const useUsersStore = defineStore({
         authStore.user = user;
       }
     },
+
     async delete(id) {
       // add isDeleting prop to user being deleted
       this.users.find((x) => x.id === id).isDeleting = true;
 
-      await axios.delete(`${baseUrl}/${id}`);
+      await Axios.delete(`${baseUrl}/${id}`);
 
       // remove user from list after deleted
       this.users = this.users.filter((x) => x.id !== id);
