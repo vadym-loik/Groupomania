@@ -30,11 +30,8 @@ export default {
   },
   data() {
     return {
-      posts: {},
+      posts: getAllPosts(),
     };
-  },
-  mounted() {
-    this.posts = getAllPosts();
   },
 };
 </script>
