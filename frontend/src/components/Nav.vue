@@ -1,26 +1,40 @@
 <template>
   <div class="nav">
-    <nav class="nav__links">
-      <router-link :to="{ name: 'login' }" class="nav__link">Login</router-link>
-      /
-      <router-link :to="{ name: 'registration' }" class="nav__link">
-        Registration</router-link
-      >
-      <router-link :to="{ name: 'profile-page' }" class="nav__link"
-        >Account</router-link
-      >
-      <router-link :to="{ name: 'home' }" class="nav__link">Home</router-link>
-      /
-      <router-link :to="{ name: 'login' }" class="nav__link"
-        >Logout</router-link
-      >
+    <nav class="nav-links">
+      <div v-if="!isUserConnected()" class="nav-wrap">
+        <router-link :to="{ name: 'login' }" class="nav-link"
+          >Login</router-link
+        >
+        /
+        <router-link :to="{ name: 'registration' }" class="nav-link">
+          Registration</router-link
+        >
+      </div>
+      <div v-if="isUserConnected()" class="nav-wrap">
+        <router-link :to="{ name: 'profile-page' }" class="nav-link"
+          >Account</router-link
+        >
+        /
+        <router-link :to="{ name: 'home' }" class="nav-link">Home</router-link>
+        /
+        <router-link :to="{ name: 'login' }" class="nav-link"
+          >Logout</router-link
+        >
+      </div>
     </nav>
   </div>
 </template>
 
 <script>
+import { isUserAuth } from '../api.js';
+
 export default {
   name: 'Nav',
+  methods: {
+    isUserConnected() {
+      return isUserAuth();
+    },
+  },
 };
 </script>
 
@@ -31,12 +45,12 @@ export default {
   color: #fff;
   font-size: 24px;
 
-  &__link {
+  &-link {
     text-decoration: none;
     color: inherit;
   }
 
-  &__link:hover {
+  &-link:hover {
     color: $main-color;
   }
 }

@@ -11,6 +11,7 @@
 import Profile from '../components/Profile.vue';
 import SectionWithHeaderSpacer from '../components/SectionWithHeaderSpacer.vue';
 import Container from '../components/Container.vue';
+import { getUserData } from '../api.js';
 
 export default {
   components: {
@@ -20,13 +21,13 @@ export default {
   },
   data() {
     return {
-      currentUser: {
-        name: 'Vad',
-        email: 'vad@fr.fr',
-        picture: 'assets/icons/user.png',
-      },
+      currentUser: {},
     };
   },
+  mounted() {
+    this.currentUser = getUserData();
+  },
+  methods: {},
 };
 </script>
 

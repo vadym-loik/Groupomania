@@ -1,18 +1,17 @@
 <template>
   <div class="post-form">
-    <form class="post-form__form">
+    <form class="post-form__form" @submit.prevent="createPost">
       <label class="post-form__label--title" for="postContent">New post</label>
       <div class="post-form__wrapper">
-        <textarea
+        <input
           class="post-form__text"
-          name="postContent"
-          id="postContent"
-          v-model="content"
-          cols="150"
-          rows="8"
+          type="text"
+          name="text"
           placeholder="Write your text here"
+          v-bind:value="text"
+          @input="text = $event.target.value"
           required
-        ></textarea>
+        />
       </div>
       <div class="post-form__wrap">
         <label class="post-form__add--text" for="file"
@@ -27,10 +26,7 @@
           @change="upload($event)"
         />
 
-        <Button
-          type="submit"
-          class="post-form__button"
-          @click:prevent="submitPost"
+        <Button type="submit" class="post-form__button" @click:prevent=""
           >Create post</Button
         >
       </div>
@@ -40,36 +36,43 @@
 
 <script>
 import Button from '../Button.vue';
-import axios from '@/axios';
+// import Axios from '@/api.js';
+import { getAllPosts } from '../../api';
 
 export default {
   name: 'PostForm',
   components: { Button },
   data() {
     return {
-      content: '',
+      text: '',
     };
   },
   methods: {
     upload(event) {
       this.file = event.target.files[0];
     },
-    submitPost() {
+    createPost(event) {
       // make API call to create post
-      axios
-        .post('/api/posts', {
-          content: this.content,
-        })
-        .then((response) => {
-          // handle successful response
-          console.log(response.data);
-          // reset form fields
-          this.content = '';
-        })
-        .catch((error) => {
-          // handle error
-          console.log(error);
-        });
+      // Axios.post('/api/posts', {
+      //   content: this.content,
+      // })
+      //   .then((response) => {
+      //     // handle successful response
+      //     console.log(response.data);
+      //     // reset form fields
+      //     this.content = '';
+      //   })
+      //   .catch((error) => {
+      //     // handle error
+      //     console.log(error);
+      //   });
+      const newPost = {
+        postId: Date.now(),
+        text: this.text,
+        imageUrl: this.imageUrl,
+        name: this.name,
+      };
+      this.getAllPosts().push(newPost);
     },
   },
 };
@@ -96,6 +99,7 @@ export default {
     width: 100%;
     border: 2px solid $main-color;
     border-radius: 8px;
+    height: 60px;
   }
 
   &__choose,

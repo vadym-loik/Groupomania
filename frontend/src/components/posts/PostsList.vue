@@ -1,7 +1,7 @@
 <template>
   <Container>
     <div class="posts-list">
-      <PostCard />
+      <PostCard v-for="post in posts" :key="posts.postId" />
     </div>
   </Container>
 </template>
@@ -15,6 +15,12 @@ export default {
   components: {
     Container,
     PostCard,
+  },
+  props: {
+    posts: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>

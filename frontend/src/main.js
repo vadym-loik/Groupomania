@@ -3,7 +3,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
-import './axios';
+import './api.js';
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core';

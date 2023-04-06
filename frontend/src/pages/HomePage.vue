@@ -5,7 +5,7 @@
         <SectionSpacer />
         <PostForm />
         <MainTitle class="home-title">All posts</MainTitle>
-        <PostsList />
+        <PostsList :posts="posts" />
       </Container>
     </div>
   </main>
@@ -17,6 +17,7 @@ import PostForm from '../components/posts/PostForm.vue';
 import Container from '../components/Container.vue';
 import MainTitle from '../components/MainTitle.vue';
 import PostsList from '../components/posts/PostsList.vue';
+import { getAllPosts } from '../api';
 
 export default {
   name: 'HomePage',
@@ -26,6 +27,14 @@ export default {
     Container,
     MainTitle,
     PostsList,
+  },
+  data() {
+    return {
+      posts: {},
+    };
+  },
+  mounted() {
+    this.posts = getAllPosts();
   },
 };
 </script>

@@ -2,16 +2,15 @@
   <div class="post">
     <div class="user-info">
       <img class="post-avatar" src="../../assets/icons/user.png" alt="avatar" />
-      <MainTitle class="user-name">Vad</MainTitle>
+      <MainTitle class="user-name">{{ posts.name }}</MainTitle>
     </div>
-    <img src="../../assets/icons/edit.png" class="post-edit" alt="" />
     <font-awesome-icon
+      class="post-edit"
       :icon="['fas', 'pen-to-square']"
       style="color: #ff662d"
     />
     <article class="post-text">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo, sequi.
-      Consequuntur provident assumenda libero veniam.
+      {{ posts.text }}
     </article>
     <img
       class="post-img"
@@ -28,10 +27,11 @@
         src="../../assets/icons/user.png"
         alt="avatar"
       />
-      <textarea
+      <input
         class="post-comment__content"
+        type="text"
         placeholder="Write your comment here"
-      ></textarea>
+      />
       <Button class="post-comment__btn">Add comment</Button>
     </div>
 
@@ -44,7 +44,11 @@
       <p class="post-comment__text">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, placeat?
       </p>
-      <img src="../../assets/icons/close.png" alt="" class="close-icon" />
+      <font-awesome-icon
+        class="close-icon"
+        :icon="['fas', 'xmark']"
+        style="color: #ff662d"
+      />
     </div>
   </div>
 </template>
@@ -52,12 +56,18 @@
 <script>
 import Button from '../Button.vue';
 import MainTitle from '../MainTitle.vue';
+import getAllPosts from '../../api';
 
 export default {
   name: 'PostCard',
   components: {
     Button,
     MainTitle,
+  },
+  data() {
+    return {
+      posts: getAllPosts(),
+    };
   },
 };
 </script>
@@ -83,6 +93,7 @@ export default {
   max-width: 60%;
   background-color: #fff;
   position: relative;
+  margin-bottom: 10px;
 
   &-edit {
     position: absolute;
@@ -126,10 +137,11 @@ export default {
 
   &-comment__btn {
     width: 100px;
+    margin-left: 10px;
   }
 
   &-comment__content {
-    width: 436px;
+    width: 100%;
     height: 70px;
     border: none;
   }

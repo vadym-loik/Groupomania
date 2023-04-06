@@ -1,43 +1,16 @@
 <template>
-  <div v-if="showProfile" class="profile">
-    <div class="profile-body">
-      <div class="profile-wrap">
-        <img
-          :src="user.picture"
-          class="profile-picture"
-          alt="Profile Picture"
-        />
-      </div>
-    </div>
-    <div class="profile-info">
-      <p>Name: {{ user.name }}</p>
-      <p>e-mail: {{ user.email }}</p>
-    </div>
-    <div class="profile-buttons">
-      <Button class="profile-edit__btn" @click.prevent="toggleProfile"
-        >Edit</Button
-      >
-      <Button>Delete</Button>
-    </div>
+  <div class="edit-profile">
+    <EditProfileForm />
   </div>
-  <EditProfile v-if="editProfile" @toggle-profile="toggleProfile" />
 </template>
 
 <script>
-import Button from './Button.vue';
-import EditProfile from './EditProfile.vue';
+import EditProfileForm from './forms/EditProfileForm.vue';
 
 export default {
   name: 'Profile',
   components: {
-    Button,
-    EditProfile,
-  },
-  data() {
-    return {
-      showProfile: true,
-      editProfile: false,
-    };
+    EditProfileForm,
   },
   props: {
     user: {
@@ -45,18 +18,12 @@ export default {
       required: true,
     },
   },
-  methods: {
-    toggleProfile() {
-      this.showProfile = !this.showProfile;
-      this.editProfile = !this.editProfile;
-    },
-  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/scss/variables.scss';
-.profile {
+.edit-profile {
   display: flex;
   position: relative;
   flex-direction: column;

@@ -3,12 +3,7 @@
     <MainTitle class="registration__title">Registration</MainTitle>
     <form @submit.prevent="submitForm" class="login__form">
       <div class="registration__input--wrapper">
-        <input
-          class="registration__input"
-          type="text"
-          placeholder="Email"
-          v-model="store.email"
-        />
+        <input class="registration__input" type="text" placeholder="Email" />
         <span class="registration__input--error" v-if="v$.email.$error">
           {{ v$.email.$errors[0].$message }}</span
         >
@@ -18,7 +13,6 @@
           class="registration__input"
           type="password"
           placeholder="Password"
-          v-model="store.password"
         />
         <span class="registration__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
@@ -29,7 +23,6 @@
           class="registration__input"
           type="password"
           placeholder="Confirm password"
-          v-model="store.confirm_password"
         />
         <span
           class="registration__input--error"
@@ -48,7 +41,7 @@ import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
 
-import { useRegistrationStore } from '../../stores/registerStore';
+// import { useRegistrationStore } from '../../stores/registerStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
 
@@ -64,7 +57,7 @@ export default {
 
     return {
       v$: useVuelidate(),
-      store,
+      // store,
     };
   },
   data() {
@@ -75,9 +68,9 @@ export default {
     };
   },
   methods: {
-    async submitForm() {
-      await this.store.submitForm();
-    },
+    // async submitForm() {
+    //   await this.store.submitForm();
+    // },
   },
   validations() {
     return {

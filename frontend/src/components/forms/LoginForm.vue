@@ -3,23 +3,13 @@
     <MainTitle class="login__title">Login</MainTitle>
     <form @submit.prevent="submitForm" class="login__form">
       <div class="login__input--wrapper">
-        <input
-          class="login__input"
-          type="text"
-          placeholder="Email"
-          v-model="email"
-        />
+        <input class="login__input" type="text" placeholder="Email" />
         <span class="login__input--error" v-if="v$.email.$error">
           {{ v$.email.$errors[0].$message }}</span
         >
       </div>
       <div class="login__input--wrapper">
-        <input
-          class="login__input"
-          type="password"
-          placeholder="Password"
-          v-model="password"
-        />
+        <input class="login__input" type="password" placeholder="Password" />
         <span class="login__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
         >
@@ -33,7 +23,7 @@
 import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
-import { useAuthStore } from '../../stores/authStore';
+// import { useAuthStore } from '../../stores/authStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
 
@@ -56,22 +46,20 @@ export default {
     };
   },
   methods: {
-    async submitForm() {
-      this.v$.$validate();
-      if (!this.v$.$error) {
-        alert('Login was successful');
-      } else {
-        alert('Please fill in all fields correctly');
-      }
-
-      const auth = useAuthStore();
-      const email = this.email;
-      const password = this.password;
-
-      await auth.login(email, password);
-      console.log(email);
-      console.log(password);
-    },
+    // async submitForm() {
+    //   this.v$.$validate();
+    //   if (!this.v$.$error) {
+    //     alert('Login was successful');
+    //   } else {
+    //     alert('Please fill in all fields correctly');
+    //   }
+    //   const auth = useAuthStore();
+    //   const email = this.email;
+    //   const password = this.password;
+    //   await auth.login(email, password);
+    //   console.log(email);
+    //   console.log(password);
+    // },
   },
   validations() {
     return {
