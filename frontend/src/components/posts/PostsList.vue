@@ -1,7 +1,7 @@
 <template>
   <Container>
     <div class="posts-list">
-      <PostCard v-for="post in posts" :key="posts.postId" />
+      <PostCard v-for="post in posts" />
     </div>
   </Container>
 </template>
