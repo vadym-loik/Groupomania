@@ -8,8 +8,7 @@
           type="text"
           name="text"
           placeholder="Write your text here"
-          v-bind:value="text"
-          @input="text = $event.target.value"
+          v-model="post.text"
           required
         />
       </div>
@@ -44,7 +43,9 @@ export default {
   components: { Button },
   data() {
     return {
-      text: '',
+      post: {
+        text: '',
+      },
     };
   },
   methods: {
