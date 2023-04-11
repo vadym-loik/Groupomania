@@ -53,7 +53,7 @@ export default {
     Button,
   },
   setup() {
-    const store = useRegistrationStore();
+    // const store = useRegistrationStore();
 
     return {
       v$: useVuelidate(),

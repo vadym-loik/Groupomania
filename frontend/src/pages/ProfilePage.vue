@@ -11,7 +11,7 @@
 import Profile from '../components/Profile.vue';
 import SectionWithHeaderSpacer from '../components/SectionWithHeaderSpacer.vue';
 import Container from '../components/Container.vue';
-import { getUserData } from '../api.js';
+// import { getUserData } from '../api.js';
 
 export default {
   components: {
@@ -25,7 +25,7 @@ export default {
     };
   },
   mounted() {
-    this.currentUser = getUserData();
+    // this.currentUser = getUserData();
   },
   methods: {},
 };

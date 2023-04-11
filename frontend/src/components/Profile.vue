@@ -1,57 +1,62 @@
 <template>
-  <div v-if="showProfile" class="profile">
-    <div class="profile-body">
-      <div class="profile-wrap">
-        <img
-          :src="user.picture"
-          class="profile-picture"
-          alt="Profile Picture"
-        />
-      </div>
-    </div>
+  <div class="profile">
+    <img
+      src="../assets/images/IMG_20150915_153914.jpg"
+      class="profile-picture"
+      alt="Profile Picture"
+    />
+
     <div class="profile-info">
-      <p>Name: {{ user.name }}</p>
-      <p>e-mail: {{ user.email }}</p>
+      <p>Name: {{ name }}</p>
+      <p>e-mail: {{ email }}</p>
     </div>
     <div class="profile-buttons">
-      <Button class="profile-edit__btn" @click.prevent="toggleProfile"
-        >Edit</Button
-      >
+      <Button class="profile-edit__btn">Edit</Button>
       <Button>Delete</Button>
     </div>
   </div>
-  <EditProfile v-if="editProfile" @toggle-profile="toggleProfile" />
+  <EditProfile />
 </template>
 
-<script>
+<script setup>
+import { onMounted, ref } from 'vue';
 import Button from './Button.vue';
 import EditProfile from './EditProfile.vue';
+import { computed } from '@vue/reactivity';
+import axios from 'axios';
 
-export default {
-  name: 'Profile',
-  components: {
-    Button,
-    EditProfile,
-  },
-  data() {
-    return {
-      showProfile: true,
-      editProfile: false,
-    };
-  },
-  props: {
-    user: {
-      type: Object,
-      required: true,
-    },
-  },
-  methods: {
-    toggleProfile() {
-      this.showProfile = !this.showProfile;
-      this.editProfile = !this.editProfile;
-    },
-  },
-};
+const user = ref();
+
+onMounted(async () => {
+  const response = await axios.get('http://localhost:3000/profile');
+  user.value = response.user;
+});
+
+// export default {
+//   name: 'Profile',
+//   components: {
+//     Button,
+//     EditProfile,
+//   },
+//   data() {
+//     return {
+//       showProfile: true,
+//       editProfile: false,
+//     };
+//   },
+//   props: {
+//     user: {
+//       type: Object,
+//       required: true,
+//     },
+//   },
+//   methods: {
+//     toggleProfile() {
+//       this.showProfile = !this.showProfile;
+//       this.editProfile = !this.editProfile;
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
@@ -84,14 +89,15 @@ export default {
     margin-bottom: 10px;
   }
 
-  &-picture {
+  /* &-picture {
     width: 200px;
     margin-bottom: 20px;
-  }
+  } */
 
-  &-picture img {
-    width: 100%;
+  &-picture {
+    width: 30%;
     border-radius: 50%;
+    margin-bottom: 10px;
   }
 
   &-close {

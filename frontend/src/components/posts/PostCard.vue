@@ -1,8 +1,8 @@
 <template>
   <div class="post">
     <div class="user-info">
-      <img class="post-avatar" src="../../assets/icons/user.png" alt="avatar" />
-      <MainTitle class="user-name">{{ posts.name }}</MainTitle>
+      <img class="post-avatar" src="" alt="avatar" />
+      <MainTitle class="user-name">Vad</MainTitle>
     </div>
     <font-awesome-icon
       class="post-edit"
@@ -10,7 +10,8 @@
       style="color: #ff662d"
     />
     <article class="post-text">
-      {{ posts.text }}
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus,
+      officiis.
     </article>
     <img
       class="post-img"
@@ -53,23 +54,26 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import Button from '../Button.vue';
 import MainTitle from '../MainTitle.vue';
-import getAllPosts from '../../api';
 
-export default {
-  name: 'PostCard',
-  components: {
-    Button,
-    MainTitle,
-  },
-  data() {
-    return {
-      posts: getAllPosts(),
-    };
-  },
-};
+const user = ref({});
+
+// export default {
+//   name: 'PostCard',
+//   components: {
+//     Button,
+//     MainTitle,
+//   },
+//   props: {
+//     post: {
+//       type: Object,
+//       required: true,
+//     },
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>

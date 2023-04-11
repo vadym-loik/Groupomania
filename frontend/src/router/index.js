@@ -7,6 +7,11 @@ import ProfilePage from '../pages/ProfilePage.vue';
 
 const routes = [
   {
+    path: '/',
+    name: 'home',
+    component: HomePage,
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login,
@@ -16,11 +21,7 @@ const routes = [
     name: 'registration',
     component: Registration,
   },
-  {
-    path: '/',
-    name: 'home',
-    component: HomePage,
-  },
+
   {
     path: '/profile',
     name: 'profile-page',
