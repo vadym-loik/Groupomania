@@ -11,23 +11,12 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import SectionSpacer from '../components/SectionWithHeaderSpacer.vue';
 import PostForm from '../components/posts/PostForm.vue';
 import Container from '../components/Container.vue';
 import MainTitle from '../components/MainTitle.vue';
 import PostsList from '../components/posts/PostsList.vue';
-
-export default {
-  name: 'HomePage',
-  components: {
-    SectionSpacer,
-    PostForm,
-    Container,
-    MainTitle,
-    PostsList,
-  },
-};
 </script>
 
 <style lang="scss" scoped>

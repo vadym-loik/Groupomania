@@ -1,45 +1,29 @@
 <template>
   <Container>
-    <div class="posts-list" ref="posts">
-      <PostCard v-for="post in posts" :key="post.id" ref="posts" />
+    <div class="posts-list">
+      <PostCard v-for="post in posts" :key="post.id" :post="post" />
     </div>
   </Container>
 </template>
 
 <script setup>
-import axios from 'axios';
 import Container from '../Container.vue';
 import PostCard from './PostCard.vue';
-import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
 
-const posts = ref();
+const posts = ref([]);
 
 onMounted(() => {
-  const getAllPost = async () => {
-    await axios
-      .get('http://localhost:3000/posts')
-      .then((response) => {
-        console.log(response);
-        posts.value = response.data;
-      })
-      .catch((err) => console.log(err));
-  };
-  return getAllPost();
+  axios
+    .get('http://localhost:3000/posts')
+    .then((res) => {
+      posts.value = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
-
-// export default {
-//   name: 'PostsList',
-//   components: {
-//     Container,
-//     PostCard,
-//   },
-//   props: {
-//     posts: {
-//       type: Array,
-//       required: true,
-//     },
-//   },
-// };
 </script>
 
 <style lang="scss" scoped>

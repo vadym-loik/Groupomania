@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <img
-      src="../assets/images/IMG_20150915_153914.jpg"
+      src="@/assets/icons/user.png"
       class="profile-picture"
       alt="Profile Picture"
     />

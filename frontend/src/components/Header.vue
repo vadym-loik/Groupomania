@@ -12,7 +12,7 @@
 <script>
 import Container from './Container.vue';
 import Logo from './Logo.vue';
-import Nav from './nav/Nav.vue';
+import Nav from './navs/Nav.vue';
 
 export default {
   name: 'Header',

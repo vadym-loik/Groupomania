@@ -3,6 +3,12 @@
     <MainTitle class="registration__title">Registration</MainTitle>
     <form @submit.prevent="submitForm" class="login__form">
       <div class="registration__input--wrapper">
+        <input class="registration__input" type="text" placeholder="Name" />
+        <span class="registration__input--error" v-if="v$.name.$error">
+          {{ v$.name.$errors[0].$message }}</span
+        >
+      </div>
+      <div class="registration__input--wrapper">
         <input class="registration__input" type="text" placeholder="Email" />
         <span class="registration__input--error" v-if="v$.email.$error">
           {{ v$.email.$errors[0].$message }}</span
@@ -62,6 +68,7 @@ export default {
   },
   data() {
     return {
+      name: '',
       email: '',
       password: '',
       confirm_password: '',
@@ -74,6 +81,7 @@ export default {
   },
   validations() {
     return {
+      name: { required },
       email: { required, email },
       password: { required, minlength: minLength(8) },
       confirm_password: { required, sameAs: sameAs(this.password) },

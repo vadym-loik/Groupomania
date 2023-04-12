@@ -1,79 +1,53 @@
 <template>
   <div class="post">
+    <div>{{ post.id }}</div>
     <div class="user-info">
       <img class="post-avatar" src="" alt="avatar" />
-      <MainTitle class="user-name">Vad</MainTitle>
+      <MainTitle class="user-name">{{ post.userId.name }}</MainTitle>
     </div>
-    <font-awesome-icon
-      class="post-edit"
-      :icon="['fas', 'pen-to-square']"
-      style="color: #ff662d"
-    />
-    <article class="post-text">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus,
-      officiis.
-    </article>
+    <article class="post-text">{{ post.text }}</article>
     <img
       class="post-img"
-      src="../../assets/images/2A2A9295crop.jpg"
+      src="@/assets/images/2A2A9295crop.jpg"
       alt="post image"
     />
-    <div class="post-like">
-      <font-awesome-icon :icon="['far', 'heart']" style="color: #ff662d" />
-    </div>
+    <div class="post-like"></div>
     <MainTitle>Comments</MainTitle>
-    <div class="post-comments">
-      <img
-        class="post-comment__avatar"
-        src="../../assets/icons/user.png"
-        alt="avatar"
-      />
-      <input
-        class="post-comment__content"
-        type="text"
-        placeholder="Write your comment here"
-      />
-      <Button class="post-comment__btn">Add comment</Button>
-    </div>
-
-    <div class="post-comment">
-      <img
-        src="../../assets/icons/user.png"
-        class="post-comment__avatar"
-        alt="User avatar"
-      />
-      <p class="post-comment__text">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, placeat?
-      </p>
-      <font-awesome-icon
-        class="close-icon"
-        :icon="['fas', 'xmark']"
-        style="color: #ff662d"
-      />
-    </div>
+    <CommentInput />
+    <Comments
+      v-for="comment in comments"
+      :key="comment.id"
+      :comment="comment"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import Button from '../Button.vue';
 import MainTitle from '../MainTitle.vue';
+import Comments from '../comments/CommentsList.vue';
+import CommentInput from '../comments/CommentInput.vue';
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
 
-const user = ref({});
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+});
 
-// export default {
-//   name: 'PostCard',
-//   components: {
-//     Button,
-//     MainTitle,
-//   },
-//   props: {
-//     post: {
-//       type: Object,
-//       required: true,
-//     },
-//   },
-// };
+const comments = ref([]);
+
+onMounted(() => {
+  axios
+    .get('http://localhost:3000/comments')
+    .then((res) => {
+      comments.value = res.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -116,8 +90,7 @@ const user = ref({});
 
   &-avatar,
   &-text,
-  &-img,
-  &-comments {
+  &-img {
     margin-bottom: 10px;
   }
 
@@ -127,44 +100,6 @@ const user = ref({});
 
   &-img {
     max-width: 380px;
-  }
-
-  &-comments {
-    display: flex;
-    justify-content: space-around;
-    border: 2px solid $main-color;
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-  }
-
-  &-comment__btn {
-    width: 100px;
-    margin-left: 10px;
-  }
-
-  &-comment__content {
-    width: 100%;
-    height: 70px;
-    border: none;
-  }
-
-  &-comment {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-
-  &-comment__avatar {
-    margin-right: 10px;
-  }
-
-  &-comment__text {
-    border: none;
-    background-color: #e6e1e1;
-    border-radius: 8px;
-    padding: 10px 25px 10px 10px;
   }
 }
 </style>

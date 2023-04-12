@@ -8,7 +8,7 @@
           type="text"
           name="text"
           placeholder="Write your text here"
-          v-model="post.text"
+          v-model="text"
           required
         />
       </div>
@@ -22,7 +22,6 @@
           accept=".png, .jpg, .jpeg"
           id="file"
           name="image"
-          @change="upload($event)"
         />
 
         <Button type="submit" class="post-form__button">Create post</Button>
@@ -32,63 +31,20 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import Button from '../Button.vue';
+import { ref } from 'vue';
 // import Axios from '@/api.js';
 
-import { onMounted, ref } from 'vue';
+const text = ref('');
+const imageUrl = ref('');
 
-const post = ref({});
-// const posts = ref([]);
-// onMounted(() => {
-//   getAllPosts()
-//     .then((res) => {
-//       posts.value = res;
-//     })
-//     .catch();
-// });
-
-// export default {
-//   name: 'PostForm',
-//   components: { Button },
-//   data() {
-//     return {
-//       posts: getAllPosts(),
-//       post: {
-//         text: '',
-//       },
-//     };
-//   },
-//   methods: {
-//     upload(event) {
-//       this.file = event.target.files[0];
-//     },
-//     createPost() {
-//       // make API call to create post
-//       // Axios.post('/api/posts', {
-//       //   content: this.text,
-//       // })
-//       //   .then((response) => {
-//       //     // handle successful response
-//       //     console.log(response.data);
-//       //     // reset form fields
-//       //     this.text = '';
-//       //   })
-//       //   .catch((error) => {
-//       //     // handle error
-//       //     console.log(error);
-//       //   });
-//       const newPost = {
-//         postId: Date.now(),
-//         text: this.text,
-//         imageUrl: this.imageUrl,
-//         name: this.name,
-//       };
-//       this.posts.push(newPost);
-
-//       console.log('click');
-//     },
-//   },
-// };
+function createPost() {
+  axios.post('http://localhost:3000/posts', {
+    text: text.value,
+    imageUrl: imageUrl.value,
+  });
+}
 </script>
 
 <style lang="scss" scoped>
