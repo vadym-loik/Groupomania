@@ -4,13 +4,26 @@
       class="comments__content"
       type="text"
       placeholder="Write your comment here"
+      v-model="text"
     />
-    <Button class="comments__btn">Add comment</Button>
+    <Button class="comments__btn" @click.prevent="addComment"
+      >Add comment</Button
+    >
   </div>
 </template>
 
 <script setup>
 import Button from '../Button.vue';
+import { ref } from 'vue';
+import axios from 'axios';
+
+const text = ref('');
+
+function addComment() {
+  axios.post('http://localhost:3000/comments', {
+    text: text.value,
+  });
+}
 </script>
 
 <style lang="scss" scoped>

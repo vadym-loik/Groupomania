@@ -7,7 +7,7 @@
         alt="User avatar"
       />
       <p class="comment__text">
-        {{ comment.body }}
+        {{ comment.text }}
       </p>
     </div>
   </div>

@@ -3,14 +3,10 @@
     <div>{{ post.id }}</div>
     <div class="user-info">
       <img class="post-avatar" src="" alt="avatar" />
-      <MainTitle class="user-name">{{ post.userId.name }}</MainTitle>
+      <MainTitle class="user-name">{{}}</MainTitle>
     </div>
     <article class="post-text">{{ post.text }}</article>
-    <img
-      class="post-img"
-      src="@/assets/images/2A2A9295crop.jpg"
-      alt="post image"
-    />
+    <img class="post-img" src="" alt="post image" />
     <div class="post-like"></div>
     <MainTitle>Comments</MainTitle>
     <CommentInput />
@@ -68,7 +64,7 @@ onMounted(() => {
   padding: 15px;
   border: 2px solid $main-color;
   border-radius: 8px;
-  max-width: 60%;
+  width: 100%;
   background-color: #fff;
   position: relative;
   margin-bottom: 10px;

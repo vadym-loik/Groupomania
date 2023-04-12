@@ -56,7 +56,7 @@ function createPost() {
   margin-bottom: 20px;
 
   &__form {
-    max-width: 60%;
+    width: 100%;
     padding-top: 10px;
   }
 
