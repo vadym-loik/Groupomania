@@ -1,23 +1,15 @@
-const Sequelize = require('sequelize');
-require('dotenv').config();
+const db = require('./sequelize');
+const User = require('../models/User');
+const Post = require('../models/Post');
+const Comments = require('../models/Comments');
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    dialect: 'mariadb',
-    host: process.env.DB_HOST,
-  }
-);
+User.hasMany(Post, { foreignKey: 'userId', onDelete: 'cascade' });
+Post.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade' });
 
-(async function (req, res) {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-})();
+Comments.belongsTo(Post, { foreignKey: 'postId', onDelete: 'cascade' });
+Post.hasMany(Comments, { foreignKey: 'postId', onDelete: 'cascade' });
 
-module.exports = sequelize;
+Comments.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade' });
+User.hasMany(Comments, { foreignKey: 'userId', onDelete: 'cascade' });
+
+module.exports = db;
