@@ -4,11 +4,11 @@ const fs = require('fs');
 const User = require('../models/User');
 
 // SIGNUP
-exports.signup = (req, res, next) => {
+exports.signup = async (req, res, next) => {
   // const userObject = req.body;
   // console.log(userObject);
 
-  bcrypt.hash(req.body.password, 10).then((hash) => {
+  await bcrypt.hash(req.body.password, 10).then((hash) => {
     User.create({
       name: req.body.name,
       email: req.body.email,
