@@ -20,4 +20,6 @@ const Post = db.define(
   { tableName: 'post' }
 );
 
+// Post.sync({ alter: true });
+
 module.exports = Post;

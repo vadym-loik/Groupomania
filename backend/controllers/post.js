@@ -4,20 +4,24 @@ const fs = require('fs');
 
 //CREATE A POST
 exports.createPost = (req, res, next) => {
-  let imageUrl = '';
   if (req.file) {
-    imageUrl = `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`;
+    req.body.file = req.file.filename;
+  } else {
+    req.body.file = null;
   }
+  try {
+    console.log(req.body);
+    let { text, file, userId } = req.body;
 
-  Post.create({
-    text: req.body.text,
-    userId: req.body.userId,
-    imageUrl: imageUrl,
-  })
-    .then((post) => res.status(201).json({ message: 'Post saved!', post }))
-    .catch((error) => res.status(400).json({ error }));
+    Post.create({ text, file, userId })
+      .then((newPost) => {
+        console.log('Post created!');
+        res.status(201).json(newPost);
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };
 
 //GET ONE POST
@@ -44,71 +48,47 @@ exports.getOnePost = (req, res, next) => {
 
 //GET ALL POSTS
 exports.getAllPosts = (req, res, next) => {
-  Post.findAll({
-    include: {
-      model: User,
-      attributes: {
-        exclude: ['id', 'password', 'email', 'createdAt', 'updatedAt'],
-      },
-    },
-    //sort by date from newest to least recent
-    order: [['createdAt', 'DESC']],
-  })
-    .then((post) => res.status(200).json(post))
-    .catch((error) => res.status(404).json({ error }));
+  try {
+    Post.findAll({ include: User })
+      .then((posts) => {
+        res.status(200).json(posts);
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };
 
 //MODIFY POST
-
 exports.modifyPost = (req, res, next) => {
-  const postObject = req.file
-    ? {
-        ...req.body,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
-
-  Post.findOne({ where: { id: req.params.id } })
-    .then((post) => {
-      if (req.file) {
-        const oldImage = post.imageUrl.split('/images/')[1];
-        fs.unlink(`images/${oldImage}`, (error) => {
-          console.log(error);
-        });
-      }
-
-      if (!post) {
-        return res.status(404).json({ error: 'Post not found!' });
-      }
-
-      User.findOne({ where: { id: req.auth.userId } })
-        .then((user) => {
-          //check whoever wants to edit the post is the author of the post or the administrator
-          if (user.isAdmin || req.auth.userId === post.userId) {
-            //update the database
-            Post.update(
-              { ...postObject, id: req.params.id },
-              { where: { id: req.params.id } }
-            )
-              .then(() =>
-                Post.findOne({ where: { id: req.params.id } })
-                  .then((post) => {
-                    res.status(200).json({ message: 'Post updated!', post });
-                  })
-                  .catch((error) => res.status(400).json(error))
-              )
-              .catch((error) => res.status(400).json(error));
-          } else {
-            return res
-              .status(401)
-              .json({ error: 'Modification not permitted!' });
-          }
-        })
-        .catch((error) => res.status(400).json(error));
-    })
-    .catch((error) => res.status(400).json({ error }));
+  req.file
+    ? (req.body.file = req.file.filename)
+    : console.log('we keep the same picture'); //we check if the user has uploaded a new photo
+  if (req.file) {
+    //remove the old image from the post
+    Post.findOne({ where: { id: req.params.id } })
+      .then((post) => {
+        if (post.file) {
+          //if post.file is not null we delete the existing file
+          fs.unlink(`images/${post.file}`, (error) => {
+            if (error) throw err;
+          });
+        } else {
+          console.log('the image to replace is NULL');
+        }
+      })
+      .catch((error) => res.status(400).json(error));
+  }
+  try {
+    Post.update(req.body, { where: { id: req.params.id } })
+      .then(() => {
+        let updatedPost = { ...req.body };
+        res.status(201).json(updatedPost);
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };
 
 //DELETE POST

@@ -2,7 +2,7 @@
   <SectionWithHeaderSpacer />
   <Container>
     <div class="profile-page">
-      <Profile v-for="user in users" :key="user.userId" :user="user" />
+      <Profile v-for="user in users" :key="user.id" :user="user" />
     </div>
   </Container>
 </template>
@@ -19,9 +19,10 @@ const users = ref([]);
 
 function getUsers() {
   axios
-    .get('http://localhost:3000/profile')
+    .get('http://localhost:8000/api/auth/profile/:id')
     .then((res) => {
       users.value = res.data;
+      console.log(users.value);
     })
     .catch((err) => {
       console.log(err);

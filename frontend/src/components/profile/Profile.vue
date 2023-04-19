@@ -1,7 +1,7 @@
 <template>
   <div class="profile" v-if="showProfile">
     <img
-      src="@/assets/icons/user.png"
+      src="@/assets/icons/avatar_default.png"
       class="profile-picture"
       alt="Profile Picture"
     />

@@ -3,7 +3,7 @@ const helmet = require('helmet');
 const path = require('path');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
-const commentsRoutes = require('./routes/comments');
+const commentRoutes = require('./routes/comment');
 const db = require('./config/db');
 
 try {
@@ -43,7 +43,7 @@ app.use(express.json());
 
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
-app.use('/api/comments', commentsRoutes);
+app.use('/api/comments', commentRoutes);
 
 // for management of image files
 app.use('/images', express.static(path.join(__dirname, 'images')));

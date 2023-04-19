@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const User = require('../models/User');
-const { log } = require('console');
 
 // SIGNUP
 exports.signup = (req, res, next) => {
@@ -13,6 +12,8 @@ exports.signup = (req, res, next) => {
       password: hash,
       isAdmin: false,
     });
+
+    console.log(user);
 
     user
       .save()
@@ -28,16 +29,16 @@ exports.signup = (req, res, next) => {
 
 // LOGIN
 exports.login = (req, res, next) => {
-  const { email, password } = req.body;
+  // const { email, password } = req.body;
 
   User.findOne({
-    where: { email: email.email },
+    where: { email: req.body.email },
   }).then((user) => {
     if (!user) {
       return res.status(401).json({ error: 'User not found!' });
     }
     bcrypt
-      .compare(password.password, user.password)
+      .compare(req.body.password, user.password)
       .then((valid) => {
         if (!valid) {
           return res.status(401).json({ error: 'Incorrect password!' });
@@ -61,59 +62,66 @@ exports.login = (req, res, next) => {
 
 //GET ONE USER
 exports.getOneUser = (req, res, next) => {
-  User.findOne({
-    attributes: ['userId', 'name', 'email', 'isAdmin'],
-    where: { userId: req.params.id },
-  })
-    .then((user) => res.status(200).json({ user }))
-    .catch((error) => res.status(404).json({ error }));
+  try {
+    User.findOne({
+      where: { userId: req.params.id },
+      attributes: {
+        exclude: ['id', 'password', 'email', 'createdAt', 'updatedAt'],
+      },
+    })
+      .then((user) => res.status(200).json({ user }))
+      .catch((error) => res.status(400).json({ error }));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };
 
 //MODIFY USER PROFILE
 exports.modifyUser = (req, res, next) => {
-  const userObject = req.file
-    ? {
-        ...req.body,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${
-          req.file.filename
-        }`,
-      }
-    : { ...req.body };
-
-  User.findOne({ where: { id: req.params.id } })
-    .then((user) => {
-      //delete the old file in case a new file is different from the "avatar_default.png" image
-      if (
-        user.imageUrl != 'http://localhost:8000/images/avatar_default.png' &&
-        req.file
-      ) {
-        const oldImage = user.imageUrl.split('/images/')[1];
-        fs.unlink(`images/${oldImage}`, (error) => {
-          console.log(error);
-        });
-      }
-    })
-    .catch((error) => {
-      return res.status(400).json({ error });
-    });
-
-  //update the database
-  User.update(
-    { ...userObject, id: req.params.id },
-    { where: { id: req.params.id } }
-  ).then(() =>
-    //if successful registration
+  req.file
+    ? (req.body.profile = req.file.filename)
+    : console.log('we keep the same picture'); //we check if the user has uploaded a new photo
+  if (req.file) {
+    //remove the old profile photo
     User.findOne({ where: { id: req.params.id } })
       .then((user) => {
-        res.status(200).json({ message: 'Profile updated!', user });
+        if (user.profile !== 'avatar_default.png') {
+          //if the profile picture is not the default one, you can delete it
+          fs.unlink(`images/${user.profile}`, (error) => {
+            if (error) throw err;
+          });
+        } else {
+          console.log(
+            'This file cannot be deleted because it is the default image.'
+          );
+        }
       })
-      .catch((error) => res.status(400).json(error))
-  );
+      .catch((error) => res.status(400).json(error));
+  }
+  if (req.body.password) {
+    //if the password has been modified, the hash is saved
+    bcrypt
+      .hash(req.body.password, 8)
+      .then((hash) => {
+        req.body.password = hash;
+        User.update(req.body, { where: { id: req.params.id } })
+          .then((user) => {
+            res.status(201).json({ message: 'profile and password changed' });
+          })
+          .catch((error) => res.status(400).json(error));
+      })
+      .catch((error) => res.status(500).json(error));
+  } else {
+    //the password has not been changed so we can save our data directly
+    User.update(req.body, { where: { id: req.params.id } })
+      .then(() => res.status(201).json({ message: 'updated profile' }))
+      .catch((error) => res.status(400).json(error));
+  }
 };
 
 // GET ALL USERS
 exports.getAllUsers = (req, res, next) => {
-  User.findAll({ attributes: ['userId', 'name', 'email'] })
+  User.findAll({ attributes: ['id', 'name', 'email'] })
     .then((users) => {
       res.status(200).json({ users });
     })
@@ -124,26 +132,14 @@ exports.getAllUsers = (req, res, next) => {
 
 // DELETE USER
 exports.deleteUser = (req, res, next) => {
-  User.findOne({ where: { id: req.params.id } })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ error: 'User not found!' });
-      }
-
-      const filename = user.imageUrl.split('/images/')[1];
-      if (user.imageUrl != 'http://localhost:8000/images/avatar_default.png') {
-        //remove image only if different from avatar default.png image
-        fs.unlink(`images/${filename}`, (error) => {
-          if (error) {
-            console.log(error);
-          }
-        });
-      }
-
-      //we delete the user from the database by indicating his id
-      User.destroy({ where: { id: req.params.id } })
-        .then((user) => res.status(200).json({ message: 'User deleted!' }))
-        .catch((error) => res.status(400).json({ error }));
-    })
-    .catch((error) => res.status(400).json({ error }));
+  console.log('User id to delete: ', req.params.id);
+  try {
+    User.destroy({ where: { id: req.params.id } })
+      .then(() => {
+        res.status(200).json({ message: 'User deleted!' });
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };

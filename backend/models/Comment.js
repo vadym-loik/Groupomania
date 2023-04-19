@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/sequelize');
 
-const Comments = db.define(
+const Comment = db.define(
   'comments',
   {
     userId: {
@@ -20,4 +20,6 @@ const Comments = db.define(
   { tableName: 'comment' }
 );
 
-module.exports = Comments;
+// Comment.sync({ alter: true });
+
+module.exports = Comment;
