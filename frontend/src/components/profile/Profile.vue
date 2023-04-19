@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" v-if="showProfile">
     <img
       src="@/assets/icons/user.png"
       class="profile-picture"
@@ -7,60 +7,42 @@
     />
 
     <div class="profile-info">
-      <p>Name: {{ name }}</p>
-      <p>e-mail: {{ email }}</p>
+      <p>Name: {{ user.name }}</p>
+      <p>e-mail: {{ user.email }}</p>
     </div>
     <div class="profile-buttons">
-      <Button class="profile-edit__btn">Edit</Button>
+      <Button class="profile-edit__btn" @click.prevent="toggleProfile"
+        >Edit</Button
+      >
       <Button>Delete</Button>
     </div>
   </div>
-  <EditProfile />
+  <EditProfile v-if="editProfile" />
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import Button from './Button.vue';
+import { ref } from 'vue';
+import Button from '../Button.vue';
 import EditProfile from './EditProfile.vue';
-import { computed } from '@vue/reactivity';
-import axios from 'axios';
 
-const user = ref();
-
-onMounted(async () => {
-  const response = await axios.get('http://localhost:3000/profile');
-  user.value = response.user;
+const props = defineProps({
+  user: {
+    type: Object,
+    require: true,
+  },
 });
 
-// export default {
-//   name: 'Profile',
-//   components: {
-//     Button,
-//     EditProfile,
-//   },
-//   data() {
-//     return {
-//       showProfile: true,
-//       editProfile: false,
-//     };
-//   },
-//   props: {
-//     user: {
-//       type: Object,
-//       required: true,
-//     },
-//   },
-//   methods: {
-//     toggleProfile() {
-//       this.showProfile = !this.showProfile;
-//       this.editProfile = !this.editProfile;
-//     },
-//   },
-// };
+const showProfile = ref(true);
+const editProfile = ref(false);
+
+function toggleProfile() {
+  showProfile.value = !showProfile.value;
+  editProfile.value = !editProfile.value;
+}
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/variables.scss';
+@import '@/assets/scss/variables.scss';
 .profile {
   display: flex;
   position: relative;

@@ -39,8 +39,8 @@ import { ref } from 'vue';
 const text = ref('');
 const imageUrl = ref('');
 
-function createPost() {
-  axios.post('http://localhost:3000/posts', {
+async function createPost() {
+  await axios.post('http://localhost:3000/posts', {
     text: text.value,
     imageUrl: imageUrl.value,
   });

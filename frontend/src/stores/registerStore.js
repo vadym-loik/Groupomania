@@ -1,8 +1,10 @@
 // import { defineStore } from 'pinia';
-// import Axios from '../api.js';
+// import Axios from '../api';
 
-// export const useRegistrationStore = defineStore('registration', {
+// export const useRegistrationStore = defineStore({
+//   id: 'registration',
 //   state: () => ({
+//     name: '',
 //     email: '',
 //     password: '',
 //     confirm_password: '',
@@ -10,11 +12,12 @@
 
 //   actions: {
 //     async submitForm() {
-//       const { email, password, confirm_password } = this.$state;
+//       const { name, email, password, confirm_password } = this.$state;
 
 //       try {
 //         // Make API call to register user
-//         await Axios.post('/signup', {
+//         await Axios.post('/api/auth/signup', {
+//           name,
 //           email,
 //           password,
 //           confirm_password,

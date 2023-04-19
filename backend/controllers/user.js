@@ -2,21 +2,23 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const User = require('../models/User');
+const { log } = require('console');
 
 // SIGNUP
-exports.signup = async (req, res, next) => {
-  // const userObject = req.body;
-  // console.log(userObject);
-
-  await bcrypt.hash(req.body.password, 10).then((hash) => {
-    User.create({
+exports.signup = (req, res, next) => {
+  bcrypt.hash(req.body.password, 10).then((hash) => {
+    const user = new User({
       name: req.body.name,
       email: req.body.email,
       password: hash,
       isAdmin: false,
-    })
+    });
+
+    user
+      .save()
       .then(() => {
         res.status(201).json({ message: 'User created successfully' });
+        console.log(User);
       })
       .catch((error) => {
         res.status(400).json({ error });

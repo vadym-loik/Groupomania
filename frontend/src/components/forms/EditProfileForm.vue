@@ -21,15 +21,28 @@
   </form>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import Button from '../Button.vue';
 
-export default {
-  name: 'EditProfile',
-  components: {
-    Button,
-  },
-};
+const name = ref('');
+const email = ref('');
+const password = ref('');
+
+// const showProfile = ref(false);
+// const editProfile = ref(true);
+
+// function toggleProfile() {
+//   showProfile.value = !showProfile.value;
+//   editProfile.value = !editProfile.value;
+// }
+
+// export default {
+//   name: 'EditProfile',
+//   components: {
+//     Button,
+//   },
+// };
 </script>
 
 <style lang="scss" scoped>
@@ -59,5 +72,9 @@ export default {
     width: 30%;
     border-radius: 50%;
   }
+}
+
+.save {
+  display: block;
 }
 </style>

@@ -9,13 +9,14 @@
 <script setup>
 import Container from '../Container.vue';
 import PostCard from './PostCard.vue';
-import axios from 'axios';
+// import userService from '@/services/user.service.js';
 import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
 const posts = ref([]);
 
-onMounted(() => {
-  axios
+onMounted(async () => {
+  await axios
     .get('http://localhost:3000/posts')
     .then((res) => {
       posts.value = res.data;
@@ -24,6 +25,10 @@ onMounted(() => {
       console.log(err);
     });
 });
+
+// onMounted(async () => {
+//   await userService.getAllPosts();
+// });
 </script>
 
 <style lang="scss" scoped>

@@ -1,10 +1,26 @@
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
-const sequelize = require('./config/sequelize');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 const commentsRoutes = require('./routes/comments');
+const db = require('./config/db');
+
+try {
+  db.authenticate();
+  console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}
+
+// (async function (req, res) {
+//   try {
+//     await sequelize.authenticate();
+//     console.log('Connection has been established successfully.');
+//   } catch (error) {
+//     console.error('Unable to connect to the database:', error);
+//   }
+// })();
 
 const app = express();
 app.use(helmet());

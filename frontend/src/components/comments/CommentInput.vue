@@ -19,8 +19,8 @@ import axios from 'axios';
 
 const text = ref('');
 
-function addComment() {
-  axios.post('http://localhost:3000/comments', {
+async function addComment() {
+  await axios.post('http://localhost:3000/comments', {
     text: text.value,
   });
 }

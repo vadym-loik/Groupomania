@@ -3,13 +3,23 @@
     <MainTitle class="registration__title">Registration</MainTitle>
     <form @submit.prevent="submitForm" class="login__form">
       <div class="registration__input--wrapper">
-        <input class="registration__input" type="text" placeholder="Name" />
+        <input
+          class="registration__input"
+          type="text"
+          placeholder="Name"
+          v-model="name"
+        />
         <span class="registration__input--error" v-if="v$.name.$error">
           {{ v$.name.$errors[0].$message }}</span
         >
       </div>
       <div class="registration__input--wrapper">
-        <input class="registration__input" type="text" placeholder="Email" />
+        <input
+          class="registration__input"
+          type="text"
+          placeholder="Email"
+          v-model="email"
+        />
         <span class="registration__input--error" v-if="v$.email.$error">
           {{ v$.email.$errors[0].$message }}</span
         >
@@ -19,6 +29,7 @@
           class="registration__input"
           type="password"
           placeholder="Password"
+          v-model="password"
         />
         <span class="registration__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
@@ -29,6 +40,7 @@
           class="registration__input"
           type="password"
           placeholder="Confirm password"
+          v-model="confirm_password"
         />
         <span
           class="registration__input--error"
@@ -38,6 +50,10 @@
         >
       </div>
       <Button class="registration__btn" type="submit">Enter</Button>
+      <p class="registration__have-account">
+        You already have an account? Click here:
+        <router-link to="/login">Login</router-link>
+      </p>
     </form>
   </AuthContainer>
 </template>
@@ -47,7 +63,7 @@ import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
 
-// import { useRegistrationStore } from '../../stores/registerStore';
+import { useRegistrationStore } from '@/stores/registerStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
 
@@ -59,11 +75,11 @@ export default {
     Button,
   },
   setup() {
-    // const store = useRegistrationStore();
+    const store = useRegistrationStore();
 
     return {
       v$: useVuelidate(),
-      // store,
+      store,
     };
   },
   data() {
@@ -75,9 +91,9 @@ export default {
     };
   },
   methods: {
-    // async submitForm() {
-    //   await this.store.submitForm();
-    // },
+    async submitForm() {
+      await this.store.submitForm();
+    },
   },
   validations() {
     return {
@@ -123,6 +139,10 @@ export default {
 
   &__input--error {
     color: red;
+  }
+
+  &__have-account {
+    margin-top: 10px;
   }
 }
 </style>
