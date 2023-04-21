@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-login">
+  <div class="nav-login" v-if="!authStore.loggedIn">
     <nav class="nav-links">
       <div class="nav-login__wrap">
         <router-link :to="{ name: 'login' }" class="nav-login__link"
@@ -14,8 +14,10 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+import { useAuthStore } from '@/stores/authStore';
+
+const authStore = useAuthStore();
 </script>
 
 <style lang="scss" scoped>

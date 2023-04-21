@@ -18,10 +18,10 @@
           class="registration__input"
           type="text"
           placeholder="Email"
-          v-model="v$.email.$model"
+          v-model="v$.userEmail.$model"
         />
-        <span class="registration__input--error" v-if="v$.email.$error">
-          {{ v$.email.$errors[0].$message }}</span
+        <span class="registration__input--error" v-if="v$.userEmail.$error">
+          {{ v$.userEmail.$errors[0].$message }}</span
         >
       </div>
       <div class="registration__input--wrapper">
@@ -65,28 +65,28 @@ import Button from '../Button.vue';
 
 import { useAuthStore } from '@/stores/authStore';
 import { useVuelidate } from '@vuelidate/core';
-import { required, minLength, sameAs } from '@vuelidate/validators';
+import { required, minLength, sameAs, email } from '@vuelidate/validators';
 import { ref } from 'vue';
 
 const authStore = useAuthStore();
 
 const name = ref('');
-const email = ref('');
+const userEmail = ref('');
 const password = ref('');
 const confirm_password = ref('');
 
 const rules = {
   name: { required },
-  email: { required },
+  userEmail: { required, email },
   password: { required, minlength: minLength(8) },
   confirm_password: { required, sameAs: sameAs(password) },
 };
 
-const v$ = useVuelidate(rules, { name, email, password, confirm_password });
+const v$ = useVuelidate(rules, { name, userEmail, password, confirm_password });
 
 function signup() {
   try {
-    authStore.signup(name.value, email.value, password.value);
+    authStore.signup(name.value, userEmail.value, password.value);
   } catch (error) {
     console.log(error);
   }

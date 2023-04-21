@@ -1,21 +1,23 @@
 <template>
-  <div class="nav-auth">
-    <div class="nav-wrap">
-      <router-link :to="{ name: 'profile-page' }" class="nav-auth__link"
-        >Account</router-link
-      >
-      /
-      <router-link :to="{ name: 'login' }" class="nav-auth__link"
-        >Logout</router-link
-      >
-    </div>
+  <div class="nav-auth" v-if="authStore.loggedIn">
+    <nav class="nav-links">
+      <div class="nav-wrap">
+        <router-link :to="{ name: 'profile-page' }" class="nav-auth__link"
+          >Account</router-link
+        >
+        /
+        <router-link :to="{ name: 'login' }" class="nav-auth__link"
+          >Logout</router-link
+        >
+      </div>
+    </nav>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'NavAuth',
-};
+<script setup>
+import { useAuthStore } from '@/stores/authStore';
+
+const authStore = useAuthStore();
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import Axios from '../api';
+import router from '../router/index';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -21,7 +22,9 @@ export const useAuthStore = defineStore('auth', {
         console.log(data);
         this.user = data.user;
         this.loggedIn = true;
+
         this.error = null;
+        router.push('/');
       } catch (error) {
         this.error = error.message;
         throw error;
