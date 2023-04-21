@@ -13,9 +13,12 @@ export const useAuthStore = defineStore('auth', {
       try {
         // perform signup logic, e.g. make an API request to register the user
         const response = await Axios.post('/api/auth/signup', {
-          data: JSON.stringify({ name, email, password }),
+          name,
+          email,
+          password,
         });
-        const data = await response.json();
+        const data = response;
+        console.log(data);
         this.user = data.user;
         this.loggedIn = true;
         this.error = null;

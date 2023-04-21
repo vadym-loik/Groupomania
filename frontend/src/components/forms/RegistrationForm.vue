@@ -1,13 +1,13 @@
 <template>
   <AuthContainer class="registration">
     <MainTitle class="registration__title">Registration</MainTitle>
-    <form @submit.prevent="submitForm" class="login__form">
+    <form @submit.prevent="signup" class="login__form">
       <div class="registration__input--wrapper">
         <input
           class="registration__input"
           type="text"
           placeholder="Name"
-          v-model="name"
+          v-model="v$.name.$model"
         />
         <span class="registration__input--error" v-if="v$.name.$error">
           {{ v$.name.$errors[0].$message }}</span
@@ -18,7 +18,7 @@
           class="registration__input"
           type="text"
           placeholder="Email"
-          v-model="email"
+          v-model="v$.email.$model"
         />
         <span class="registration__input--error" v-if="v$.email.$error">
           {{ v$.email.$errors[0].$message }}</span
@@ -29,7 +29,7 @@
           class="registration__input"
           type="password"
           placeholder="Password"
-          v-model="password"
+          v-model="v$.password.$model"
         />
         <span class="registration__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
@@ -40,7 +40,7 @@
           class="registration__input"
           type="password"
           placeholder="Confirm password"
-          v-model="confirm_password"
+          v-model="v$.confirm_password.$model"
         />
         <span
           class="registration__input--error"
@@ -58,74 +58,39 @@
   </AuthContainer>
 </template>
 
-<script>
+<script setup>
 import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
 
 import { useAuthStore } from '@/stores/authStore';
 import { useVuelidate } from '@vuelidate/core';
-import { required, email, minLength, sameAs } from '@vuelidate/validators';
-import { reactive, ref } from 'vue';
+import { required, minLength, sameAs } from '@vuelidate/validators';
+import { ref } from 'vue';
 
-export default {
-  name: 'Registration',
-  components: {
-    AuthContainer,
-    MainTitle,
-    Button,
-  },
-  setup() {
-    const store = useAuthStore();
+const authStore = useAuthStore();
 
-    const name = ref('');
-    const email = ref('');
-    const password = ref('');
-    const confirm_password = ref('');
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const confirm_password = ref('');
 
-    const state = reactive({ name, email, password, confirm_password });
-
-    const validationRules = {
-      name: { required },
-      email: { required, email },
-      password: { required, minlength: minLength(8) },
-      confirm_pass: { required, sameAs: sameAs(password) },
-    };
-
-    const v$ = useVuelidate(validationRules, state);
-
-    const signup = async () => {
-      try {
-        this.v$.$validate();
-
-        if (!this.v$.$error) {
-          alert('OK');
-        } else {
-          console.error('Form error');
-        }
-
-        await store.signup(name.value, email.value, password.value);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    return {
-      v$,
-      signup,
-    };
-  },
-  // methods: {
-  //   submitForm() {
-  //     this.v$.$validate();
-
-  //     if (!this.v$.$error) {
-  //       alert('OK');
-  //     } else {
-  //       console.error('Form error');
-  //     }
-  //   },
+const rules = {
+  name: { required },
+  email: { required },
+  password: { required, minlength: minLength(8) },
+  confirm_password: { required, sameAs: sameAs(password) },
 };
+
+const v$ = useVuelidate(rules, { name, email, password, confirm_password });
+
+function signup() {
+  try {
+    authStore.signup(name.value, email.value, password.value);
+  } catch (error) {
+    console.log(error);
+  }
+}
 </script>
 
 <style lang="scss" scoped>

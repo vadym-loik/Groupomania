@@ -9,15 +9,13 @@
 <script setup>
 import Container from '../Container.vue';
 import PostCard from './PostCard.vue';
-// import userService from '@/services/user.service.js';
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import Axios from '@/api';
 
 const posts = ref([]);
 
 onMounted(async () => {
-  await axios
-    .get('http://localhost:3000/posts')
+  await Axios.get('http://localhost:8000/api/auth/posts')
     .then((res) => {
       posts.value = res.data;
     })
