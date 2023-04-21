@@ -114,7 +114,7 @@ exports.deletePost = (req, res, next) => {
       fs.unlink(`images/${filename}`, () => {
         //we delete the user from the database by indicating his id
         Post.destroy({ where: { id: req.params.id } })
-          .then((user) => res.status(200).json({ message: 'Post deleted!' }))
+          .then(() => res.status(200).json({ message: 'Post deleted!' }))
           .catch((error) => res.status(400).json({ error }));
       });
     })

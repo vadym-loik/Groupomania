@@ -13,7 +13,7 @@ exports.createComment = (req, res, next) => {
   Comment.create({
     postId: req.body.postId,
     userId: req.body.userId,
-    description: req.body.text,
+    text: req.body.text,
   })
     .then((comment) =>
       res.status(201).json({ message: 'Comment added!', comment })
@@ -25,13 +25,10 @@ exports.createComment = (req, res, next) => {
 exports.getAllCommentsByPost = (req, res, next) => {
   Comment.findAll({
     where: {
-      postId: req.params.postid,
+      postId: req.params.postId,
     },
     include: {
       model: User,
-      attributes: {
-        exclude: ['id', 'password', 'email', 'createdAt', 'updatedAt'],
-      },
     },
     order: [['createdAt', 'DESC']],
   })
@@ -47,7 +44,7 @@ exports.deleteComment = (req, res, next) => {
         return res.status(404).json({ error: 'Comment not found!' });
       }
 
-      //check whoever wants to edit the post is the author of the post or the administrator
+      //check whoever wants to delete the post is the author of the post or the administrator
       User.findOne({ where: { id: req.auth.userId } })
         .then((user) => {
           if (!user.isAdmin && req.auth.userId != comment.userId) {
