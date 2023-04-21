@@ -1,36 +1,50 @@
-// import { defineStore } from 'pinia';
-// import Axios from '../api.js';
-// import router from '../router';
+import { defineStore } from 'pinia';
+import Axios from '../api';
 
-// export const useAuthStore = defineStore({
-//   id: 'auth',
-//   state: () => ({
-//     user: null,
-//     token: localStorage.getItem('token') || '',
-//   }),
-//   getters: {
-//     isAuthenticated: (state) => !!state.token,
-//   },
-//   actions: {
-//     async login({ email, password }) {
-//       try {
-//         const response = await Axios.post('api/login', { email, password });
-//         const { user, token } = response.data;
-//         this.user = user;
-//         this.token = token;
-//         localStorage.setItem('token', token);
-//         router.push('/');
-//         console.log(user);
-//         return user;
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     },
-//     async logout() {
-//       this.user = null;
-//       this.token = '';
-//       localStorage.removeItem('token');
-//       router.push('/account/login');
-//     },
-//   },
-// });
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    loggedIn: false,
+    user: null,
+    error: null,
+  }),
+
+  actions: {
+    async signup(name, email, password) {
+      try {
+        // perform signup logic, e.g. make an API request to register the user
+        const response = await Axios.post('/api/auth/signup', {
+          data: JSON.stringify({ name, email, password }),
+        });
+        const data = await response.json();
+        this.user = data.user;
+        this.loggedIn = true;
+        this.error = null;
+      } catch (error) {
+        this.error = error.message;
+        throw error;
+      }
+    },
+
+    async login(email, password) {
+      try {
+        // perform login logic, e.g. make an API request to authenticate the user
+        const response = await Axios.post('/api/auth/login', {
+          data: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        this.user = data.user;
+        this.loggedIn = true;
+        this.error = null;
+      } catch (error) {
+        this.error = error.message;
+        throw error;
+      }
+    },
+
+    logout() {
+      // perform logout logic, e.g. clear the user session
+      this.user = null;
+      this.loggedIn = false;
+    },
+  },
+});

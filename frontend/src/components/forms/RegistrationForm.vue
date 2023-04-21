@@ -63,9 +63,10 @@ import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
 
-import { useRegistrationStore } from '@/stores/registerStore';
+import { useAuthStore } from '@/stores/authStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, sameAs } from '@vuelidate/validators';
+import { reactive, ref } from 'vue';
 
 export default {
   name: 'Registration',
@@ -75,34 +76,55 @@ export default {
     Button,
   },
   setup() {
-    const store = useRegistrationStore();
+    const store = useAuthStore();
 
-    return {
-      v$: useVuelidate(),
-      store,
-    };
-  },
-  data() {
-    return {
-      name: '',
-      email: '',
-      password: '',
-      confirm_password: '',
-    };
-  },
-  methods: {
-    async submitForm() {
-      await this.store.submitForm();
-    },
-  },
-  validations() {
-    return {
+    const name = ref('');
+    const email = ref('');
+    const password = ref('');
+    const confirm_password = ref('');
+
+    const state = reactive({ name, email, password, confirm_password });
+
+    const validationRules = {
       name: { required },
       email: { required, email },
       password: { required, minlength: minLength(8) },
-      confirm_password: { required, sameAs: sameAs(this.password) },
+      confirm_pass: { required, sameAs: sameAs(password) },
+    };
+
+    const v$ = useVuelidate(validationRules, state);
+
+    const signup = async () => {
+      try {
+        this.v$.$validate();
+
+        if (!this.v$.$error) {
+          alert('OK');
+        } else {
+          console.error('Form error');
+        }
+
+        await store.signup(name.value, email.value, password.value);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    return {
+      v$,
+      signup,
     };
   },
+  // methods: {
+  //   submitForm() {
+  //     this.v$.$validate();
+
+  //     if (!this.v$.$error) {
+  //       alert('OK');
+  //     } else {
+  //       console.error('Form error');
+  //     }
+  //   },
 };
 </script>
 
