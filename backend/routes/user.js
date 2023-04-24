@@ -10,8 +10,8 @@ router.post('/signup', emailValidator, passwordValidator, userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.get('/', userCtrl.getAllUsers);
 
-router.get('/profile/:id', auth, userCtrl.getOneUser);
-router.put('/profile/:id', auth, multer, userCtrl.modifyUser);
-router.delete('/profile/:id', auth, userCtrl.deleteUser);
+router.get('/profile/:id', userCtrl.getOneUser);
+router.put('/profile/:id', multer, userCtrl.modifyUser);
+router.delete('/profile/:id', userCtrl.deleteUser);
 
 module.exports = router;

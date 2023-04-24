@@ -2,10 +2,12 @@ import { defineStore } from 'pinia';
 import Axios from '../api';
 import router from '../router/index';
 
-export const useAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore({
+  id: 'auth',
   state: () => ({
     loggedIn: false,
     user: null,
+    token: null,
     error: null,
   }),
 
@@ -18,12 +20,23 @@ export const useAuthStore = defineStore('auth', {
           email,
           password,
         });
-        const data = response;
-        console.log(data);
-        this.user = data.user;
-        this.loggedIn = true;
 
+        // const data = response;
+        // console.log(data);
+        const user = await response.json();
+
+        this.user = user;
+        console.log(this.user);
+        this.token = token;
+        this.loggedIn = true;
         this.error = null;
+
+        // Store login state in local storage
+        localStorage.setItem(
+          'auth',
+          JSON.stringify({ user: this.user, token: this.token })
+        );
+
         router.push('/');
       } catch (error) {
         this.error = error.message;
@@ -37,10 +50,22 @@ export const useAuthStore = defineStore('auth', {
         const response = await Axios.post('/api/auth/login', {
           data: JSON.stringify({ email, password }),
         });
-        const data = await response.json();
-        this.user = data.user;
+        console.log(response);
+
+        // const data = response;
+
+        this.user = response.user;
+        this.token = response.token;
         this.loggedIn = true;
         this.error = null;
+
+        // Store login state in local storage
+        localStorage.setItem(
+          'auth',
+          JSON.stringify({ user: this.user, token: this.token })
+        );
+
+        router.push('/');
       } catch (error) {
         this.error = error.message;
         throw error;
@@ -51,6 +76,10 @@ export const useAuthStore = defineStore('auth', {
       // perform logout logic, e.g. clear the user session
       this.user = null;
       this.loggedIn = false;
+
+      // Remove login state from local storage
+      localStorage.removeItem('auth');
+      router.push('/login');
     },
   },
 });

@@ -9,20 +9,27 @@
 <script setup>
 import Container from '../Container.vue';
 import PostCard from './PostCard.vue';
-import { ref, onMounted } from 'vue';
-import Axios from '@/api';
+import { usePostStore } from '@/stores/postStore';
 
-const posts = ref([]);
+const postStore = usePostStore();
 
-onMounted(async () => {
-  await Axios.get('http://localhost:8000/api/auth/posts')
-    .then((res) => {
-      posts.value = res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+const getAllPosts = () => {
+  postStore.getAllPosts();
+};
+
+const getPostById = (postId) => {
+  postStore.getPostById(postId);
+};
+
+// onMounted(async () => {
+//   await Axios.get('http://localhost:8000/api/auth/posts')
+//     .then((res) => {
+//       posts.value = res.data;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 
 // onMounted(async () => {
 //   await userService.getAllPosts();

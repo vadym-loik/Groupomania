@@ -1,6 +1,6 @@
 <template>
   <div class="post">
-    <div>{{ post.id }}</div>
+    <div>{{}}</div>
     <div class="user-info">
       <img
         class="post-avatar"
@@ -56,31 +56,22 @@ const props = defineProps({
     postId: Number,
   },
 });
+console.log(props);
 
 const comments = ref([]);
 const users = ref([]);
 console.log(users);
 
-onMounted(async () => {
-  await axios
-    .get('http://localhost:3000/comments')
-    .then((res) => {
-      comments.value = res.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  await axios
-    .get('http://localhost:3000/users')
-    .then((res) => {
-      users.value = res.data;
-      console.log(users.value);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+// onMounted(async () => {
+//   await axios
+//     .get('http://localhost:3000/comments')
+//     .then((res) => {
+//       comments.value = res.data;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 </script>
 
 <style lang="scss" scoped>

@@ -6,7 +6,10 @@
           >Account</router-link
         >
         /
-        <router-link :to="{ name: 'login' }" class="nav-auth__link"
+        <router-link
+          :to="{ name: 'login' }"
+          @click="authStore.logout()"
+          class="nav-auth__link"
           >Logout</router-link
         >
       </div>
@@ -18,6 +21,14 @@
 import { useAuthStore } from '@/stores/authStore';
 
 const authStore = useAuthStore();
+
+// const loggedIn = localStorage.getItem('loggedIn') === 'true';
+// const user = localStorage.getItem('user')
+//   ? JSON.parse(localStorage.getItem('user'))
+//   : null;
+
+// authStore.loggedIn = loggedIn;
+// authStore.user = user;
 </script>
 
 <style lang="scss" scoped>
