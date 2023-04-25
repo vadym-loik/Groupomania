@@ -7,7 +7,7 @@
         src="../../assets/icons/avatar_default.png"
         alt="avatar"
       />
-      <MainTitle class="user-name">{{ users.userId }}</MainTitle>
+      <MainTitle class="user-name">{{ post.userId }}</MainTitle>
       <font-awesome-icon
         class="post-edit"
         :icon="['far', 'edit']"
@@ -55,6 +55,8 @@ const props = defineProps({
     postId: Number,
   },
 });
+
+console.log(props);
 
 const comments = ref([]);
 const users = ref([]);
