@@ -16,7 +16,7 @@
       <div class="registration__input--wrapper">
         <input
           class="registration__input"
-          type="text"
+          type="email"
           placeholder="Email"
           v-model="v$.userEmail.$model"
         />

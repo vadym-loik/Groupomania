@@ -12,7 +12,7 @@ export const usePostStore = defineStore({
   actions: {
     async fetchPosts() {
       try {
-        const response = await Axios.get(`/posts`);
+        const response = await Axios.get(`/api/posts/`);
         this.posts = response.data;
       } catch (error) {
         this.error = error;
@@ -20,7 +20,7 @@ export const usePostStore = defineStore({
     },
     async fetchPostById(postId) {
       try {
-        const response = await Axios.get(`/posts/${postId}`);
+        const response = await Axios.get(`/api/posts/${postId}`);
         this.selectedPost = response.data;
       } catch (error) {
         this.error = error;
@@ -28,7 +28,7 @@ export const usePostStore = defineStore({
     },
     async createPost(post) {
       try {
-        const response = await Axios.post(`/posts`, post);
+        const response = await Axios.post(`/api/posts`, post);
         this.posts.push(response.data);
       } catch (error) {
         this.error = error;
@@ -36,7 +36,7 @@ export const usePostStore = defineStore({
     },
     async updatePost(post) {
       try {
-        const response = await Axios.put(`/posts/${post.id}`, post);
+        const response = await Axios.put(`/api/posts/${post.id}`, post);
         this.posts = this.posts.map((p) =>
           p.id === response.data.id ? response.data : p
         );
@@ -46,7 +46,7 @@ export const usePostStore = defineStore({
     },
     async deletePost(postId) {
       try {
-        await Axios.delete(`/posts/${postId}`);
+        await Axios.delete(`/api/posts/${postId}`);
         this.posts = this.posts.filter((p) => p.id !== postId);
       } catch (error) {
         this.error = error;

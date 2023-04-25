@@ -21,23 +21,24 @@ export const useAuthStore = defineStore({
           password,
         });
 
-        // const data = response;
-        // console.log(data);
-        const user = await response.json();
+        const user = response;
 
         this.user = user;
-        console.log(this.user);
-        this.token = token;
         this.loggedIn = true;
         this.error = null;
 
-        // Store login state in local storage
-        localStorage.setItem(
-          'auth',
-          JSON.stringify({ user: this.user, token: this.token })
-        );
+        // if registration successful, login
+        if (response.status === 201) {
+          this.login();
+        } else {
+          this.error = error.message;
+          throw error;
+        }
 
-        router.push('/');
+        // Store login state in local storage
+        // localStorage.setItem('auth', JSON.stringify({ user: this.user }));
+
+        // router.push('/');
       } catch (error) {
         this.error = error.message;
         throw error;
@@ -48,13 +49,14 @@ export const useAuthStore = defineStore({
       try {
         // perform login logic, e.g. make an API request to authenticate the user
         const response = await Axios.post('/api/auth/login', {
-          data: JSON.stringify({ email, password }),
+          email,
+          password,
         });
-        console.log(response);
 
-        // const data = response;
+        const user = response;
+        console.log(user);
 
-        this.user = response.user;
+        this.user = user;
         this.token = response.token;
         this.loggedIn = true;
         this.error = null;

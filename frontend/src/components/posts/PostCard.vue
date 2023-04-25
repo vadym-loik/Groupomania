@@ -46,7 +46,6 @@ import MainTitle from '../MainTitle.vue';
 import Comment from '../comments/CommentsItem.vue';
 import CommentInput from '../comments/CommentInput.vue';
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 
 const props = defineProps({
   post: {
@@ -56,11 +55,9 @@ const props = defineProps({
     postId: Number,
   },
 });
-console.log(props);
 
 const comments = ref([]);
 const users = ref([]);
-console.log(users);
 
 // onMounted(async () => {
 //   await axios

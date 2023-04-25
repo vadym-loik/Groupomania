@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import HomePage from '../pages/HomePage.vue';
-
-export default {};
+export default {
+  name: 'Logo',
+};
 </script>
 
 <style lang="scss" scoped></style>

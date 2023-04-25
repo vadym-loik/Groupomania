@@ -1,15 +1,25 @@
 <template>
   <AuthContainer class="login">
     <MainTitle class="login__title">Login</MainTitle>
-    <form @submit.prevent="submitForm" class="login__form">
+    <form @submit.prevent="login" class="login__form">
       <div class="login__input--wrapper">
-        <input class="login__input" type="text" placeholder="Email" />
-        <span class="login__input--error" v-if="v$.email.$error">
-          {{ v$.email.$errors[0].$message }}</span
+        <input
+          class="login__input"
+          type="email"
+          placeholder="Email"
+          v-model="v$.userEmail.$model"
+        />
+        <span class="login__input--error" v-if="v$.userEmail.$error">
+          {{ v$.userEmail.$errors[0].$message }}</span
         >
       </div>
       <div class="login__input--wrapper">
-        <input class="login__input" type="password" placeholder="Password" />
+        <input
+          class="login__input"
+          type="password"
+          placeholder="Password"
+          v-model="v$.password.$model"
+        />
         <span class="login__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
         >
@@ -19,55 +29,34 @@
   </AuthContainer>
 </template>
 
-<script>
+<script setup>
 import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
-// import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '@/stores/authStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
+import { ref } from 'vue';
 
-export default {
-  name: 'Login',
-  components: {
-    Button,
-    AuthContainer,
-    MainTitle,
-  },
-  setup() {
-    return {
-      v$: useVuelidate(),
-    };
-  },
-  data() {
-    return {
-      email: '',
-      password: '',
-    };
-  },
-  methods: {
-    // async submitForm() {
-    //   this.v$.$validate();
-    //   if (!this.v$.$error) {
-    //     alert('Login was successful');
-    //   } else {
-    //     alert('Please fill in all fields correctly');
-    //   }
-    //   const auth = useAuthStore();
-    //   const email = this.email;
-    //   const password = this.password;
-    //   await auth.login(email, password);
-    //   console.log(email);
-    //   console.log(password);
-    // },
-  },
-  validations() {
-    return {
-      email: { required, email },
-      password: { required, minlength: minLength(8) },
-    };
-  },
+const authStore = useAuthStore();
+
+const userEmail = ref('');
+const password = ref('');
+
+const rules = {
+  userEmail: { required, email },
+  password: { required, minlength: minLength(8) },
 };
+
+const v$ = useVuelidate(rules, { userEmail, password });
+
+function login() {
+  try {
+    authStore.login(userEmail.value, password.value);
+  } catch (error) {
+    console.log(error);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
