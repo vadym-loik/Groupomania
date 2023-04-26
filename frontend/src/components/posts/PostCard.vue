@@ -1,13 +1,12 @@
 <template>
   <div class="post">
-    <div>{{}}</div>
     <div class="user-info">
       <img
         class="post-avatar"
         src="../../assets/icons/avatar_default.png"
         alt="avatar"
       />
-      <MainTitle class="user-name">{{ post.userId }}</MainTitle>
+      <MainTitle class="user-name">{{ post.user.name }}</MainTitle>
       <font-awesome-icon
         class="post-edit"
         :icon="['far', 'edit']"
@@ -17,7 +16,7 @@
     <article class="post-text">{{ post.text }}</article>
     <div class="file-container">
       <img
-        v-if="post.imageUrl != ''"
+        v-if="post.imageUrl != null"
         class="post-img"
         :src="post.imageUrl"
         alt="post image"
@@ -35,7 +34,6 @@
     <Comment
       v-show="comments.length > 0"
       v-for="comment in comments"
-      :key="comment.id"
       :comment="comment"
     />
   </div>
@@ -45,7 +43,8 @@
 import MainTitle from '../MainTitle.vue';
 import Comment from '../comments/CommentsItem.vue';
 import CommentInput from '../comments/CommentInput.vue';
-import { onMounted, ref } from 'vue';
+import { useCommentStore } from '@/stores/commentStore';
+import { ref } from 'vue';
 
 const props = defineProps({
   post: {
@@ -56,10 +55,15 @@ const props = defineProps({
   },
 });
 
-console.log(props);
+const comments = ref({});
+const commentStore = useCommentStore();
 
-const comments = ref([]);
-const users = ref([]);
+async function getAllCommentsOfPost() {
+  await commentStore.fetchComments();
+  comments.value = commentStore.comments;
+}
+
+getAllCommentsOfPost();
 
 // onMounted(async () => {
 //   await axios

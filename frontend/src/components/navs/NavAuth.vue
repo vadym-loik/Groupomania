@@ -22,13 +22,13 @@ import { useAuthStore } from '@/stores/authStore';
 
 const authStore = useAuthStore();
 
-// const loggedIn = localStorage.getItem('loggedIn') === 'true';
-// const user = localStorage.getItem('user')
-//   ? JSON.parse(localStorage.getItem('user'))
-//   : null;
+const loggedIn = localStorage.getItem('loggedIn') === 'true';
+const user = localStorage.getItem('user')
+  ? JSON.parse(localStorage.getItem('user'))
+  : null;
 
-// authStore.loggedIn = loggedIn;
-// authStore.user = user;
+authStore.loggedIn = loggedIn;
+authStore.user = user;
 </script>
 
 <style lang="scss" scoped>

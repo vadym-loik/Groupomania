@@ -2,7 +2,7 @@
   <SectionWithHeaderSpacer />
   <Container>
     <div class="profile-page">
-      <Profile v-for="user in users" :key="user.id" :user="user" />
+      <Profile />
     </div>
   </Container>
 </template>
@@ -11,27 +11,36 @@
 import Profile from '../components/profile/Profile.vue';
 import SectionWithHeaderSpacer from '../components/SectionWithHeaderSpacer.vue';
 import Container from '../components/Container.vue';
+// import { useUserStore } from '../stores/userStore';
 
-import { onMounted, ref } from 'vue';
-import axios from 'axios';
+// import { ref } from 'vue';
 
-const users = ref([]);
+// import axios from 'axios';
 
-function getUsers() {
-  axios
-    .get('http://localhost:8000/api/auth/profile/:id')
-    .then((res) => {
-      users.value = res.data;
-      console.log(users.value);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
+// const user = ref([]);
+// const userStore = useUserStore();
 
-onMounted(() => {
-  getUsers();
-});
+// function getUserById() {
+//   user.value = userStore.getOneUser();
+// }
+
+// getUserById();
+
+// function getUsers() {
+//   axios
+//     .get('http://localhost:8000/api/auth/profile/:id')
+//     .then((res) => {
+//       users.value = res.data;
+//       console.log(users.value);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// }
+
+// onMounted(() => {
+//   getUsers();
+// });
 // import { getUserData } from '../api.js';
 
 // export default {

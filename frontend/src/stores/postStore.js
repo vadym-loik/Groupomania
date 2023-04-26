@@ -5,25 +5,36 @@ export const usePostStore = defineStore({
   id: 'post',
   state: () => ({
     posts: [],
-    selectedPost: null,
+    post: null,
+    loading: false,
     error: null,
   }),
   getters: {},
   actions: {
     async fetchPosts() {
+      // this.posts = [];
+      // this.loading = true;
       try {
-        const response = await Axios.get(`/api/posts/`);
-        this.posts = response.data;
+        this.posts = await Axios.get(`/api/posts/`).then(
+          (response) => response.data
+        );
       } catch (error) {
         this.error = error;
+      } finally {
+        this.loading = false;
       }
     },
-    async fetchPostById(postId) {
+    async fetchPostById(id) {
+      // this.post = null;
+      // this.loading = true;
       try {
-        const response = await Axios.get(`/api/posts/${postId}`);
-        this.selectedPost = response.data;
+        this.post = await Axios.get(`/api/posts/${id}`).then(
+          (response) => response.data
+        );
       } catch (error) {
         this.error = error;
+      } finally {
+        this.loading = false;
       }
     },
     async createPost(post) {
@@ -35,6 +46,7 @@ export const usePostStore = defineStore({
       }
     },
     async updatePost(post) {
+      // this.posts = [];
       try {
         const response = await Axios.put(`/api/posts/${post.id}`, post);
         this.posts = this.posts.map((p) =>
@@ -45,6 +57,7 @@ export const usePostStore = defineStore({
       }
     },
     async deletePost(postId) {
+      // this.posts = [];
       try {
         await Axios.delete(`/api/posts/${postId}`);
         this.posts = this.posts.filter((p) => p.id !== postId);

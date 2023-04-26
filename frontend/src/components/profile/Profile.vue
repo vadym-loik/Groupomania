@@ -21,16 +21,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import Button from '../Button.vue';
 import EditProfile from './EditProfile.vue';
 
-const props = defineProps({
-  user: {
-    type: Object,
-    require: true,
-  },
-});
+import { useUserStore } from '@/stores/userStore';
+
+import { ref } from 'vue';
+
+const user = ref([]);
+const userStore = useUserStore();
+
+function getUserById() {
+  user.value = userStore.getOneUser();
+}
+
+getUserById();
+
+// const props = defineProps({
+//   user: {
+//     type: Object,
+//     require: true,
+//   },
+// });
 
 const showProfile = ref(true);
 const editProfile = ref(false);

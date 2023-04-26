@@ -28,17 +28,17 @@ export const useAuthStore = defineStore({
         this.error = null;
 
         // if registration successful, login
-        if (response.status === 201) {
-          this.login();
-        } else {
-          this.error = error.message;
-          throw error;
-        }
+        // if (response.status === 201) {
+        //   this.login();
+        // } else {
+        //   this.error = error.message;
+        //   throw error;
+        // }
 
         // Store login state in local storage
-        // localStorage.setItem('auth', JSON.stringify({ user: this.user }));
+        localStorage.setItem('auth', JSON.stringify({ user: this.user }));
 
-        // router.push('/');
+        router.push('/');
       } catch (error) {
         this.error = error.message;
         throw error;
@@ -64,7 +64,11 @@ export const useAuthStore = defineStore({
         // Store login state in local storage
         localStorage.setItem(
           'auth',
-          JSON.stringify({ user: this.user, token: this.token })
+          JSON.stringify({
+            user: this.user,
+            token: this.token,
+            loggedIn: this.loggedIn,
+          })
         );
 
         router.push('/');

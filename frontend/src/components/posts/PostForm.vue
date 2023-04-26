@@ -1,6 +1,6 @@
 <template>
   <div class="post-form">
-    <form class="post-form__form" @submit.prevent="createPost">
+    <form class="post-form__form" @submit.prevent="createNewPost">
       <label class="post-form__label--title" for="postContent">New post</label>
       <div class="post-form__wrapper">
         <input
@@ -34,17 +34,25 @@
 import axios from 'axios';
 import Button from '../Button.vue';
 import { ref } from 'vue';
+import { usePostStore } from '@/stores/postStore.js';
 // import Axios from '@/api.js';
 
 const text = ref('');
 const imageUrl = ref('');
 
-async function createPost() {
-  await axios.post('http://localhost:3000/posts', {
-    text: text.value,
-    imageUrl: imageUrl.value,
-  });
+const postStore = usePostStore();
+
+function createNewPost() {
+  postStore.createPost();
+  text.value = postStore.text;
+  imageUrl.value = postStore.imageUrl;
 }
+// async function createPost() {
+//   await axios.post('http://localhost:3000/posts', {
+//     text: text.value,
+//     imageUrl: imageUrl.value,
+//   });
+// }
 </script>
 
 <style lang="scss" scoped>

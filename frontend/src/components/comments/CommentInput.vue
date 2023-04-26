@@ -15,15 +15,21 @@
 <script setup>
 import Button from '../Button.vue';
 import { ref } from 'vue';
-import axios from 'axios';
+import { useCommentStore } from '@/stores/commentStore';
 
 const text = ref('');
+const commentStore = useCommentStore();
 
 async function addComment() {
-  await axios.post('http://localhost:3000/comments', {
-    text: text.value,
-  });
+  await commentStore.addComment();
+  text.value = commentStore.text;
 }
+
+// async function addComment() {
+//   await Axios.post('/api/comments', {
+//     text: text.value,
+//   });
+// }
 </script>
 
 <style lang="scss" scoped>
