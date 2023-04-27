@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-login" v-if="!authStore.loggedIn">
+  <div class="nav-login" v-if="!isLoggedIn">
     <nav class="nav-links">
       <div class="nav-login__wrap">
         <router-link :to="{ name: 'login' }" class="nav-login__link"
@@ -16,8 +16,11 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/authStore';
+import { computed } from 'vue';
 
 const authStore = useAuthStore();
+
+const isLoggedIn = computed(() => authStore.isLoggedIn);
 </script>
 
 <style lang="scss" scoped>

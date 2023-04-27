@@ -12,8 +12,6 @@ export const usePostStore = defineStore({
   getters: {},
   actions: {
     async fetchPosts() {
-      // this.posts = [];
-      // this.loading = true;
       try {
         this.posts = await Axios.get(`/api/posts/`).then(
           (response) => response.data
@@ -25,8 +23,6 @@ export const usePostStore = defineStore({
       }
     },
     async fetchPostById(id) {
-      // this.post = null;
-      // this.loading = true;
       try {
         this.post = await Axios.get(`/api/posts/${id}`).then(
           (response) => response.data
@@ -46,7 +42,6 @@ export const usePostStore = defineStore({
       }
     },
     async updatePost(post) {
-      // this.posts = [];
       try {
         const response = await Axios.put(`/api/posts/${post.id}`, post);
         this.posts = this.posts.map((p) =>
@@ -57,7 +52,6 @@ export const usePostStore = defineStore({
       }
     },
     async deletePost(postId) {
-      // this.posts = [];
       try {
         await Axios.delete(`/api/posts/${postId}`);
         this.posts = this.posts.filter((p) => p.id !== postId);

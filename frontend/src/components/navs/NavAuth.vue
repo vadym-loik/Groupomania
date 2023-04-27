@@ -1,7 +1,11 @@
 <template>
-  <div class="nav-auth" v-if="authStore.loggedIn">
+  <div class="nav-auth" v-if="isLoggedIn">
     <nav class="nav-links">
       <div class="nav-wrap">
+        <router-link :to="{ name: 'home' }" class="nav-auth__link"
+          >Home</router-link
+        >
+        /
         <router-link :to="{ name: 'profile-page' }" class="nav-auth__link"
           >Account</router-link
         >
@@ -19,16 +23,11 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/authStore';
+import { computed } from 'vue';
 
 const authStore = useAuthStore();
 
-const loggedIn = localStorage.getItem('loggedIn') === 'true';
-const user = localStorage.getItem('user')
-  ? JSON.parse(localStorage.getItem('user'))
-  : null;
-
-authStore.loggedIn = loggedIn;
-authStore.user = user;
+const isLoggedIn = computed(() => authStore.isLoggedIn);
 </script>
 
 <style lang="scss" scoped>

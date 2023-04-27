@@ -4,7 +4,10 @@
       <label for="file" class="edit-profile__label"
         >Change profile picture :</label
       >
-      <img src="@/assets/icons/user.png" class="edit-profile__avatar" />
+      <img
+        src="@/assets/icons/avatar_default.png"
+        class="edit-profile__avatar"
+      />
       <input type="file" ref="file" name="file" id="file" />
 
       <label for="name">Change name :</label>

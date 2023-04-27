@@ -5,12 +5,14 @@ import router from '../router/index';
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
-    loggedIn: false,
-    user: null,
-    token: null,
+    user: {},
+    token: localStorage.getItem('auth') || null,
     error: null,
   }),
-
+  getters: {
+    isLoggedIn: (state) => !!state.token,
+    isAdmin: (state) => state.user?.role === 'admin',
+  },
   actions: {
     async signup(name, email, password) {
       try {
@@ -20,24 +22,9 @@ export const useAuthStore = defineStore({
           email,
           password,
         });
-
-        const user = response;
-
-        this.user = user;
-        this.loggedIn = true;
-        this.error = null;
-
-        // if registration successful, login
-        // if (response.status === 201) {
-        //   this.login();
-        // } else {
-        //   this.error = error.message;
-        //   throw error;
-        // }
-
-        // Store login state in local storage
-        localStorage.setItem('auth', JSON.stringify({ user: this.user }));
-
+        this.token = response.data.token;
+        this.user = response.data.user;
+        localStorage.setItem('auth', this.token);
         router.push('/');
       } catch (error) {
         this.error = error.message;
@@ -52,25 +39,9 @@ export const useAuthStore = defineStore({
           email,
           password,
         });
-
-        const user = response;
-        console.log(user);
-
-        this.user = user;
-        this.token = response.token;
-        this.loggedIn = true;
-        this.error = null;
-
-        // Store login state in local storage
-        localStorage.setItem(
-          'auth',
-          JSON.stringify({
-            user: this.user,
-            token: this.token,
-            loggedIn: this.loggedIn,
-          })
-        );
-
+        this.token = response.data.token;
+        this.user = response.data.user;
+        localStorage.setItem('auth', this.token);
         router.push('/');
       } catch (error) {
         this.error = error.message;

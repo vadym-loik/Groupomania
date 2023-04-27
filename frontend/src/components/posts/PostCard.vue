@@ -44,7 +44,7 @@ import MainTitle from '../MainTitle.vue';
 import Comment from '../comments/CommentsItem.vue';
 import CommentInput from '../comments/CommentInput.vue';
 import { useCommentStore } from '@/stores/commentStore';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
   post: {
@@ -63,18 +63,7 @@ async function getAllCommentsOfPost() {
   comments.value = commentStore.comments;
 }
 
-getAllCommentsOfPost();
-
-// onMounted(async () => {
-//   await axios
-//     .get('http://localhost:3000/comments')
-//     .then((res) => {
-//       comments.value = res.data;
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
+onMounted(getAllCommentsOfPost);
 </script>
 
 <style lang="scss" scoped>

@@ -11,18 +11,18 @@
 import Profile from '../components/profile/Profile.vue';
 import SectionWithHeaderSpacer from '../components/SectionWithHeaderSpacer.vue';
 import Container from '../components/Container.vue';
-// import { useUserStore } from '../stores/userStore';
+import { useUserStore } from '../stores/userStore';
 
-// import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-// import axios from 'axios';
+const user = ref([]);
+const userStore = useUserStore();
 
-// const user = ref([]);
-// const userStore = useUserStore();
+function getUserById() {
+  user.value = userStore.getOneUser();
+}
 
-// function getUserById() {
-//   user.value = userStore.getOneUser();
-// }
+onMounted(getUserById);
 
 // getUserById();
 

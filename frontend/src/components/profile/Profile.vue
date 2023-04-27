@@ -7,8 +7,8 @@
     />
 
     <div class="profile-info">
-      <p>Name: {{ user.name }}</p>
-      <p>e-mail: {{ user.email }}</p>
+      <p>Name: {{ user }}</p>
+      <p>e-mail: {{ user }}</p>
     </div>
     <div class="profile-buttons">
       <Button class="profile-edit__btn" @click.prevent="toggleProfile"
@@ -23,26 +23,14 @@
 <script setup>
 import Button from '../Button.vue';
 import EditProfile from './EditProfile.vue';
-
-import { useUserStore } from '@/stores/userStore';
-
 import { ref } from 'vue';
 
-const user = ref([]);
-const userStore = useUserStore();
-
-function getUserById() {
-  user.value = userStore.getOneUser();
-}
-
-getUserById();
-
-// const props = defineProps({
-//   user: {
-//     type: Object,
-//     require: true,
-//   },
-// });
+const props = defineProps({
+  user: {
+    type: Object,
+    require: true,
+  },
+});
 
 const showProfile = ref(true);
 const editProfile = ref(false);

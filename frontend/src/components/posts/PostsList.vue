@@ -9,7 +9,7 @@
 <script setup>
 import Container from '../Container.vue';
 import PostCard from './PostCard.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { usePostStore } from '@/stores/postStore';
 
 const postStore = usePostStore();
@@ -21,11 +21,7 @@ async function getAllPosts() {
   posts.value = postStore.posts;
 }
 
-getAllPosts();
-
-// onMounted(async () => {
-//   await postStore.fetchPosts(posts);
-// });
+onMounted(getAllPosts);
 </script>
 
 <style lang="scss" scoped>
