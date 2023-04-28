@@ -27,7 +27,9 @@ import { computed } from 'vue';
 
 const authStore = useAuthStore();
 
-const isLoggedIn = computed(() => authStore.isLoggedIn);
+const isLoggedIn = computed(() => {
+  return authStore.isLoggedIn;
+});
 </script>
 
 <style lang="scss" scoped>
