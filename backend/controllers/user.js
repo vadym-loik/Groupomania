@@ -67,9 +67,6 @@ exports.getOneUser = (req, res, next) => {
   try {
     User.findOne({
       where: { id: req.params.id },
-      // attributes: {
-      //   exclude: ['id', 'password', 'email', 'createdAt', 'updatedAt'],
-      // },
     })
       .then((user) => res.status(200).json({ user }))
       .catch((error) => res.status(400).json({ error }));
