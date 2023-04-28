@@ -11,7 +11,7 @@ export const useAuthStore = defineStore({
   }),
   getters: {
     isLoggedIn: (state) => !!state.token,
-    isAdmin: (state) => state.user?.role === 'admin',
+    // isAdmin: (state) => state.user?.role === 'admin',
   },
   actions: {
     async signup(name, email, password) {
@@ -52,7 +52,6 @@ export const useAuthStore = defineStore({
     logout() {
       // perform logout logic, e.g. clear the user session
       this.user = null;
-      this.loggedIn = false;
 
       // Remove login state from local storage
       localStorage.removeItem('auth');
