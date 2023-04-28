@@ -10,11 +10,16 @@ const Axios = axios.create({
 
 // Set the JWT token in the Authorization header for all requests
 Axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
+  try {
+    const token = localStorage.getItem('auth');
+    if (!token) {
+      throw new Error("Can't get token from localstorage!");
+    }
     config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  } catch (error) {
+    console.log(error);
   }
-  return config;
 });
 
 export default Axios;
