@@ -31,28 +31,33 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import Button from '../Button.vue';
 import { ref } from 'vue';
-import { usePostStore } from '@/stores/postStore.js';
-// import Axios from '@/api.js';
+import { usePostStore } from '@/stores/postStore';
+import { useUserStore } from '@/stores/userStore';
+import Axios from '@/api';
 
+const postStore = usePostStore();
+const userStore = useUserStore();
+const post = ref(null);
 const text = ref('');
 const imageUrl = ref('');
 
-const postStore = usePostStore();
-
-function createNewPost() {
-  postStore.createPost();
-  text.value = postStore.text;
-  imageUrl.value = postStore.imageUrl;
-}
-// async function createPost() {
-//   await axios.post('http://localhost:3000/posts', {
-//     text: text.value,
-//     imageUrl: imageUrl.value,
-//   });
+// function createNewPost() {
+//   postStore.createPost();
+//   text.value = postStore.text;
+//   imageUrl.value = postStore.imageUrl;
 // }
+
+async function createNewPost(post) {
+  try {
+    await Axios.post(`/api/posts`, post).then((response) => {
+      postStore.addNewPost(response.data);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
