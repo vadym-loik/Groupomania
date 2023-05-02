@@ -33,12 +33,12 @@
 import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
-import { useAuthStore } from '@/stores/authStore';
+
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength } from '@vuelidate/validators';
 import { ref } from 'vue';
-
-const authStore = useAuthStore();
+import router from '@/router/index';
+import Axios from '@/api';
 
 const userEmail = ref('');
 const password = ref('');
@@ -50,13 +50,22 @@ const rules = {
 
 const v$ = useVuelidate(rules, { userEmail, password });
 
-function login() {
+const login = async () => {
   try {
-    authStore.login(userEmail.value, password.value);
+    // perform login logic, e.g. make an API request to authenticate the user
+    const res = await Axios.post('/api/auth/login', {
+      email: userEmail.value,
+      password: password.value,
+    });
+    console.log(res.data);
+    const token = res.data.token;
+    localStorage.setItem('auth', token);
+    router.push('/');
   } catch (error) {
-    console.log(error);
+    error = error.message;
+    throw error;
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
