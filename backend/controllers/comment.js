@@ -1,62 +1,47 @@
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 
-//CREATE COMMENT
-exports.createComment = (req, res, next) => {
-  if (!req.body.postId || !req.body.userId || !req.body.text) {
-    res.status(400).json({
-      message: 'Please check that the fields are all filled in!',
-    });
-    return;
+//GET ALL COMMENTS BY POST
+exports.getAllComments = (req, res, next) => {
+  try {
+    Comment.findAll({
+      where: {
+        postId: req.params.postId,
+      },
+      include: User,
+    })
+      .then((comment) => res.status(200).json(comment))
+      .catch((error) => res.status(400).json({ error }));
+  } catch {
+    (error) => res.status(500).json(error);
   }
-
-  Comment.create({
-    postId: req.body.postId,
-    userId: req.body.userId,
-    text: req.body.text,
-  })
-    .then((comment) =>
-      res.status(201).json({ message: 'Comment added!', comment })
-    )
-    .catch((error) => res.status(400).json({ error }));
 };
 
-//GET ALL COMMENTS BY POST
-exports.getAllCommentsByPost = (req, res, next) => {
-  Comment.findAll({
-    where: {
-      postId: req.params.postId,
-    },
-    include: {
-      model: User,
-    },
-    order: [['createdAt', 'DESC']],
-  })
-    .then((comment) => res.status(200).json(comment))
-    .catch((error) => res.status(404).json({ error }));
+//CREATE COMMENT
+exports.createComment = (req, res, next) => {
+  try {
+    let { text, userId, postId } = req.body;
+    Comment.create({ text, postId, userId })
+      .then((newComment) => {
+        console.log('Comment added!');
+        res.status(201).json(newComment);
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };
 
 //DELETE COMMENT
 exports.deleteComment = (req, res, next) => {
-  Comment.findOne({ where: { id: req.params.id } })
-    .then((comment) => {
-      if (!comment) {
-        return res.status(404).json({ error: 'Comment not found!' });
-      }
-
-      //check whoever wants to delete the post is the author of the post or the administrator
-      User.findOne({ where: { id: req.auth.userId } })
-        .then((user) => {
-          if (!user.isAdmin && req.auth.userId != comment.userId) {
-            return res.status(401).json({ error: 'Deletion not allowed!' });
-          }
-        })
-        .catch((error) => res.status(400).json({ error }));
-
-      Comment.destroy({ where: { id: req.params.id } })
-        .then(() => res.status(200).json({ message: 'Comment deleted!' }))
-        .catch((error) => res.status(400).json({ error }));
-    })
-
-    .catch((error) => res.status(400).json({ error }));
+  try {
+    Comment.destroy({ where: { id: req.params.id } })
+      .then(() => {
+        console.log('Comment deleted!');
+        res.status(200);
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };
