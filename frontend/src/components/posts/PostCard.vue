@@ -31,11 +31,7 @@
     </div>
     <MainTitle>Comments</MainTitle>
     <CommentInput />
-    <Comment
-      v-show="comments.length > 0"
-      v-for="comment in comments"
-      :comment="comment"
-    />
+    <Comment v-for="comment in comments" :comment="comment" />
   </div>
 </template>
 
@@ -43,8 +39,9 @@
 import MainTitle from '../MainTitle.vue';
 import Comment from '../comments/CommentsItem.vue';
 import CommentInput from '../comments/CommentInput.vue';
-import { useCommentStore } from '@/stores/commentStore';
+// import { useCommentStore } from '@/stores/commentStore';
 import { ref, onMounted, computed } from 'vue';
+import Axios from '@/api';
 
 const props = defineProps({
   post: {
@@ -55,9 +52,19 @@ const props = defineProps({
   },
 });
 
-const commentStore = useCommentStore();
-const comments = computed(() => commentStore.getPostComments);
-console.log(comments);
+const comments = ref([]);
+const postId = ref(null);
+
+async function getAllCommentsOfPost() {
+  await Axios.get(`/api/comments/${postId}`).then(
+    (res) => (comments.value = res.data)
+  );
+}
+
+onMounted(getAllCommentsOfPost);
+
+// const commentStore = useCommentStore();
+// const comments = computed(() => commentStore.getPostComments);
 
 // async function getAllCommentsOfPost() {
 //   await commentStore.fetchComments();
