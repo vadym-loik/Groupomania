@@ -32,27 +32,24 @@
 
 <script setup>
 import Button from '../Button.vue';
-import { ref } from 'vue';
-import { usePostStore } from '@/stores/postStore';
-import { useUserStore } from '@/stores/userStore';
+import { computed, ref } from 'vue';
 import Axios from '@/api';
 
-const postStore = usePostStore();
-const userStore = useUserStore();
-const post = ref(null);
 const text = ref('');
 const imageUrl = ref('');
+const currentUser = ref(null);
 
-// function createNewPost() {
-//   postStore.createPost();
-//   text.value = postStore.text;
-//   imageUrl.value = postStore.imageUrl;
-// }
+const token = localStorage.getItem('auth');
+const [header, payload] = token?.split('.');
+const decodedPayload = JSON.parse(window.atob(payload));
+currentUser.value = decodedPayload?.userId;
 
-async function createNewPost(post) {
+async function createNewPost() {
   try {
-    await Axios.post(`/api/posts`, post).then((response) => {
-      postStore.addNewPost(response.data);
+    await Axios.post(`/api/posts/`, {
+      text: text.value,
+      userId: currentUser.value,
+      imageUrl: imageUrl.value,
     });
   } catch (error) {
     console.log(error);
