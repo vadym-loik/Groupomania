@@ -13,23 +13,21 @@
 </template>
 
 <script setup>
+import Axios from '@/api';
 import Button from '../Button.vue';
 import { ref } from 'vue';
-import { useCommentStore } from '@/stores/commentStore';
 
 const text = ref('');
-const commentStore = useCommentStore();
+const userId = ref(null);
+const postId = ref(null);
 
 async function addComment() {
-  await commentStore.addComment();
-  text.value = commentStore.text;
+  await Axios.post('/api/comments', {
+    text: text.value,
+    userId: userId.value,
+    postId: postId.value,
+  });
 }
-
-// async function addComment() {
-//   await Axios.post('/api/comments', {
-//     text: text.value,
-//   });
-// }
 </script>
 
 <style lang="scss" scoped>
