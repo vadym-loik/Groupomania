@@ -14,7 +14,9 @@
       <Button class="profile-edit__btn" @click.prevent="toggleProfile"
         >Edit</Button
       >
-      <Button>Delete</Button>
+      <Button type="button" class="delete-profile" @click="deleteProfile"
+        >Delete</Button
+      >
     </div>
   </div>
 
@@ -31,22 +33,28 @@
       <input type="file" ref="file" name="file" id="file" />
 
       <label for="name">Change name :</label>
-      <input type="text" name="name" :value="name" />
+      <input type="text" name="name" v-model="name" />
 
       <label for="email">Change e-mail :</label>
-      <input type="email" name="email" :value="email" />
+      <input type="email" name="email" v-model="email" />
 
       <label for="password">Change password :</label>
-      <input type="password" name="password" placeholder="Enter new password" />
-
-      <Button
-        type="submit"
-        class="save"
-        @click="saveNewInfo"
-        @click.prevent="toggleProfile"
-      >
-        Save
-      </Button>
+      <input
+        type="password"
+        name="password"
+        placeholder="Enter new password"
+        v-model="password"
+      />
+      <div class="btn-wrapper">
+        <Button
+          type="submit"
+          class="save"
+          @click="saveNewInfo"
+          @click.prevent="toggleProfile"
+        >
+          Save
+        </Button>
+      </div>
     </div>
   </form>
 </template>
@@ -54,45 +62,46 @@
 <script setup>
 import Button from '../Button.vue';
 import { ref, onMounted } from 'vue';
-import { useUserStore } from '../../stores/userStore';
 import Axios from '@/api';
+import router from '@/router';
 
-//use userStore
-const userStore = useUserStore();
+const showProfile = ref(true);
+const editProfile = ref(false);
 const user = ref({});
 const email = ref('');
-// const user = userStore.$state.user;
+const name = ref('');
+const password = ref('');
+const imageUrl = ref('');
 
-//take one user by id
+//get one user by id
 async function getOneUser(id) {
-  console.log(id);
   await Axios.get(`/api/auth/profile/${id}`).then((response) => {
-    // console.log(response.data);
-    // userStore.setUser(response.data);
     user.value = response.data.user;
-    console.log(user.value);
   });
 }
 
 onMounted(() => {
+  //get token from localStorage and decode it
   const token = localStorage.getItem('auth');
   const [header, payload] = token?.split('.');
   const decodedPayload = JSON.parse(window.atob(payload));
-  console.log(payload);
-
   getOneUser(decodedPayload?.userId);
 });
 
-//modify user info
-function saveNewInfo() {
-  userStore.modifyUserName;
+//update user info
+const saveNewInfo = async (id) => {
+  await Axios.put(`/api/auth/profile/${id}`);
+};
+
+//delete user profile
+async function deleteProfile(id) {
+  await Axios.delete(`/api/auth/profile/${id}`);
+  localStorage.removeItem('auth');
+  router.push('/registration');
 }
 
-const showProfile = ref(true);
-const editProfile = ref(false);
-
+//toggle function for switching between profile section and edit section
 function toggleProfile() {
-  console.log('toggle');
   showProfile.value = !showProfile.value;
   editProfile.value = !editProfile.value;
 }
@@ -177,7 +186,7 @@ function toggleProfile() {
   }
 }
 
-.save {
-  display: block;
+.btn-wrapper {
+  width: 30%;
 }
 </style>
