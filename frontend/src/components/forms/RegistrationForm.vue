@@ -63,12 +63,14 @@ import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
 
-import { useAuthStore } from '@/stores/authStore';
+// import { useAuthStore } from '@/stores/authStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, minLength, sameAs, email } from '@vuelidate/validators';
 import { ref } from 'vue';
+import Axios from '@/api';
+import router from '@/router/index';
 
-const authStore = useAuthStore();
+// const authStore = useAuthStore();
 
 const name = ref('');
 const userEmail = ref('');
@@ -84,13 +86,53 @@ const rules = {
 
 const v$ = useVuelidate(rules, { name, userEmail, password, confirm_password });
 
-function signup() {
-  try {
-    authStore.signup(name.value, userEmail.value, password.value);
-  } catch (error) {
-    console.log(error);
-  }
-}
+// function signup() {
+//   try {
+//     authStore.signup(name.value, userEmail.value, password.value);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+const signup = async () => {
+  await Axios.post('api/auth/signup', {
+    name: name.value,
+    email: userEmail.value,
+    password: password.value,
+  })
+    .then((res) => {
+      if (res.status === 201) {
+        Axios.post('api/auth/login', {
+          email: userEmail.value,
+          password: password.value,
+        });
+        console.log(res.data);
+        const token = res.data.token;
+        localStorage.setItem('auth', token);
+        router.push('/');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+// const signup = async () => {
+//   try {
+//     // perform signup logic, e.g. make an API request to register the user
+//     const response = await Axios.post('/api/auth/signup', {
+//       name: name.value,
+//       email: userEmail.value,
+//       password: password.value,
+//     });
+//     const token = response.data.token;
+//     localStorage.setItem('auth', token);
+//     router.push('/');
+//   } catch (error) {
+//     error = error.message;
+//     throw error;
+//   }
+// };
 </script>
 
 <style lang="scss" scoped>
