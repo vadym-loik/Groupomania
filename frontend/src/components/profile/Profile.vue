@@ -1,7 +1,7 @@
 <template>
   <div class="profile" v-if="showProfile">
     <img
-      src="@/assets/icons/avatar_default.png"
+      :src="'../src/assets/icons/avatar_default.png' || user.imageUrl"
       class="profile-picture"
       alt="Profile Picture"
     />
@@ -64,7 +64,9 @@ import Button from '../Button.vue';
 import { ref, onMounted } from 'vue';
 import Axios from '@/api';
 import router from '@/router';
+import { useAuthStore } from '@/stores/authStore';
 
+const authStore = useAuthStore();
 const showProfile = ref(true);
 const editProfile = ref(false);
 const user = ref({});
@@ -82,10 +84,8 @@ async function getOneUser(id) {
 
 onMounted(() => {
   //get token from localStorage and decode it
-  const token = localStorage.getItem('auth');
-  const [header, payload] = token?.split('.');
-  const decodedPayload = JSON.parse(window.atob(payload));
-  getOneUser(decodedPayload?.userId);
+  authStore.getUserId();
+  getOneUser(authStore.$state.userId);
 });
 
 //update user info

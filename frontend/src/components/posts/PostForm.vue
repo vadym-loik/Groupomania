@@ -8,7 +8,7 @@
           type="text"
           name="text"
           placeholder="Write your text here"
-          v-model="text"
+          v-model.trim="text"
           required
         />
       </div>
@@ -22,6 +22,7 @@
           accept=".png, .jpg, .jpeg"
           id="file"
           name="image"
+          v-on:change="imageUrl"
         />
 
         <Button type="submit" class="post-form__button">Create post</Button>
@@ -32,23 +33,23 @@
 
 <script setup>
 import Button from '../Button.vue';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import Axios from '@/api';
+import { useAuthStore } from '@/stores/authStore';
 
+const authStore = useAuthStore();
 const text = ref('');
 const imageUrl = ref('');
-const currentUser = ref(null);
-
-const token = localStorage.getItem('auth');
-const [header, payload] = token?.split('.');
-const decodedPayload = JSON.parse(window.atob(payload));
-currentUser.value = decodedPayload?.userId;
+const userId = ref(null);
 
 async function createNewPost() {
+  authStore.getUserId();
+  userId.value = authStore.$state.userId;
+  console.log(userId.value);
   try {
     await Axios.post(`/api/posts/`, {
       text: text.value,
-      userId: currentUser.value,
+      userId: userId.value,
       imageUrl: imageUrl.value,
     });
   } catch (error) {

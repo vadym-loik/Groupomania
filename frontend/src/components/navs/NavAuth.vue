@@ -7,7 +7,7 @@
         >
         /
         <router-link :to="{ name: 'profile-page' }" class="nav-auth__link"
-          >Account</router-link
+          >Profile</router-link
         >
         /
         <router-link

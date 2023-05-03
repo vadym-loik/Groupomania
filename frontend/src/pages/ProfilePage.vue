@@ -1,10 +1,12 @@
 <template>
-  <SectionWithHeaderSpacer />
-  <Container>
-    <div class="profile-page">
-      <Profile />
-    </div>
-  </Container>
+  <main class="profile">
+    <SectionWithHeaderSpacer />
+    <Container>
+      <div class="profile--wrap">
+        <Profile />
+      </div>
+    </Container>
+  </main>
 </template>
 
 <script setup>
@@ -14,7 +16,7 @@ import Container from '../components/Container.vue';
 </script>
 
 <style lang="scss" scoped>
-.profile-page {
+.profile--wrap {
   background-size: cover;
   background-position: center;
   min-height: calc(100vh - 30px);

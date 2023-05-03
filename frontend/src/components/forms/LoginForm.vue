@@ -7,7 +7,7 @@
           class="login__input"
           type="email"
           placeholder="Email"
-          v-model="v$.userEmail.$model"
+          v-model.trim="v$.userEmail.$model"
         />
         <span class="login__input--error" v-if="v$.userEmail.$error">
           {{ v$.userEmail.$errors[0].$message }}</span
@@ -18,7 +18,7 @@
           class="login__input"
           type="password"
           placeholder="Password"
-          v-model="v$.password.$model"
+          v-model.trim="v$.password.$model"
         />
         <span class="login__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span

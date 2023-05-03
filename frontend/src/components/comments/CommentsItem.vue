@@ -20,14 +20,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  userId: {
-    type: Number,
-    required: true,
-  },
-  postId: {
-    type: Number,
-    required: true,
-  },
 });
 console.log(props);
 </script>

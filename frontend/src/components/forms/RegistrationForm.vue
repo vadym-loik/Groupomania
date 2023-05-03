@@ -7,7 +7,7 @@
           class="registration__input"
           type="text"
           placeholder="Name"
-          v-model="v$.name.$model"
+          v-model.trim="v$.name.$model"
         />
         <span class="registration__input--error" v-if="v$.name.$error">
           {{ v$.name.$errors[0].$message }}</span
@@ -18,7 +18,7 @@
           class="registration__input"
           type="email"
           placeholder="Email"
-          v-model="v$.userEmail.$model"
+          v-model.trim="v$.userEmail.$model"
         />
         <span class="registration__input--error" v-if="v$.userEmail.$error">
           {{ v$.userEmail.$errors[0].$message }}</span
@@ -29,7 +29,7 @@
           class="registration__input"
           type="password"
           placeholder="Password"
-          v-model="v$.password.$model"
+          v-model.trim="v$.password.$model"
         />
         <span class="registration__input--error" v-if="v$.password.$error">
           {{ v$.password.$errors[0].$message }}</span
@@ -40,7 +40,7 @@
           class="registration__input"
           type="password"
           placeholder="Confirm password"
-          v-model="v$.confirm_password.$model"
+          v-model.trim="v$.confirm_password.$model"
         />
         <span
           class="registration__input--error"
@@ -63,14 +63,11 @@ import AuthContainer from '../AuthContainer.vue';
 import MainTitle from '../MainTitle.vue';
 import Button from '../Button.vue';
 
-// import { useAuthStore } from '@/stores/authStore';
 import { useVuelidate } from '@vuelidate/core';
 import { required, minLength, sameAs, email } from '@vuelidate/validators';
 import { ref } from 'vue';
 import Axios from '@/api';
 import router from '@/router/index';
-
-// const authStore = useAuthStore();
 
 const name = ref('');
 const userEmail = ref('');
@@ -86,14 +83,6 @@ const rules = {
 
 const v$ = useVuelidate(rules, { name, userEmail, password, confirm_password });
 
-// function signup() {
-//   try {
-//     authStore.signup(name.value, userEmail.value, password.value);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 const signup = async () => {
   await Axios.post('api/auth/signup', {
     name: name.value,
@@ -101,38 +90,26 @@ const signup = async () => {
     password: password.value,
   })
     .then((res) => {
-      if (res.status === 201) {
-        Axios.post('api/auth/login', {
-          email: userEmail.value,
-          password: password.value,
-        });
-        console.log(res.data);
-        const token = res.data.token;
-        localStorage.setItem('auth', token);
-        router.push('/');
-      }
+      console.log(res);
+      const token = res.data.token;
+      localStorage.setItem('auth', token);
+      alert('User was created successfully!');
+      router.push('/login');
+      // if (res.status === 201) {
+      //   Axios.post('api/auth/login', {
+      //     email: userEmail.value,
+      //     password: password.value,
+      //   });
+      //   console.log(res.data);
+      //   const token = res.data.token;
+      //   localStorage.setItem('auth', token);
+      //   router.push('/');
+      // }
     })
     .catch((error) => {
       console.error(error);
     });
 };
-
-// const signup = async () => {
-//   try {
-//     // perform signup logic, e.g. make an API request to register the user
-//     const response = await Axios.post('/api/auth/signup', {
-//       name: name.value,
-//       email: userEmail.value,
-//       password: password.value,
-//     });
-//     const token = response.data.token;
-//     localStorage.setItem('auth', token);
-//     router.push('/');
-//   } catch (error) {
-//     error = error.message;
-//     throw error;
-//   }
-// };
 </script>
 
 <style lang="scss" scoped>

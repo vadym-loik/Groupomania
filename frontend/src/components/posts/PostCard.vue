@@ -1,11 +1,7 @@
 <template>
   <div class="post">
     <div class="user-info">
-      <img
-        class="post-avatar"
-        src="../../assets/icons/avatar_default.png"
-        alt="avatar"
-      />
+      <img class="post-avatar" :src="post.user.imageUrl" alt="avatar" />
       <MainTitle class="user-name">{{ post.user.name }}</MainTitle>
       <font-awesome-icon
         class="post-edit"
@@ -31,7 +27,11 @@
     </div>
     <MainTitle>Comments</MainTitle>
     <CommentInput />
-    <Comment v-for="comment in comments" :comment="comment" />
+    <Comment
+      v-for="(comment, post) in comments"
+      :key="comment.id"
+      :comment="comment"
+    />
   </div>
 </template>
 
@@ -48,14 +48,14 @@ const props = defineProps({
     type: Object,
     isAdmin: Boolean,
     userId: Number,
-    postId: Number,
+    id: Number,
   },
 });
+console.log(props.post);
 
 const comments = ref([]);
-const postId = ref(null);
 
-async function getAllCommentsOfPost() {
+async function getAllCommentsOfPost(postId) {
   await Axios.get(`/api/comments/${postId}`).then(
     (res) => (comments.value = res.data)
   );
