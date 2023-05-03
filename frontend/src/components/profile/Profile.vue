@@ -30,7 +30,13 @@
         src="@/assets/icons/avatar_default.png"
         class="edit-profile__avatar"
       />
-      <input type="file" ref="file" name="file" id="file" />
+      <input
+        type="file"
+        ref="file"
+        name="file"
+        id="file"
+        v-on:change="imageUrl"
+      />
 
       <label for="name">Change name :</label>
       <input type="text" name="name" v-model="name" />
@@ -69,7 +75,8 @@ import { useAuthStore } from '@/stores/authStore';
 const authStore = useAuthStore();
 const showProfile = ref(true);
 const editProfile = ref(false);
-const user = ref({});
+const user = ref([]);
+
 const email = ref('');
 const name = ref('');
 const password = ref('');
@@ -77,20 +84,32 @@ const imageUrl = ref('');
 
 //get one user by id
 async function getOneUser(id) {
-  await Axios.get(`/api/auth/profile/${id}`).then((response) => {
-    user.value = response.data.user;
+  await Axios.get(`/api/auth/profile/${id}`).then((res) => {
+    user.value = res.data.user;
   });
 }
 
 onMounted(() => {
-  //get token from localStorage and decode it
-  authStore.getUserId();
+  authStore.getUserId;
   getOneUser(authStore.$state.userId);
 });
 
 //update user info
 const saveNewInfo = async (id) => {
-  await Axios.put(`/api/auth/profile/${id}`);
+  const user = [];
+
+  const newInfo = {
+    name: name.value,
+    email: email.value,
+    password: password.value,
+    imageUrl: imageUrl.value,
+  };
+
+  user.push(newInfo);
+
+  await Axios.put(`/api/auth/profile/${id}`, {
+    user,
+  }).then((res) => console.log(res.data));
 };
 
 //delete user profile

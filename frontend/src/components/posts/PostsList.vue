@@ -1,7 +1,7 @@
 <template>
   <Container>
     <div class="posts-list">
-      <PostCard v-for="post in posts" :key="post.id" :post="post" />
+      <PostCard v-for="post in postStore.posts" :key="post.id" :post="post" />
     </div>
   </Container>
 </template>
@@ -9,23 +9,14 @@
 <script setup>
 import Container from '../Container.vue';
 import PostCard from './PostCard.vue';
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
+import { usePostStore } from '@/stores/postStore';
 
-import Axios from '@/api';
+const postStore = usePostStore();
 
-const posts = ref([]);
-
-async function getAllPosts() {
-  try {
-    await Axios.get(`/api/posts/`).then((res) => {
-      posts.value = res.data;
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-onMounted(getAllPosts);
+onMounted(() => {
+  postStore.getAllPosts();
+});
 </script>
 
 <style lang="scss" scoped>

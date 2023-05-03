@@ -22,8 +22,7 @@ const User = db.define(
     },
     isAdmin: {
       type: Sequelize.BOOLEAN,
-      allowNull: false,
-      default: 0,
+      default: false,
     },
     createdAt: {
       type: Sequelize.DATE,

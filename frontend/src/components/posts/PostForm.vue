@@ -33,28 +33,23 @@
 
 <script setup>
 import Button from '../Button.vue';
-import { ref } from 'vue';
-import Axios from '@/api';
+import { ref, computed } from 'vue';
+// import Axios from '@/api';
 import { useAuthStore } from '@/stores/authStore';
+import { usePostStore } from '@/stores/postStore';
 
+const postStore = usePostStore();
 const authStore = useAuthStore();
+
+const userId = computed(() => {
+  return authStore.getUserId;
+});
+
 const text = ref('');
 const imageUrl = ref('');
-const userId = ref(null);
 
-async function createNewPost() {
-  authStore.getUserId();
-  userId.value = authStore.$state.userId;
-  console.log(userId.value);
-  try {
-    await Axios.post(`/api/posts/`, {
-      text: text.value,
-      userId: userId.value,
-      imageUrl: imageUrl.value,
-    });
-  } catch (error) {
-    console.log(error);
-  }
+function createNewPost() {
+  postStore.addNewPost();
 }
 </script>
 

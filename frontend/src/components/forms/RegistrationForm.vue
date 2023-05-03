@@ -66,9 +66,9 @@ import Button from '../Button.vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, minLength, sameAs, email } from '@vuelidate/validators';
 import { ref } from 'vue';
-import Axios from '@/api';
-import router from '@/router/index';
+import { useAuthStore } from '@/stores/authStore';
 
+const authStore = useAuthStore();
 const name = ref('');
 const userEmail = ref('');
 const password = ref('');
@@ -83,33 +83,9 @@ const rules = {
 
 const v$ = useVuelidate(rules, { name, userEmail, password, confirm_password });
 
-const signup = async () => {
-  await Axios.post('api/auth/signup', {
-    name: name.value,
-    email: userEmail.value,
-    password: password.value,
-  })
-    .then((res) => {
-      console.log(res);
-      const token = res.data.token;
-      localStorage.setItem('auth', token);
-      alert('User was created successfully!');
-      router.push('/login');
-      // if (res.status === 201) {
-      //   Axios.post('api/auth/login', {
-      //     email: userEmail.value,
-      //     password: password.value,
-      //   });
-      //   console.log(res.data);
-      //   const token = res.data.token;
-      //   localStorage.setItem('auth', token);
-      //   router.push('/');
-      // }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
+async function signup() {
+  await authStore.signup(name.value, userEmail.value, password.value);
+}
 </script>
 
 <style lang="scss" scoped>

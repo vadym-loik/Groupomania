@@ -27,23 +27,16 @@
     </div>
     <MainTitle>Comments</MainTitle>
     <CommentInput />
-    <Comment
-      v-for="(comment, post) in comments"
-      :key="comment.id"
-      :comment="comment"
-    />
+    <CommentItem />
   </div>
 </template>
 
 <script setup>
 import MainTitle from '../MainTitle.vue';
-import Comment from '../comments/CommentsItem.vue';
+import CommentItem from '../comments/CommentsItem.vue';
 import CommentInput from '../comments/CommentInput.vue';
-// import { useCommentStore } from '@/stores/commentStore';
-import { ref, onMounted, computed } from 'vue';
-import Axios from '@/api';
 
-const props = defineProps({
+defineProps({
   post: {
     type: Object,
     isAdmin: Boolean,
@@ -51,27 +44,7 @@ const props = defineProps({
     id: Number,
   },
 });
-console.log(props.post);
-
-const comments = ref([]);
-
-async function getAllCommentsOfPost(postId) {
-  await Axios.get(`/api/comments/${postId}`).then(
-    (res) => (comments.value = res.data)
-  );
-}
-
-onMounted(getAllCommentsOfPost);
-
-// const commentStore = useCommentStore();
-// const comments = computed(() => commentStore.getPostComments);
-
-// async function getAllCommentsOfPost() {
-//   await commentStore.fetchComments();
-//   comments.value = commentStore.comments;
-// }
-
-// onMounted(getAllCommentsOfPost);
+// console.log(props.post);
 </script>
 
 <style lang="scss" scoped>

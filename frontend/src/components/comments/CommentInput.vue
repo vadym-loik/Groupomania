@@ -4,7 +4,7 @@
       class="comments__content"
       type="text"
       placeholder="Write your comment here"
-      v-model="text"
+      v-model.trim="text"
     />
     <Button class="comments__btn" @click.prevent="addComment"
       >Add comment</Button

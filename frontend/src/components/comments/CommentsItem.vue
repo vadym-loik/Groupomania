@@ -1,5 +1,5 @@
 <template>
-  <div class="comment">
+  <div class="comment" v-for="comment in comments" :key="comment.id">
     <img
       src="@/assets/icons/avatar_default.png"
       class="comment__avatar"
@@ -15,13 +15,24 @@
 </template>
 
 <script setup>
-const props = defineProps({
-  comment: {
-    type: Object,
-    required: true,
-  },
-});
-console.log(props);
+import { ref, onMounted } from 'vue';
+import Axios from '@/api';
+// const props = defineProps({
+//   comment: {
+//     type: Object,
+//     required: true,
+//   },
+// });
+
+const comments = ref([]);
+
+async function getAllCommentsOfPost(postId) {
+  await Axios.get(`/api/comments/${postId}`).then((res) => {
+    comments.value = res.data;
+  });
+}
+
+onMounted(getAllCommentsOfPost);
 </script>
 
 <style lang="scss" scoped>

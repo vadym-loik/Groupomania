@@ -5,26 +5,27 @@ const User = require('../models/User');
 
 // SIGNUP
 exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10).then((hash) => {
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: hash,
-      isAdmin: false,
-    });
-
-    console.log(user);
-
-    user
-      .save()
-      .then(() => {
-        res.status(201).json({ message: 'User created successfully' });
-        console.log(User);
-      })
-      .catch((error) => {
-        res.status(400).json({ error });
+  bcrypt
+    .hash(req.body.password, 10)
+    .then((hash) => {
+      const user = new User({
+        ...req.body,
+        password: hash,
       });
-  });
+      let { name, email, password } = user;
+      User.create({ name, email, password })
+        .then((newUser) => {
+          console.log(
+            'New user registered:',
+            newUser.name,
+            'userId:',
+            newUser.id
+          );
+          res.status(201).json();
+        })
+        .catch((error) => res.status(400).json(error));
+    })
+    .catch((error) => res.status(500).json(error));
 };
 
 // LOGIN
@@ -104,8 +105,8 @@ exports.modifyUser = (req, res, next) => {
       .then((hash) => {
         req.body.password = hash;
         User.update(req.body, { where: { id: req.params.id } })
-          .then((user) => {
-            res.status(201).json({ message: 'profile and password changed' });
+          .then(() => {
+            res.status(201).json({ message: 'Profile and password changed.' });
           })
           .catch((error) => res.status(400).json(error));
       })
@@ -113,7 +114,7 @@ exports.modifyUser = (req, res, next) => {
   } else {
     //the password has not been changed so we can save our data directly
     User.update(req.body, { where: { id: req.params.id } })
-      .then(() => res.status(201).json({ message: 'updated profile' }))
+      .then(() => res.status(201).json({ message: 'Updated profile.' }))
       .catch((error) => res.status(400).json(error));
   }
 };
