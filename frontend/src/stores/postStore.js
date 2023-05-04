@@ -11,16 +11,17 @@ export const usePostStore = defineStore('post', {
   getters: {},
   actions: {
     async getAllPosts() {
-      this.loading = true;
-      try {
-        await Axios.get(`/api/posts/`).then((res) => {
-          this.posts = res.data;
-        });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.loading = false;
-      }
+      // this.loading = true;
+      // try {
+      //   await Axios.get(`/api/posts/`).then((res) => {
+      //     this.posts = res.data;
+      //   });
+      // } catch (error) {
+      //   console.log(error);
+      // } finally {
+      //   this.loading = false;
+      // }
+      return this.posts;
     },
 
     async addNewPost(newPost) {

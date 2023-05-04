@@ -22,7 +22,7 @@
           accept=".png, .jpg, .jpeg"
           id="file"
           name="image"
-          v-on:change="imageUrl"
+          v-on:change="doSomethingWithImage"
         />
 
         <Button type="submit" class="post-form__button">Create post</Button>
@@ -44,12 +44,23 @@ const authStore = useAuthStore();
 const userId = computed(() => {
   return authStore.getUserId;
 });
+console.log(userId.value);
 
 const text = ref('');
 const imageUrl = ref('');
 
+function doSomethingWithImage(event) {
+  imageUrl.value = event.target.files[0].name;
+}
+
 function createNewPost() {
-  postStore.addNewPost();
+  const newPost = {
+    userId: userId.value,
+    text: text.value,
+    imageUrl: imageUrl.value,
+  };
+
+  postStore.addNewPost(newPost);
 }
 </script>
 

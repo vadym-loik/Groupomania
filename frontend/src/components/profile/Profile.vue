@@ -69,7 +69,7 @@
 import Button from '../Button.vue';
 import { ref, onMounted } from 'vue';
 import Axios from '@/api';
-import router from '@/router';
+import router from '@/router/index';
 import { useAuthStore } from '@/stores/authStore';
 
 const authStore = useAuthStore();
@@ -89,32 +89,33 @@ async function getOneUser(id) {
   });
 }
 
-onMounted(() => {
-  authStore.getUserId;
-  getOneUser(authStore.$state.userId);
-});
-
 //update user info
 const saveNewInfo = async (id) => {
-  const user = [];
-
   const newInfo = {
     name: name.value,
     email: email.value,
-    password: password.value,
-    imageUrl: imageUrl.value,
   };
 
-  user.push(newInfo);
+  if (password.value != '') {
+    newInfo.password = password.value;
+  }
 
-  await Axios.put(`/api/auth/profile/${id}`, {
-    user,
-  }).then((res) => console.log(res.data));
+  if (imageUrl.value != '') {
+    newInfo.imageUrl = imageUrl.value;
+  }
+
+  await Axios.put(`/api/auth/profile/${user.value.id}`, newInfo).then((res) => {
+    console.log(res.data);
+    getOneUser(user.value.id);
+  });
 };
 
 //delete user profile
-async function deleteProfile(id) {
-  await Axios.delete(`/api/auth/profile/${id}`);
+async function deleteProfile() {
+  confirm('Delete your profile?');
+  await Axios.delete(`/api/auth/profile/${user.value.id}`).then((res) =>
+    console.log(res)
+  );
   localStorage.removeItem('auth');
   router.push('/registration');
 }
@@ -124,6 +125,11 @@ function toggleProfile() {
   showProfile.value = !showProfile.value;
   editProfile.value = !editProfile.value;
 }
+
+onMounted(() => {
+  authStore.getUserId;
+  getOneUser(authStore.$state.userId);
+});
 </script>
 
 <style lang="scss" scoped>
