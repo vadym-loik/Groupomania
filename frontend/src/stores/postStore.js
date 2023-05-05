@@ -14,7 +14,7 @@ export const usePostStore = defineStore('post', {
       this.loading = true;
       try {
         await Axios.get(`/api/posts/`).then((res) => {
-          this.posts = res.data;
+          this.$state.posts = res.data;
         });
       } catch (error) {
         console.log(error);
@@ -24,8 +24,6 @@ export const usePostStore = defineStore('post', {
     },
 
     async addNewPost(newPost) {
-      this.posts.push(newPost);
-
       try {
         await Axios.post('/api/posts/', newPost).then((res) =>
           console.log(res)
@@ -34,7 +32,7 @@ export const usePostStore = defineStore('post', {
         console.log(error);
       }
 
-      this.getAllPosts();
+      this.$state.posts.push(newPost);
     },
   },
 });

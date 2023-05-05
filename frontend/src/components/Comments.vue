@@ -26,7 +26,7 @@ import { storeToRefs } from 'pinia';
 const authStore = useAuthStore();
 const { userId } = storeToRefs(authStore);
 const currentUser = userId;
-console.log(currentUser.value);
+// console.log(currentUser.value);
 
 const props = defineProps({
   comment: {
@@ -34,7 +34,7 @@ const props = defineProps({
     required: true,
   },
 });
-console.log(props.comment.userId);
+// console.log(props.comment.userId);
 
 async function deleteComment() {
   try {

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import router from '../router/index';
 import Axios from '../api';
-import { useStorage } from '@vueuse/core';
+// import { useStorage } from '@vueuse/core';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -14,16 +14,15 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     // GET userId
     getUserId() {
-      if (!this.token) return '';
+      if (!this.$state.token) return '';
       const token = localStorage.getItem('auth');
       const [header, payload] = token?.split('.');
       const decodedPayload = JSON.parse(window.atob(payload));
-      console.log(decodedPayload);
-      this.userId = decodedPayload?.userId;
+      this.$state.userId = decodedPayload?.userId;
     },
 
     // REGISTRATION
-    async signup(state, name, email, password) {
+    async signup(name, email, password) {
       const res = await Axios.post('api/auth/signup', {
         name,
         email,
@@ -38,7 +37,6 @@ export const useAuthStore = defineStore('auth', {
 
     // LOGIN
     async login(email, password) {
-      console.log(email);
       const res = await Axios.post('api/auth/login', {
         email,
         password,
@@ -46,14 +44,14 @@ export const useAuthStore = defineStore('auth', {
 
       const token = res.data.token;
       localStorage.setItem('auth', token);
-      this.token = token;
+      this.$state.token = token;
       router.push('/');
     },
 
     // LOGOUT
     logout() {
       // perform logout logic, e.g. clear the user session
-      this.token = null;
+      this.$state.token = null;
 
       // Remove login state from local storage
       localStorage.removeItem('auth');

@@ -40,7 +40,9 @@ import { usePostStore } from '@/stores/postStore';
 
 const postStore = usePostStore();
 const authStore = useAuthStore();
+authStore.getUserId();
 const { userId } = storeToRefs(authStore);
+// console.log(userId.value);
 const text = ref('');
 const imageUrl = ref('');
 
