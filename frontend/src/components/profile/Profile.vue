@@ -91,23 +91,26 @@ async function getOneUser(id) {
 
 //update user info
 const saveNewInfo = async (id) => {
-  const newInfo = {
-    name: name.value,
-    email: email.value,
-  };
+  const newInfo = {};
 
+  if (name.value != '') {
+    newInfo.name = name.value;
+  }
+  if (email.value != '') {
+    newInfo.email = email.value;
+  }
   if (password.value != '') {
     newInfo.password = password.value;
   }
-
   if (imageUrl.value != '') {
     newInfo.imageUrl = imageUrl.value;
   }
 
   await Axios.put(`/api/auth/profile/${user.value.id}`, newInfo).then((res) => {
     console.log(res.data);
-    getOneUser(user.value.id);
+    // getOneUser(user.value.id);
   });
+  user.value = newInfo;
 };
 
 //delete user profile

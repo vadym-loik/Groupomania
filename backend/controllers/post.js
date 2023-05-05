@@ -30,9 +30,6 @@ exports.getOnePost = (req, res, next) => {
     where: { id: req.params.id },
     include: {
       model: User,
-      attributes: {
-        exclude: ['id', 'password', 'email'],
-      },
     },
   })
     .then((post) => {

@@ -1,57 +1,59 @@
 import { defineStore } from 'pinia';
 import router from '../router/index';
 import Axios from '../api';
+import { useStorage } from '@vueuse/core';
 
 export const useAuthStore = defineStore('auth', {
-  state: () => {
-    return {
-      token: localStorage.getItem('auth') || null,
-      userId: null,
-      user: null,
-    };
-  },
+  state: () => ({
+    token: localStorage.getItem('auth'),
+    userId: null,
+  }),
   getters: {
     isLoggedIn: (state) => !!state.token,
-    getUserId: (state) => {
+  },
+  actions: {
+    // GET userId
+    getUserId() {
+      if (!this.token) return '';
       const token = localStorage.getItem('auth');
       const [header, payload] = token?.split('.');
       const decodedPayload = JSON.parse(window.atob(payload));
-      state.userId = decodedPayload?.userId;
+      console.log(decodedPayload);
+      this.userId = decodedPayload?.userId;
     },
-    // isAdmin: (state) => state.user?.role === 'admin',
-  },
-  actions: {
-    async signup(name, email, password) {
+
+    // REGISTRATION
+    async signup(state, name, email, password) {
       const res = await Axios.post('api/auth/signup', {
         name,
         email,
         password,
       });
 
-      const user = await res.data;
-      this.user = user;
       const token = res.data.token;
       localStorage.setItem('auth', token);
       alert('User was created successfully!');
       router.push('/login');
     },
 
+    // LOGIN
     async login(email, password) {
+      console.log(email);
       const res = await Axios.post('api/auth/login', {
         email,
         password,
       });
 
-      const user = res.data;
-      this.user = user;
       const token = res.data.token;
       localStorage.setItem('auth', token);
+      this.token = token;
       router.push('/');
     },
 
+    // LOGOUT
     logout() {
       // perform logout logic, e.g. clear the user session
-      this.toke = null;
+      this.token = null;
 
       // Remove login state from local storage
       localStorage.removeItem('auth');

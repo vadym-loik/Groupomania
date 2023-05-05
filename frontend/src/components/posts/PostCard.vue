@@ -1,7 +1,11 @@
 <template>
   <div class="post">
     <div class="user-info">
-      <img class="post-avatar" :src="post.user.imageUrl" alt="avatar" />
+      <img
+        class="post-avatar"
+        src="../../assets/icons/avatar_default.png"
+        alt="avatar"
+      />
       <MainTitle class="user-name">{{ post.user.name }}</MainTitle>
       <font-awesome-icon
         class="post-edit"
@@ -26,17 +30,24 @@
       />
     </div>
     <MainTitle>Comments</MainTitle>
-    <CommentInput />
-    <CommentItem />
+    <CommentInput :post="post" />
+    <Comment
+      v-for="comment in comments"
+      :key="comment.id"
+      :comment="comment"
+      :post="post"
+    />
   </div>
 </template>
 
 <script setup>
 import MainTitle from '../MainTitle.vue';
-import CommentItem from '../comments/CommentsItem.vue';
-import CommentInput from '../comments/CommentInput.vue';
+import Comment from '../Comments.vue';
+import { ref, onMounted } from 'vue';
+import Axios from '@/api';
+import CommentInput from '../CommentInput.vue';
 
-defineProps({
+const props = defineProps({
   post: {
     type: Object,
     isAdmin: Boolean,
@@ -44,7 +55,22 @@ defineProps({
     id: Number,
   },
 });
-// console.log(props.post);
+
+const comments = ref([]);
+
+async function fetchComments() {
+  try {
+    await Axios.get(`/api/comments/${props.post.id}`).then((res) => {
+      comments.value = res.data;
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+onMounted(() => {
+  fetchComments();
+});
 </script>
 
 <style lang="scss" scoped>

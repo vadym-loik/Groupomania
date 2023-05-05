@@ -21,8 +21,8 @@
           type="file"
           accept=".png, .jpg, .jpeg"
           id="file"
-          name="image"
-          v-on:change="doSomethingWithImage"
+          name="file"
+          @change="selectFile"
         />
 
         <Button type="submit" class="post-form__button">Create post</Button>
@@ -34,31 +34,29 @@
 <script setup>
 import Button from '../Button.vue';
 import { ref, computed } from 'vue';
-// import Axios from '@/api';
+import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/authStore';
 import { usePostStore } from '@/stores/postStore';
 
 const postStore = usePostStore();
 const authStore = useAuthStore();
-
-const userId = computed(() => {
-  return authStore.getUserId;
-});
-console.log(userId.value);
-
+const { userId } = storeToRefs(authStore);
 const text = ref('');
 const imageUrl = ref('');
 
-function doSomethingWithImage(event) {
-  imageUrl.value = event.target.files[0].name;
+function selectFile(event) {
+  imageUrl.value = event.target.files[0];
 }
 
 function createNewPost() {
   const newPost = {
     userId: userId.value,
     text: text.value,
-    imageUrl: imageUrl.value,
   };
+
+  if (imageUrl.value != '') {
+    newPost.imageUrl = imageUrl.value;
+  }
 
   postStore.addNewPost(newPost);
 }

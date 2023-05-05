@@ -6,27 +6,43 @@
       placeholder="Write your comment here"
       v-model.trim="text"
     />
-    <Button class="comments__btn" @click.prevent="addComment"
+    <Button class="comments__btn" @click.prevent="addNewComment"
       >Add comment</Button
     >
   </div>
 </template>
 
 <script setup>
-import Axios from '@/api';
-import Button from '../Button.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import Button from './Button.vue';
+import Axios from '../api';
+import { useAuthStore } from '../stores/authStore';
 
+const authStore = useAuthStore();
 const text = ref('');
-const userId = ref(null);
-const postId = ref(null);
+const { userId } = storeToRefs(authStore);
 
-async function addComment() {
-  await Axios.post('/api/comments', {
+const props = defineProps({
+  post: {
+    id: Number,
+  },
+});
+
+async function addNewComment() {
+  const newComment = {
     text: text.value,
     userId: userId.value,
-    postId: postId.value,
-  });
+    postId: props.post.id,
+  };
+
+  try {
+    await Axios.post('/api/comments/', newComment).then((res) =>
+      console.log(res)
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 </script>
 

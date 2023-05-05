@@ -1,27 +1,17 @@
 <template>
   <div class="nav">
-    <NavAuth />
-    <NavLogin />
+    <NavAuth v-if="authStore.isLoggedIn" />
+    <NavLogin v-else />
   </div>
 </template>
 
-<script>
-import NavLogin from './NavLogin.vue';
+<script setup>
 import NavAuth from './NavAuth.vue';
-// import { isUserAuth } from '../../api.js';
+import NavLogin from './NavLogin.vue';
 
-export default {
-  name: 'Nav',
-  components: {
-    NavAuth,
-    NavLogin,
-  },
-  methods: {
-    // isUserConnected() {
-    //   return isUserAuth();
-    // },
-  },
-};
+import { useAuthStore } from '@/stores/authStore';
+
+const authStore = useAuthStore();
 </script>
 
 <style lang="scss" scoped></style>
