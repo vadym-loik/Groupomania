@@ -50,11 +50,10 @@ import CommentInput from '../CommentInput.vue';
 const props = defineProps({
   post: {
     type: Object,
-    isAdmin: Boolean,
-    userId: Number,
-    id: Number,
+    required: true,
   },
 });
+// console.log(props.post);
 
 const comments = ref([]);
 

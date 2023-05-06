@@ -25,7 +25,8 @@ const { userId } = storeToRefs(authStore);
 
 const props = defineProps({
   post: {
-    id: Number,
+    type: Object,
+    required: true,
   },
 });
 

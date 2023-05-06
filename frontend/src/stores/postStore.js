@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia';
 import Axios from '../api';
 
-export const usePostStore = defineStore('post', {
-  state: () => {
-    return {
-      posts: [],
-      loading: false,
-    };
-  },
+export const usePostStore = defineStore({
+  id: 'post',
+  state: () => ({
+    posts: [],
+    loading: false,
+  }),
   getters: {},
   actions: {
     async getAllPosts() {
@@ -32,7 +31,7 @@ export const usePostStore = defineStore('post', {
         console.log(error);
       }
 
-      this.$state.posts.push(newPost);
+      this.posts.push(newPost);
     },
   },
 });
