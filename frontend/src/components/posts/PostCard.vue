@@ -7,11 +7,11 @@
         alt="avatar"
       />
       <MainTitle class="user-name">{{ post.user.name }}</MainTitle>
-      <font-awesome-icon
-        class="post-edit"
-        :icon="['far', 'edit']"
-        style="color: #ff662d"
-      />
+      <i
+        class="close fa-solid fa-xmark"
+        v-if="post.user.id === currentUser"
+        @click.prevent="deletePost"
+      ></i>
     </div>
     <article class="post-text">{{ post.text }}</article>
     <div class="file-container">
@@ -22,30 +22,36 @@
         alt="post image"
       />
     </div>
-    <div class="post-like">
-      <font-awesome-icon
-        class="post-like"
-        :icon="['far', 'heart']"
-        style="color: #ff662d"
-      />
-    </div>
+    <div class="post-like"></div>
     <MainTitle>Comments</MainTitle>
     <CommentInput :post="post" />
     <Comment
-      v-for="comment in comments"
+      v-for="comment in commentStore.comments.filter(
+        (comment) => comment[0]?.postId === props.post.id
+      )[0]"
       :key="comment.id"
       :comment="comment"
-      :post="post"
     />
   </div>
 </template>
 
 <script setup>
 import MainTitle from '../MainTitle.vue';
-import Comment from '../Comments.vue';
-import { ref, onMounted } from 'vue';
-import Axios from '@/api';
 import CommentInput from '../CommentInput.vue';
+import Comment from '../Comments.vue';
+import Axios from '@/api';
+import { ref, onMounted, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useCommentStore } from '@/stores/commentStore';
+import { usePostStore } from '@/stores/postStore';
+import { useAuthStore } from '@/stores/authStore';
+
+const commentStore = useCommentStore();
+const postStore = usePostStore();
+const authStore = useAuthStore();
+
+const { userId } = storeToRefs(authStore);
+const currentUser = userId;
 
 const props = defineProps({
   post: {
@@ -57,19 +63,34 @@ const props = defineProps({
 
 const comments = ref([]);
 
-async function fetchComments() {
+// GET STATE COMMENTS
+// const comments = computed(() => {
+//   // console.log(commentStore.comments);
+//   return commentStore.comments;
+// });
+// console.log(comments.value);
+
+// RENDER COMMENTS
+onMounted(async () => {
+  await commentStore.getComments(props.post.id);
+  comments.value = commentStore.comments;
+  console.log(comments.value);
+});
+
+// DELETE ONE POST
+async function deletePost() {
+  confirm('Are you sure that ypu want to delete this post?');
+
   try {
-    await Axios.get(`/api/comments/${props.post.id}`).then((res) => {
-      comments.value = res.data;
-    });
+    await Axios.delete(`/api/posts/${props.post.id}`).then((res) =>
+      console.log(res)
+    );
   } catch (error) {
     console.log(error);
   }
-}
 
-onMounted(() => {
-  fetchComments();
-});
+  postStore.getAllPosts();
+}
 </script>
 
 <style lang="scss" scoped>
@@ -123,5 +144,15 @@ onMounted(() => {
   &-img {
     max-width: 380px;
   }
+}
+
+.fa-xmark {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.close {
+  cursor: pointer;
 }
 </style>

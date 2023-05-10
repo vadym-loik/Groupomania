@@ -110,6 +110,7 @@ const saveNewInfo = async (id) => {
     console.log(res.data);
     // getOneUser(user.value.id);
   });
+
   user.value = newInfo;
 };
 

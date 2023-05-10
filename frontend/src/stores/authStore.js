@@ -31,8 +31,11 @@ export const useAuthStore = defineStore('auth', {
 
       const token = res.data.token;
       localStorage.setItem('auth', token);
+      this.$state.token = token;
       alert('User was created successfully!');
-      router.push('/login');
+      router.push('/');
+
+      // router.push('/login');
     },
 
     // LOGIN

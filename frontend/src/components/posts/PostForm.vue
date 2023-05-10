@@ -61,6 +61,7 @@ function createNewPost() {
   }
 
   postStore.addNewPost(newPost);
+  text.value = '';
 }
 </script>
 

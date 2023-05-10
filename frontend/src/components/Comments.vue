@@ -22,8 +22,10 @@
 import Axios from '../api';
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
+import { useCommentStore } from '../stores/commentStore';
 
 const authStore = useAuthStore();
+const commentStore = useCommentStore();
 const { userId } = storeToRefs(authStore);
 const currentUser = userId;
 // console.log(currentUser.value);
@@ -34,7 +36,6 @@ const props = defineProps({
     required: true,
   },
 });
-// console.log(props.comment.userId);
 
 async function deleteComment() {
   try {
@@ -44,6 +45,8 @@ async function deleteComment() {
   } catch (error) {
     console.log(error);
   }
+
+  commentStore.getComments();
 }
 </script>
 

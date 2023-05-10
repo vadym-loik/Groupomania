@@ -21,7 +21,18 @@ exports.signup = (req, res, next) => {
             'userId:',
             newUser.id
           );
-          res.status(201).json();
+          res.status(201).json({
+            userId: user.id,
+            isAdmin: user.isAdmin,
+            token: jwt.sign(
+              {
+                userId: user.id,
+                isAdmin: user.isAdmin,
+              },
+              'RANDOM_TOKEN_SECRET',
+              { expiresIn: '24h' }
+            ),
+          });
         })
         .catch((error) => res.status(400).json(error));
     })

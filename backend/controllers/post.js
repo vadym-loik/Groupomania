@@ -109,7 +109,7 @@ exports.deletePost = (req, res, next) => {
 
       //1st arg: file path, 2nd arg: the callback=what to do once the image is deleted
       fs.unlink(`images/${filename}`, () => {
-        //we delete the user from the database by indicating his id
+        //we delete the post from the database by indicating his id
         Post.destroy({ where: { id: req.params.id } })
           .then(() => res.status(200).json({ message: 'Post deleted!' }))
           .catch((error) => res.status(400).json({ error }));

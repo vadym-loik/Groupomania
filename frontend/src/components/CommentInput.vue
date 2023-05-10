@@ -18,8 +18,11 @@ import { storeToRefs } from 'pinia';
 import Button from './Button.vue';
 import Axios from '../api';
 import { useAuthStore } from '../stores/authStore';
+import { useCommentStore } from '../stores/commentStore';
 
 const authStore = useAuthStore();
+const commentStore = useCommentStore();
+
 const text = ref('');
 const { userId } = storeToRefs(authStore);
 
@@ -36,11 +39,15 @@ async function addNewComment() {
     userId: userId.value,
     postId: props.post.id,
   };
+  // console.log(props.post.id);
+  // console.log(userId.value);
+  // console.log(text.value);
 
   try {
-    await Axios.post('/api/comments/', newComment).then((res) =>
-      console.log(res)
-    );
+    const res = await Axios.post('/api/comments/', newComment);
+    console.log(res.data);
+
+    commentStore.addComment(res.data.postId, res.data);
   } catch (error) {
     console.log(error);
   }
