@@ -13,11 +13,11 @@ import { onMounted } from 'vue';
 import { usePostStore } from '@/stores/postStore';
 
 const postStore = usePostStore();
-postStore.getAllPosts();
+
 // console.log(postStore.posts);
 
-onMounted(() => {
-  postStore.posts;
+onMounted(async () => {
+  await postStore.getAllPosts();
 });
 </script>
 

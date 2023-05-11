@@ -9,7 +9,7 @@
       <MainTitle class="user-name">{{ post.user.name }}</MainTitle>
       <i
         class="close fa-solid fa-xmark"
-        v-if="post.user.id === currentUser"
+        v-if="post.userId === currentUser"
         @click.prevent="deletePost"
       ></i>
     </div>
@@ -40,7 +40,7 @@ import MainTitle from '../MainTitle.vue';
 import CommentInput from '../CommentInput.vue';
 import Comment from '../Comments.vue';
 import Axios from '@/api';
-import { ref, onMounted, computed } from 'vue';
+import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useCommentStore } from '@/stores/commentStore';
 import { usePostStore } from '@/stores/postStore';
@@ -59,14 +59,11 @@ const props = defineProps({
     required: true,
   },
 });
+// console.log(props.post.id);
 
 // RENDER COMMENTS
 onMounted(async () => {
   await commentStore.getAllComments();
-  const fc = commentStore.comments.filter(
-    (comment) => comment.postId === props.post.id
-  );
-  console.log(fc);
 });
 
 // DELETE ONE POST
@@ -74,14 +71,15 @@ async function deletePost() {
   confirm('Are you sure that you want to delete this post?');
 
   try {
-    await Axios.delete(`/api/posts/${props.post.id}`).then((res) =>
-      console.log(res)
-    );
+    console.log(props.post.id);
+    const res = await Axios.delete(`/api/posts/${props.post.id}`);
+    console.log(res);
+
+    // postStore.deletePost(res.data);
+    postStore.getAllPosts();
   } catch (error) {
     console.log(error);
   }
-
-  postStore.getAllPosts();
 }
 </script>
 

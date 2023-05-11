@@ -23,6 +23,7 @@
           type="file"
           accept=".png, .jpg, .jpeg"
           id="file"
+          ref="file"
           name="file"
           @change="selectFile"
         />
@@ -36,7 +37,8 @@
 <script setup>
 import Button from '../Button.vue';
 import MainTitle from '../MainTitle.vue';
-import { ref, computed } from 'vue';
+import Axios from '@/api';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/authStore';
 import { usePostStore } from '@/stores/postStore';
@@ -47,23 +49,32 @@ authStore.getUserId();
 const { userId } = storeToRefs(authStore);
 // console.log(userId.value);
 const text = ref('');
-const imageUrl = ref('');
+const file = ref('');
 
 function selectFile(event) {
-  imageUrl.value = event.target.files[0];
+  file.value = event.target.file[0];
 }
 
-function createNewPost() {
+async function createNewPost() {
   const newPost = {
     userId: userId.value,
     text: text.value,
   };
 
-  if (imageUrl.value != '') {
-    newPost.imageUrl = imageUrl.value;
+  if (file.value != '') {
+    newPost.file = file.value;
   }
 
-  postStore.addNewPost(newPost);
+  try {
+    const res = await Axios.post('/api/posts/', newPost);
+    console.log(res);
+
+    // postStore.addNewPost(res.data);
+    postStore.getAllPosts();
+  } catch (error) {
+    console.log(error);
+  }
+
   text.value = '';
 }
 </script>

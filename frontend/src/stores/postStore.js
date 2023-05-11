@@ -10,30 +10,24 @@ export const usePostStore = defineStore({
   getters: {},
   actions: {
     async getAllPosts() {
-      this.$state.loading = true;
+      this.loading = true;
       try {
-        await Axios.get(`/api/posts/`).then((res) => {
-          this.$state.posts = res.data;
-        });
+        const res = await Axios.get(`/api/posts/`);
+        this.posts = res.data;
+        this.posts.reverse();
       } catch (error) {
         console.log(error);
       } finally {
-        this.$state.loading = false;
+        this.loading = false;
       }
-
-      this.$state.posts.reverse();
     },
 
-    async addNewPost(newPost) {
-      try {
-        await Axios.post('/api/posts/', newPost).then((res) =>
-          console.log(res)
-        );
-      } catch (error) {
-        console.log(error);
-      }
+    // addNewPost(post) {
+    //   this.posts.push(post);
+    // },
 
-      this.getAllPosts();
-    },
+    // deletePost(post) {
+    //   this.posts.splice(post, 1);
+    // },
   },
 });
