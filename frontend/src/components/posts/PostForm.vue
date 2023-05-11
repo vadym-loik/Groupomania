@@ -1,7 +1,9 @@
 <template>
   <div class="post-form">
     <form class="post-form__form" @submit.prevent="createNewPost">
-      <label class="post-form__label--title" for="postContent">New post</label>
+      <MainTitle class="post-form__label--title" for="postContent"
+        >New post</MainTitle
+      >
       <div class="post-form__wrapper">
         <input
           class="post-form__text"
@@ -33,6 +35,7 @@
 
 <script setup>
 import Button from '../Button.vue';
+import MainTitle from '../MainTitle.vue';
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/authStore';

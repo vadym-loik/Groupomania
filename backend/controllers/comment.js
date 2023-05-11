@@ -1,8 +1,9 @@
 const Comment = require('../models/Comment');
+const Post = require('../models/Post');
 const User = require('../models/User');
 
 //GET ALL COMMENTS BY POST
-exports.getAllComments = (req, res, next) => {
+exports.getAllCommentsOfPost = (req, res, next) => {
   try {
     Comment.findAll({
       where: {
@@ -12,6 +13,19 @@ exports.getAllComments = (req, res, next) => {
     })
       .then((comment) => res.status(200).json(comment))
       .catch((error) => res.status(400).json({ error }));
+  } catch {
+    (error) => res.status(500).json(error);
+  }
+};
+
+//GET ALL COMMENTS
+exports.getAllComments = (req, res, next) => {
+  try {
+    Comment.findAll()
+      .then((comment) => {
+        res.status(200).json(comment);
+      })
+      .catch((error) => res.status(400).json(error));
   } catch {
     (error) => res.status(500).json(error);
   }

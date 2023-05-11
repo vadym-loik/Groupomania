@@ -2,6 +2,7 @@
   <div class="comments">
     <input
       class="comments__content"
+      name="text"
       type="text"
       placeholder="Write your comment here"
       v-model.trim="text"
@@ -25,6 +26,8 @@ const commentStore = useCommentStore();
 
 const text = ref('');
 const { userId } = storeToRefs(authStore);
+const comments = commentStore.comments;
+// console.log(comments);
 
 const props = defineProps({
   post: {
@@ -47,10 +50,12 @@ async function addNewComment() {
     const res = await Axios.post('/api/comments/', newComment);
     console.log(res.data);
 
-    commentStore.addComment(res.data.postId, res.data);
+    commentStore.addComment(res.data);
   } catch (error) {
     console.log(error);
   }
+
+  text.value = '';
 }
 </script>
 

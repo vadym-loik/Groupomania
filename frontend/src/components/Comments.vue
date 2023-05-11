@@ -46,7 +46,7 @@ async function deleteComment() {
     console.log(error);
   }
 
-  commentStore.getComments();
+  commentStore.getAllComments();
 }
 </script>
 

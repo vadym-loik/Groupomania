@@ -27,8 +27,8 @@
     <CommentInput :post="post" />
     <Comment
       v-for="comment in commentStore.comments.filter(
-        (comment) => comment[0]?.postId === props.post.id
-      )[0]"
+        (comment) => comment.postId === props.post.id
+      )"
       :key="comment.id"
       :comment="comment"
     />
@@ -59,27 +59,19 @@ const props = defineProps({
     required: true,
   },
 });
-// console.log(props.post);
-
-const comments = ref([]);
-
-// GET STATE COMMENTS
-// const comments = computed(() => {
-//   // console.log(commentStore.comments);
-//   return commentStore.comments;
-// });
-// console.log(comments.value);
 
 // RENDER COMMENTS
 onMounted(async () => {
-  await commentStore.getComments(props.post.id);
-  comments.value = commentStore.comments;
-  console.log(comments.value);
+  await commentStore.getAllComments();
+  const fc = commentStore.comments.filter(
+    (comment) => comment.postId === props.post.id
+  );
+  console.log(fc);
 });
 
 // DELETE ONE POST
 async function deletePost() {
-  confirm('Are you sure that ypu want to delete this post?');
+  confirm('Are you sure that you want to delete this post?');
 
   try {
     await Axios.delete(`/api/posts/${props.post.id}`).then((res) =>
