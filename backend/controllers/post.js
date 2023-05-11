@@ -89,32 +89,25 @@ exports.modifyPost = (req, res, next) => {
 };
 
 //DELETE POST
-exports.deletePost = (req, res, next) => {
-  Post.findOne({ where: { id: req.params.id } })
-    .then((post) => {
-      if (!post) {
-        return res.status(404).json({ error: 'Post not found!' });
+exports.deletePost = (req, res) => {
+  try {
+    Post.findOne({ where: { id: req.params.id } }).then((post) => {
+      if (post.file) {
+        // if post.file is not null we delete the existing file
+        fs.unlink(`images/${post.file}`, (error) => {
+          if (error) throw err;
+        });
+      } else {
+        console.log('This post has no file to delete.');
       }
-
-      //verify that the person who wants to delete the post is the author of the post or the administrator
-      User.findOne({ where: { id: req.auth.userId } })
-        .then((user) => {
-          if (!user.isAdmin && req.auth.userId != post.userId) {
-            return res.status(401).json({ error: 'Deletion not allowed!' });
-          }
+      Post.destroy({ where: { id: req.params.id } })
+        .then((post) => {
+          console.log('Post deleted!');
+          res.status(200).json(post);
         })
-        .catch((error) => res.status(400).json({ error }));
-
-      const filename = post.imageUrl.split('/images/')[1];
-
-      //1st arg: file path, 2nd arg: the callback=what to do once the image is deleted
-      fs.unlink(`images/${filename}`, () => {
-        //we delete the post from the database by indicating his id
-        Post.destroy({ where: { id: req.params.id } })
-          .then(() => res.status(200).json({ message: 'Post deleted!' }))
-          .catch((error) => res.status(400).json({ error }));
-      });
-    })
-
-    .catch((error) => res.status(400).json({ error }));
+        .catch((error) => res.status(400).json(error));
+    });
+  } catch {
+    (error) => res.status(500).json(error);
+  }
 };

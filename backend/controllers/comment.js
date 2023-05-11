@@ -52,7 +52,7 @@ exports.deleteComment = (req, res, next) => {
     Comment.destroy({ where: { id: req.params.id } })
       .then(() => {
         console.log('Comment deleted!');
-        res.status(200);
+        res.status(200).json();
       })
       .catch((error) => res.status(400).json(error));
   } catch {
