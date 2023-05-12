@@ -12,7 +12,7 @@
       <i
         class="close fa-solid fa-xmark"
         v-if="props.comment.userId === currentUser"
-        @click="deleteComment"
+        @click.prevent="deleteComment"
       ></i>
     </div>
   </div>
@@ -23,12 +23,12 @@ import Axios from '../api';
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import { useCommentStore } from '../stores/commentStore';
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
 const commentStore = useCommentStore();
 const { userId } = storeToRefs(authStore);
 const currentUser = userId;
-// console.log(currentUser.value);
 
 const props = defineProps({
   comment: {
@@ -38,16 +38,22 @@ const props = defineProps({
 });
 
 async function deleteComment() {
+  // console.log(props.comment.id);
+  confirm('Do you want to delete this comment?');
+
   try {
-    await Axios.delete(`/api/comments/${props.comment.id}`).then((res) =>
-      console.log(res)
-    );
+    const res = await Axios.delete(`/api/comments/${props.comment.id}`);
+    console.log(res.data);
+
+    commentStore.deleteComment(res.data);
   } catch (error) {
     console.log(error);
   }
-
-  commentStore.getAllComments();
 }
+
+// onMounted(async () => {
+//   await commentStore.getAllComments();
+// });
 </script>
 
 <style lang="scss" scoped>
