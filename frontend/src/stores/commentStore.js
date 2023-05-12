@@ -11,26 +11,30 @@ export const useCommentStore = defineStore({
     async getAllComments() {
       try {
         const res = await Axios.get('/api/comments/');
-        this.$state.comments = res.data;
+        this.comments = res.data;
       } catch (error) {
         console.log(error);
       }
     },
 
-    //   async getAllCommentsOfPost(postId) {
-    //     // console.log(postId);
-    //     try {
-    //       const res = await Axios.get(`/api/comments/${postId}`);
-    //       this.$state.comments = [...this.$state.comments, res.data];
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-
-    //     // console.log(this.$state.comments);
-    //   },
-
     addComment(comment) {
-      this.$state.comments.push(comment);
+      this.comments.push(comment);
+    },
+
+    deleteComment(id) {
+      // console.log(this.comments);
+      const idToDelete = id;
+      // console.log(idToDelete);
+
+      const index = this.comments.findIndex(
+        (comment) => comment.id === idToDelete
+      );
+
+      console.log(index);
+
+      if (index !== -1) {
+        this.comments.splice(index, 1);
+      }
     },
   },
 });
