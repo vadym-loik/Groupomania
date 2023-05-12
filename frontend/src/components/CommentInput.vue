@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import Button from './Button.vue';
 import Axios from '../api';
@@ -26,8 +26,6 @@ const commentStore = useCommentStore();
 
 const text = ref('');
 const { userId } = storeToRefs(authStore);
-const comments = commentStore.comments;
-// console.log(comments);
 
 const props = defineProps({
   post: {
@@ -42,9 +40,6 @@ async function addNewComment() {
     userId: userId.value,
     postId: props.post.id,
   };
-  // console.log(props.post.id);
-  // console.log(userId.value);
-  // console.log(text.value);
 
   try {
     const res = await Axios.post('/api/comments/', newComment);
