@@ -15,17 +15,13 @@
         />
       </div>
       <div class="post-form__wrap">
-        <label class="post-form__add--text" for="file"
-          >Add image (png, jpg, jpeg)</label
-        >
+        <label class="post-form__add--text" for="file">Add image </label>
         <input
           class="post-form__choose"
           type="file"
-          accept=".png, .jpg, .jpeg"
           id="file"
-          ref="file"
           name="file"
-          @change="selectFile"
+          @change="onFileChange"
         />
 
         <Button type="submit" class="post-form__button">Create post</Button>
@@ -49,30 +45,47 @@ authStore.getUserId();
 const { userId } = storeToRefs(authStore);
 // console.log(userId.value);
 const text = ref('');
-const file = ref('');
+const selectedFile = ref(null);
 
-function selectFile(event) {
-  file.value = event.target.file[0];
+function onFileChange(event) {
+  selectedFile.value = event.target.files[0];
+  console.log(selectedFile.value);
 }
 
 async function createNewPost() {
-  const newPost = {
-    userId: userId.value,
-    text: text.value,
-  };
+  if (selectedFile.value === null) {
+    const newPost = {
+      text: text.value,
+      userId: userId.value,
+    };
 
-  if (file.value != '') {
-    newPost.file = file.value;
-  }
+    try {
+      const res = await Axios.post('/api/posts/', newPost);
+      console.log(res);
 
-  try {
-    const res = await Axios.post('/api/posts/', newPost);
-    console.log(res);
+      postStore.getAllPosts();
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    debugger;
+    const formData = new FormData();
+    // formData.append('file', selectedFile.value);
+    const newPost = {
+      text: text.value,
+      userId: userId.value,
+      imageUrl: selectedFile.value,
+    };
+    formData.append('newPost', JSON.stringify(newPost));
 
-    // postStore.addNewPost(res.data);
-    postStore.getAllPosts();
-  } catch (error) {
-    console.log(error);
+    try {
+      const res = await Axios.post('/api/posts/', newPost);
+      console.log(res);
+
+      postStore.getAllPosts();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   text.value = '';
