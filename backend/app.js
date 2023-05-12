@@ -32,11 +32,11 @@ app.use((req, res, next) => {
 // for parsing json objects
 app.use(express.json());
 
+// for management of image files
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 app.use('/api/auth', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
-
-// for management of image files
-app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
