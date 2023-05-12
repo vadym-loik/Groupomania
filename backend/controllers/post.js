@@ -2,47 +2,6 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const fs = require('fs');
 
-//CREATE A POST
-exports.createPost = (req, res, next) => {
-  if (req.file) {
-    req.body.file = req.file.filename;
-  } else {
-    req.body.file = null;
-  }
-  try {
-    console.log(req.body);
-    let { text, file, userId } = req.body;
-
-    Post.create({ text, file, userId })
-      .then((newPost) => {
-        console.log('Post created!');
-        res.status(201).json(newPost);
-      })
-      .catch((error) => res.status(400).json(error));
-  } catch {
-    (error) => res.status(500).json(error);
-  }
-};
-
-//GET ONE POST
-exports.getOnePost = (req, res, next) => {
-  Post.findOne({
-    where: { id: req.params.id },
-    include: {
-      model: User,
-    },
-  })
-    .then((post) => {
-      //if the post does not exist
-      if (post === null) {
-        return res.status(404).json({ message: 'This post does not exist!' });
-      } else {
-        res.status(200).json(post);
-      }
-    })
-    .catch((error) => res.status(404).json({ error }));
-};
-
 //GET ALL POSTS
 exports.getAllPosts = (req, res, next) => {
   try {
@@ -56,37 +15,88 @@ exports.getAllPosts = (req, res, next) => {
   }
 };
 
-//MODIFY POST
-exports.modifyPost = (req, res, next) => {
-  req.file
-    ? (req.body.file = req.file.filename)
-    : console.log('we keep the same picture'); //we check if the user has uploaded a new photo
+//CREATE A POST
+// exports.createPost = (req, res, next) => {
+//   if (req.file) {
+//     req.body.file = req.file.filename;
+//   } else {
+//     req.body.file = null;
+//   }
+//   try {
+//     console.log(req.body);
+//     let { text, file, userId } = req.body;
+
+//     Post.create({ text, file, userId })
+//       .then((newPost) => {
+//         console.log('Post created!');
+//         res.status(201).json(newPost);
+//       })
+//       .catch((error) => res.status(400).json(error));
+//   } catch {
+//     (error) => res.status(500).json(error);
+//   }
+// };
+
+exports.createPost = (req, res) => {
+  let post, text, userId;
+  let imageUrl = null;
   if (req.file) {
-    //remove the old image from the post
-    Post.findOne({ where: { id: req.params.id } })
-      .then((post) => {
-        if (post.file) {
-          //if post.file is not null we delete the existing file
-          fs.unlink(`images/${post.file}`, (error) => {
-            if (error) throw err;
-          });
-        } else {
-          console.log('the image to replace is NULL');
-        }
-      })
-      .catch((error) => res.status(400).json(error));
+    const parsedPost = JSON.parse(req.body.post);
+    imageUrl = req.protocol + '://' + req.get('host');
+    text = parsedPost.text;
+    userId = parsedPost.userId;
+    imageUrl += '/images/' + req.file.filename;
+  } else {
+    text = req.body.text;
+    userId = req.body.userId;
   }
-  try {
-    Post.update(req.body, { where: { id: req.params.id } })
-      .then(() => {
-        let updatedPost = { ...req.body };
-        res.status(201).json(updatedPost);
-      })
-      .catch((error) => res.status(400).json(error));
-  } catch {
-    (error) => res.status(500).json(error);
-  }
+  post = new Post({
+    text,
+    imageUrl,
+    // read: 0,
+    // usersRead: [],
+    userId,
+  });
+  post
+    .save()
+    .then(() => {
+      res.status(201).json({
+        message: 'Post successfully added!',
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        error: error.message || error,
+      });
+    });
 };
+
+// exports.readPost = (req, res) => {
+//   const postId = req.params.id;
+//   Post.findOne({ where: { id: postId } }).then((post) => {
+//     const user = req.body.userId;
+//     if (post.usersRead.includes(user)) {
+//       return res.status(304).json({
+//         message: 'User already read the post.',
+//       });
+//     } else {
+//       post
+//         .update({ usersRead: [...post.usersRead, user] })
+//         .then((post) => {
+//           post.save().then(() => {
+//             res.status(200).json({
+//               message: 'User successfully added.',
+//             });
+//           });
+//         })
+//         .catch((error) => {
+//           res.status(500).json({
+//             error: error.message || error,
+//           });
+//         });
+//     }
+//   });
+// };
 
 //DELETE POST
 exports.deletePost = (req, res) => {
