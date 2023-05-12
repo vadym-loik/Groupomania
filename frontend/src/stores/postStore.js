@@ -14,12 +14,13 @@ export const usePostStore = defineStore({
       try {
         const res = await Axios.get(`/api/posts/`);
         this.posts = res.data;
-        this.posts.reverse();
       } catch (error) {
         console.log(error);
       } finally {
         this.loading = false;
       }
+
+      this.posts.reverse();
     },
 
     // addNewPost(post) {
