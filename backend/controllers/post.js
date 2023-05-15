@@ -1,3 +1,4 @@
+const { log } = require('console');
 const Post = require('../models/Post');
 const User = require('../models/User');
 const fs = require('fs');
@@ -16,32 +17,15 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 //CREATE A POST
-// exports.createPost = (req, res, next) => {
-//   if (req.file) {
-//     req.body.file = req.file.filename;
-//   } else {
-//     req.body.file = null;
-//   }
-//   try {
-//     console.log(req.body);
-//     let { text, file, userId } = req.body;
-
-//     Post.create({ text, file, userId })
-//       .then((newPost) => {
-//         console.log('Post created!');
-//         res.status(201).json(newPost);
-//       })
-//       .catch((error) => res.status(400).json(error));
-//   } catch {
-//     (error) => res.status(500).json(error);
-//   }
-// };
 
 exports.createPost = (req, res) => {
   let post, text, userId;
   let imageUrl = null;
+
   if (req.file) {
+    debugger;
     const parsedPost = JSON.parse(req.body.post);
+    console.log(parsedPost);
     imageUrl = req.protocol + '://' + req.get('host');
     text = parsedPost.text;
     userId = parsedPost.userId;
@@ -50,6 +34,7 @@ exports.createPost = (req, res) => {
     text = req.body.text;
     userId = req.body.userId;
   }
+
   post = new Post({
     text,
     imageUrl,
@@ -71,31 +56,24 @@ exports.createPost = (req, res) => {
     });
 };
 
-// exports.readPost = (req, res) => {
-//   const postId = req.params.id;
-//   Post.findOne({ where: { id: postId } }).then((post) => {
-//     const user = req.body.userId;
-//     if (post.usersRead.includes(user)) {
-//       return res.status(304).json({
-//         message: 'User already read the post.',
-//       });
-//     } else {
-//       post
-//         .update({ usersRead: [...post.usersRead, user] })
-//         .then((post) => {
-//           post.save().then(() => {
-//             res.status(200).json({
-//               message: 'User successfully added.',
-//             });
-//           });
-//         })
-//         .catch((error) => {
-//           res.status(500).json({
-//             error: error.message || error,
-//           });
-//         });
-//     }
-//   });
+// exports.createPost = (req, res) => {
+//   if (req.file) {
+//     req.body.file = req.file.filename;
+//   } else {
+//     req.body.file = null;
+//   }
+//   try {
+//     console.log(req.body);
+//     let { text, file, userId } = req.body;
+//     Post.create({ text, file, userId })
+//       .then((newPost) => {
+//         console.log('New post added!');
+//         res.status(201).json(newPost);
+//       })
+//       .catch((error) => res.status(400).json(error));
+//   } catch {
+//     (error) => res.status(500).json(error);
+//   }
 // };
 
 //DELETE POST

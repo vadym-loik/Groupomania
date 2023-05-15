@@ -45,19 +45,21 @@ authStore.getUserId();
 const { userId } = storeToRefs(authStore);
 // console.log(userId.value);
 const text = ref('');
-const selectedFile = ref(null);
+const imageUrl = ref(null);
 
 function onFileChange(event) {
-  selectedFile.value = event.target.files[0];
-  console.log(selectedFile.value);
+  imageUrl.value = event.target.files[0];
+  console.log(imageUrl.value);
 }
 
 async function createNewPost() {
-  if (selectedFile.value === null) {
+  if (imageUrl.value === null) {
     const newPost = {
       text: text.value,
       userId: userId.value,
     };
+
+    console.log(newPost);
 
     try {
       const res = await Axios.post('/api/posts/', newPost);
@@ -68,18 +70,19 @@ async function createNewPost() {
       console.log(error);
     }
   } else {
-    debugger;
-    const formData = new FormData();
-    // formData.append('file', selectedFile.value);
-    const newPost = {
-      text: text.value,
-      userId: userId.value,
-      imageUrl: selectedFile.value,
-    };
-    formData.append('newPost', JSON.stringify(newPost));
+    let formData = new FormData();
+
+    formData.append('file', imageUrl.value);
+    formData.append('text', text.value);
+    formData.append('userId', userId.value);
+    // const newPost = {
+    //   text: text.value,
+    //   userId: userId.value,
+    //   imageUrl: imageUrl.value,
+    // };
 
     try {
-      const res = await Axios.post('/api/posts/', newPost);
+      const res = await Axios.post('/api/posts/', formData);
       console.log(res);
 
       postStore.getAllPosts();
@@ -89,6 +92,7 @@ async function createNewPost() {
   }
 
   text.value = '';
+  imageUrl.value = null;
 }
 </script>
 
