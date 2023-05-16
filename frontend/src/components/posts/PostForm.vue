@@ -38,7 +38,6 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/authStore';
 import { usePostStore } from '@/stores/postStore';
-import { formToJSON } from 'axios';
 
 const postStore = usePostStore();
 const authStore = useAuthStore();
@@ -56,7 +55,7 @@ function onFileChange(event) {
 async function createNewPost() {
   if (!imageUrl.value) {
     try {
-      const post = JSON.stringify({ text: text.value, userId: userId.value });
+      const post = { text: text.value, userId: userId.value };
 
       const res = await Axios.post('/api/posts/', post);
       console.log(res);
@@ -68,8 +67,6 @@ async function createNewPost() {
   } else {
     const formData = new FormData();
     formData.append('imageUrl', imageUrl.value);
-    // formData.append('text', text.value);
-    // formData.append('userId', userId.value);
 
     const post = { text: text.value, userId: userId.value };
     formData.append('post', JSON.stringify(post));
@@ -85,7 +82,7 @@ async function createNewPost() {
   }
 
   text.value = '';
-  imageUrl.value = '';
+  imageUrl.value = null;
 }
 </script>
 
