@@ -68,16 +68,15 @@ async function createNewPost() {
   } else {
     const formData = new FormData();
     formData.append('imageUrl', imageUrl.value);
-    formData.append('text', text.value);
-    formData.append('userId', userId.value);
+    // formData.append('text', text.value);
+    // formData.append('userId', userId.value);
 
-    // const post = { text: text.value, userId: userId.value };
-    // formData.append('post', JSON.stringify(post));
+    const post = { text: text.value, userId: userId.value };
+    formData.append('post', JSON.stringify(post));
 
     try {
-      const res = await Axios.post('/api/posts/', formData).then(() => {
-        console.log(res.data.files);
-      });
+      const res = await Axios.post('/api/posts/', formData);
+      console.log(res);
 
       postStore.getAllPosts();
     } catch (error) {
@@ -86,7 +85,7 @@ async function createNewPost() {
   }
 
   text.value = '';
-  imageUrl.value = null;
+  imageUrl.value = '';
 }
 </script>
 

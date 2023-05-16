@@ -22,9 +22,7 @@ exports.createPost = (req, res) => {
   let imageUrl = null;
 
   if (req.file) {
-    const parsed = JSON.parse(req.body);
-    console.log(parsed);
-    return false;
+    const parsed = JSON.parse(req.body.post);
     imageUrl = req.protocol + '://' + req.get('host');
     text = parsed.text;
     userId = parsed.userId;
