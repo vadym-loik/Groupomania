@@ -38,6 +38,7 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/authStore';
 import { usePostStore } from '@/stores/postStore';
+import { formToJSON } from 'axios';
 
 const postStore = usePostStore();
 const authStore = useAuthStore();
@@ -53,16 +54,11 @@ function onFileChange(event) {
 }
 
 async function createNewPost() {
-  if (imageUrl.value === null) {
-    const newPost = {
-      text: text.value,
-      userId: userId.value,
-    };
-
-    console.log(newPost);
-
+  if (!imageUrl.value) {
     try {
-      const res = await Axios.post('/api/posts/', newPost);
+      const post = JSON.stringify({ text: text.value, userId: userId.value });
+
+      const res = await Axios.post('/api/posts/', post);
       console.log(res);
 
       postStore.getAllPosts();
@@ -70,20 +66,18 @@ async function createNewPost() {
       console.log(error);
     }
   } else {
-    let formData = new FormData();
-
-    formData.append('file', imageUrl.value);
+    const formData = new FormData();
+    formData.append('imageUrl', imageUrl.value);
     formData.append('text', text.value);
     formData.append('userId', userId.value);
-    // const newPost = {
-    //   text: text.value,
-    //   userId: userId.value,
-    //   imageUrl: imageUrl.value,
-    // };
+
+    // const post = { text: text.value, userId: userId.value };
+    // formData.append('post', JSON.stringify(post));
 
     try {
-      const res = await Axios.post('/api/posts/', formData);
-      console.log(res);
+      const res = await Axios.post('/api/posts/', formData).then(() => {
+        console.log(res.data.files);
+      });
 
       postStore.getAllPosts();
     } catch (error) {

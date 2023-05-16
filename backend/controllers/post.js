@@ -1,4 +1,3 @@
-const { log } = require('console');
 const Post = require('../models/Post');
 const User = require('../models/User');
 const fs = require('fs');
@@ -23,12 +22,12 @@ exports.createPost = (req, res) => {
   let imageUrl = null;
 
   if (req.file) {
-    debugger;
-    const parsedPost = JSON.parse(req.body.post);
-    console.log(parsedPost);
+    const parsed = JSON.parse(req.body);
+    console.log(parsed);
+    return false;
     imageUrl = req.protocol + '://' + req.get('host');
-    text = parsedPost.text;
-    userId = parsedPost.userId;
+    text = parsed.text;
+    userId = parsed.userId;
     imageUrl += '/images/' + req.file.filename;
   } else {
     text = req.body.text;
@@ -42,8 +41,8 @@ exports.createPost = (req, res) => {
     // usersRead: [],
     userId,
   });
-  post
-    .save()
+
+  Post.create(post)
     .then(() => {
       res.status(201).json({
         message: 'Post successfully added!',
