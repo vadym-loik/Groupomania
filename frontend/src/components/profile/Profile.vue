@@ -1,7 +1,14 @@
 <template>
   <div class="profile" v-if="showProfile">
     <img
-      :src="'../src/assets/icons/avatar_default.png' || user.imageUrl"
+      v-if="user.imageUrl"
+      :src="user.imageUrl"
+      class="profile-picture"
+      alt="Profile Picture"
+    />
+    <img
+      v-else
+      src="../../images/avatar_default.png"
       class="profile-picture"
       alt="Profile Picture"
     />
@@ -35,7 +42,7 @@
         ref="file"
         name="file"
         id="file"
-        v-on:change="imageUrl"
+        @change="onFileChange"
       />
 
       <label for="name">Change name :</label>
@@ -87,6 +94,12 @@ async function getOneUser(id) {
   await Axios.get(`/api/auth/profile/${id}`).then((res) => {
     user.value = res.data.user;
   });
+}
+
+// get avatar
+function onFileChange(event) {
+  imageUrl.value = event.target.files[0];
+  console.log(imageUrl.value);
 }
 
 //update user info
