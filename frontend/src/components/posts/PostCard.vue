@@ -16,13 +16,12 @@
     <article class="post-text">{{ post.text }}</article>
     <div class="file-container">
       <img
-        v-if="post.imageUrl != null"
+        v-if="post.imageUrl"
         class="post-img"
         :src="post.imageUrl"
-        alt="post image"
+        alt="postImage"
       />
     </div>
-    <div class="post-like"></div>
     <MainTitle>Comments</MainTitle>
     <CommentInput :post="post" />
     <Comment
@@ -59,7 +58,7 @@ const props = defineProps({
     required: true,
   },
 });
-// console.log(props.post.id);
+// console.log(props.post);
 
 // RENDER COMMENTS
 onMounted(async () => {
@@ -132,7 +131,7 @@ async function deletePost() {
   }
 
   &-img {
-    max-width: 380px;
+    max-width: 500px;
   }
 }
 
