@@ -16,62 +16,26 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 //CREATE A POST
-
 exports.createPost = (req, res) => {
-  let post, text, userId;
-  let imageUrl = null;
+  const newPost = {
+    text: req.body.text,
+    userId: req.body.userId,
+    imageUrl: req.file
+      ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      : null,
+  };
 
-  if (req.file) {
-    const parsed = JSON.parse(req.body.post);
-    imageUrl = req.protocol + '://' + req.get('host');
-    text = parsed.text;
-    userId = parsed.userId;
-    imageUrl += '/images/' + req.file.filename;
-  } else {
-    text = req.body.text;
-    userId = req.body.userId;
+  try {
+    Post.create(newPost)
+      .then((newPost) => {
+        console.log('New post added!');
+        res.status(201).json(newPost);
+      })
+      .catch((error) => res.status(400).json(error));
+  } catch {
+    (error) => res.status(500).json(error);
   }
-
-  post = new Post({
-    text,
-    imageUrl,
-    // read: 0,
-    // usersRead: [],
-    userId,
-  });
-
-  Post.create(post)
-    .then(() => {
-      res.status(201).json({
-        message: 'Post successfully added!',
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        error: error.message || error,
-      });
-    });
 };
-
-// exports.createPost = (req, res) => {
-//   if (req.file) {
-//     req.body.file = req.file.filename;
-//   } else {
-//     req.body.file = null;
-//   }
-//   try {
-//     console.log(req.body);
-//     let { text, file, userId } = req.body;
-//     Post.create({ text, file, userId })
-//       .then((newPost) => {
-//         console.log('New post added!');
-//         res.status(201).json(newPost);
-//       })
-//       .catch((error) => res.status(400).json(error));
-//   } catch {
-//     (error) => res.status(500).json(error);
-//   }
-// };
 
 //DELETE POST
 exports.deletePost = (req, res) => {
@@ -80,7 +44,7 @@ exports.deletePost = (req, res) => {
       if (post.file) {
         // if post.file is not null we delete the existing file
         fs.unlink(`images/${post.file}`, (error) => {
-          if (error) throw err;
+          if (error) throw error;
         });
       } else {
         console.log('This post has no file to delete.');
