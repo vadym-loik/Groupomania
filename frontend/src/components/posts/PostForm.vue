@@ -18,6 +18,7 @@
         <label class="post-form__add--text" for="file">Add image </label>
         <input
           class="post-form__choose"
+          ref="inputFile"
           type="file"
           id="file"
           name="file"
@@ -45,15 +46,25 @@ authStore.getUserId();
 const { userId } = storeToRefs(authStore);
 // console.log(userId.value);
 const text = ref('');
-const imageUrl = ref(null);
+const inputFile = ref(null);
+const file = ref(null);
 
 function onFileChange(event) {
-  imageUrl.value = event.target.files[0];
-  console.log(imageUrl.value);
+  // file.value = event.target.files[0];
+
+  file.value = inputFile.value.files[0];
+  let input = event.target;
+  if (input.files) {
+    let reader = new FileReader();
+    reader.readAsDataURL(input.files[0]);
+    console.log('line 60', reader);
+  }
+
+  console.log('line 62', file.value);
 }
 
 async function createNewPost() {
-  if (!imageUrl.value) {
+  if (!file.value) {
     try {
       const post = { text: text.value, userId: userId.value };
 
@@ -66,10 +77,9 @@ async function createNewPost() {
     }
   } else {
     const formData = new FormData();
-    formData.append('imageUrl', imageUrl.value);
-
-    const post = { text: text.value, userId: userId.value };
-    formData.append('post', JSON.stringify(post));
+    formData.append('file', file.value);
+    formData.append('text', text.value);
+    formData.append('userId', userId.value);
 
     try {
       const res = await Axios.post('/api/posts/', formData);
@@ -82,7 +92,7 @@ async function createNewPost() {
   }
 
   text.value = '';
-  imageUrl.value = null;
+  inputFile.value = null;
 }
 </script>
 
