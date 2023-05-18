@@ -23,7 +23,6 @@ import Axios from '../api';
 import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import { useCommentStore } from '../stores/commentStore';
-import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
 const commentStore = useCommentStore();
@@ -50,10 +49,6 @@ async function deleteComment() {
     console.log(error);
   }
 }
-
-// onMounted(async () => {
-//   await commentStore.getAllComments();
-// });
 </script>
 
 <style lang="scss" scoped>
