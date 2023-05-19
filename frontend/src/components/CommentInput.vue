@@ -1,16 +1,17 @@
 <template>
-  <div class="comments">
+  <form class="comments">
     <input
       class="comments__content"
       name="text"
       type="text"
       placeholder="Write your comment here"
       v-model.trim="text"
+      required
     />
     <Button class="comments__btn" @click.prevent="addNewComment"
       >Add comment</Button
     >
-  </div>
+  </form>
 </template>
 
 <script setup>
@@ -35,19 +36,22 @@ const props = defineProps({
 });
 
 async function addNewComment() {
-  const newComment = {
-    text: text.value,
-    userId: userId.value,
-    postId: props.post.id,
-  };
+  if (text.value) {
+    const newComment = {
+      text: text.value,
+      userId: userId.value,
+      postId: props.post.id,
+    };
 
-  try {
-    const res = await Axios.post('/api/comments/', newComment);
-    console.log(res.data);
+    try {
+      const res = await Axios.post('/api/comments/', newComment);
+      console.log(res.data);
 
-    commentStore.addComment(res.data);
-  } catch (error) {
-    console.log(error);
+      commentStore.addComment(res.data);
+      commentStore.getAllComments();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   text.value = '';
