@@ -53,12 +53,12 @@ function onFileChange(event) {
   // file.value = event.target.files[0];
 
   file.value = inputFile.value.files[0];
-  let input = event.target;
-  if (input.files) {
-    let reader = new FileReader();
-    reader.readAsDataURL(input.files[0]);
-    console.log('line 60', reader);
-  }
+  // let input = event.target;
+  // if (input.files) {
+  //   let reader = new FileReader();
+  //   reader.readAsDataURL(input.files[0]);
+  //   console.log('line 60', reader);
+  // }
 
   console.log('line 62', file.value);
 }
@@ -82,7 +82,9 @@ async function createNewPost() {
     formData.append('userId', userId.value);
 
     try {
-      const res = await Axios.post('/api/posts/', formData);
+      const res = await Axios.post('/api/posts/', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       console.log(res);
 
       postStore.getAllPosts();
