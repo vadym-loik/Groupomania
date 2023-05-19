@@ -34,12 +34,20 @@
         >Change profile picture :</label
       >
       <img
-        src="@/assets/icons/avatar_default.png"
-        class="edit-profile__avatar"
+        v-if="user.imageUrl"
+        :src="user.imageUrl"
+        class="profile-picture"
+        alt="Profile Picture"
+      />
+      <img
+        v-else
+        src="../../images/avatar_default.png"
+        class="profile-picture"
+        alt="Profile Picture"
       />
       <input
         type="file"
-        ref="file"
+        ref="inputFile"
         name="file"
         id="file"
         @change="onFileChange"
@@ -82,12 +90,13 @@ import { useAuthStore } from '@/stores/authStore';
 const authStore = useAuthStore();
 const showProfile = ref(true);
 const editProfile = ref(false);
-const user = ref([]);
+const user = ref({});
 
 const email = ref('');
 const name = ref('');
 const password = ref('');
-const imageUrl = ref('');
+const inputFile = ref(null);
+const file = ref(null);
 
 //get one user by id
 async function getOneUser(id) {
@@ -96,44 +105,58 @@ async function getOneUser(id) {
   });
 }
 
+onMounted(() => {
+  authStore.getUserId();
+  getOneUser(authStore.userId);
+});
+
 // get avatar
 function onFileChange(event) {
-  imageUrl.value = event.target.files[0];
-  console.log(imageUrl.value);
+  file.value = inputFile.value.files[0];
+  console.log(file.value);
 }
 
 //update user info
 const saveNewInfo = async (id) => {
-  const newInfo = {};
+  const formData = new FormData();
 
-  if (name.value != '') {
-    newInfo.name = name.value;
+  if (name.value !== '') {
+    formData.append('name', name.value);
   }
-  if (email.value != '') {
-    newInfo.email = email.value;
+  if (email.value !== '') {
+    formData.append('email', email.value);
   }
-  if (password.value != '') {
-    newInfo.password = password.value;
+  if (password.value !== '') {
+    formData.append('password', password.value);
   }
-  if (imageUrl.value != '') {
-    newInfo.imageUrl = imageUrl.value;
+  if (file.value !== null) {
+    formData.append('file', file.value);
   }
 
-  await Axios.put(`/api/auth/profile/${user.value.id}`, newInfo).then((res) => {
-    console.log(res.data);
-    // getOneUser(user.value.id);
-  });
+  try {
+    const res = await Axios.put(
+      `/api/auth/profile/${authStore.userId}`,
+      formData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+    );
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
 
-  user.value = newInfo;
+  getOneUser(authStore.userId);
 };
 
 //delete user profile
 async function deleteProfile() {
   confirm('Delete your profile?');
-  await Axios.delete(`/api/auth/profile/${user.value.id}`).then((res) =>
+  await Axios.delete(`/api/auth/profile/${authStore.userId}`).then((res) =>
     console.log(res)
   );
   localStorage.removeItem('auth');
+  authStore.logout();
   router.push('/registration');
 }
 
@@ -142,11 +165,6 @@ function toggleProfile() {
   showProfile.value = !showProfile.value;
   editProfile.value = !editProfile.value;
 }
-
-onMounted(() => {
-  authStore.getUserId;
-  getOneUser(authStore.$state.userId);
-});
 </script>
 
 <style lang="scss" scoped>

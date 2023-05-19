@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const User = require('../models/User');
+const path = require('path');
 
 // SIGNUP
 exports.signup = (req, res, next) => {
@@ -89,26 +90,6 @@ exports.getOneUser = (req, res, next) => {
 
 //MODIFY USER PROFILE
 exports.modifyUser = (req, res, next) => {
-  req.file
-    ? (req.body.profile = req.file.filename)
-    : console.log('we keep the same picture'); //we check if the user has uploaded a new photo
-  if (req.file) {
-    //remove the old profile photo
-    User.findOne({ where: { id: req.params.id } })
-      .then((user) => {
-        if (user.profile !== 'avatar_default.png') {
-          //if the profile picture is not the default one, you can delete it
-          fs.unlink(`images/${user.profile}`, (error) => {
-            if (error) throw err;
-          });
-        } else {
-          console.log(
-            'This file cannot be deleted because it is the default image.'
-          );
-        }
-      })
-      .catch((error) => res.status(400).json(error));
-  }
   if (req.body.password) {
     //if the password has been modified, the hash is saved
     bcrypt
@@ -123,10 +104,28 @@ exports.modifyUser = (req, res, next) => {
       })
       .catch((error) => res.status(500).json(error));
   } else {
-    //the password has not been changed so we can save our data directly
-    User.update(req.body, { where: { id: req.params.id } })
-      .then(() => res.status(201).json({ message: 'Updated profile.' }))
-      .catch((error) => res.status(400).json(error));
+    const userId = req.params.id;
+    const updatedProfile = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      imageUrl: req.file
+        ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        : null,
+    };
+
+    User.update(updatedProfile, { where: { id: userId } })
+      .then((result) => {
+        res.status(200).json({
+          message: 'Profile updated successfully',
+          newProfileInfo: updatedProfile,
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: 'Something went wrong',
+        });
+      });
   }
 };
 
@@ -143,13 +142,25 @@ exports.getAllUsers = (req, res, next) => {
 
 // DELETE USER
 exports.deleteUser = (req, res, next) => {
-  console.log('User id to delete: ', req.params.id);
   try {
-    User.destroy({ where: { id: req.params.id } })
-      .then(() => {
-        res.status(200).json({ message: 'User deleted!' });
-      })
-      .catch((error) => res.status(400).json(error));
+    User.findOne({ where: { id: req.params.id } }).then((user) => {
+      const filename = path.basename(`/backend/images/${user.imageUrl}`);
+      console.log('line 44', filename);
+
+      if (filename) {
+        // if filename is not null we delete the existing file
+        fs.unlink(`images/${filename}`, (error) => {
+          if (error) throw error;
+        });
+      } else {
+        console.log('This post has no file to delete.');
+      }
+      User.destroy({ where: { id: req.params.id } })
+        .then(() => {
+          res.status(200).json({ message: 'User deleted!' });
+        })
+        .catch((error) => res.status(400).json(error));
+    });
   } catch {
     (error) => res.status(500).json(error);
   }

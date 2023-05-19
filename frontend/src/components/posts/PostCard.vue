@@ -2,9 +2,16 @@
   <div class="post">
     <div class="user-info">
       <img
+        v-if="post.user.imageUrl"
+        :src="post.user.imageUrl"
         class="post-avatar"
-        src="../../assets/icons/avatar_default.png"
-        alt="avatar"
+        alt="Profile Picture"
+      />
+      <img
+        v-else
+        src="../../images/avatar_default.png"
+        class="post-avatar"
+        alt="Profile Picture"
       />
       <MainTitle class="user-name">{{ post.user.name }}</MainTitle>
       <i

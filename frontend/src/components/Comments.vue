@@ -1,10 +1,17 @@
 <template>
   <div class="comment">
-    <img
-      src="@/assets/icons/avatar_default.png"
+    <!-- <img
+      v-if="imageUrl"
+      :src="imageUrl"
       class="comment__avatar"
-      alt="User avatar"
+      alt="Profile Picture"
     />
+    <img
+      v-else
+      src="../../src/images/avatar_default.png"
+      class="comment__avatar"
+      alt="Profile Picture"
+    /> -->
     <div class="comment__wrap">
       <p class="comment__text">
         {{ comment.text }}
@@ -61,6 +68,11 @@ async function deleteComment() {
   margin-bottom: 10px;
 
   &__avatar {
+    vertical-align: middle;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+
     margin-right: 10px;
   }
 

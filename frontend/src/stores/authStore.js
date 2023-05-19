@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
 
       const token = res.data.token;
       localStorage.setItem('auth', token);
-      this.$state.token = token;
+      this.token = token;
       alert('User was created successfully!');
       router.push('/');
 
@@ -47,14 +47,14 @@ export const useAuthStore = defineStore('auth', {
 
       const token = res.data.token;
       localStorage.setItem('auth', token);
-      this.$state.token = token;
+      this.token = token;
       router.push('/');
     },
 
     // LOGOUT
     logout() {
       // perform logout logic, e.g. clear the user session
-      this.$state.token = null;
+      this.token = null;
 
       // Remove login state from local storage
       localStorage.removeItem('auth');

@@ -1,6 +1,7 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const fs = require('fs');
+const path = require('path');
 
 //GET ALL POSTS
 exports.getAllPosts = (req, res, next) => {
@@ -41,9 +42,12 @@ exports.createPost = (req, res) => {
 exports.deletePost = (req, res) => {
   try {
     Post.findOne({ where: { id: req.params.id } }).then((post) => {
-      if (post.file) {
-        // if post.file is not null we delete the existing file
-        fs.unlink(`images/${post.file}`, (error) => {
+      const filename = path.basename(`/backend/images/${post.imageUrl}`);
+      console.log('line 44', filename);
+
+      if (filename) {
+        // if filename is not null we delete the existing file
+        fs.unlink(`images/${filename}`, (error) => {
           if (error) throw error;
         });
       } else {

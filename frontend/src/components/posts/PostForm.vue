@@ -7,6 +7,7 @@
       <div class="post-form__wrapper">
         <input
           class="post-form__text"
+          autocomplete="text"
           type="text"
           name="text"
           placeholder="Write your text here"
