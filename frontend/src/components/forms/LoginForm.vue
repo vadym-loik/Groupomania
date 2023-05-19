@@ -5,22 +5,33 @@
       <div class="login__input--wrapper">
         <input
           class="login__input"
+          autocomplete="email"
+          name="email"
           type="email"
           placeholder="Email"
           v-model.trim="v$.userEmail.$model"
         />
-        <span class="login__input--error" v-if="v$.userEmail.$error">
+        <span
+          for="email"
+          class="login__input--error"
+          v-if="v$.userEmail.$error"
+        >
           {{ v$.userEmail.$errors[0].$message }}</span
         >
       </div>
       <div class="login__input--wrapper">
         <input
           class="login__input"
+          name="password"
           type="password"
           placeholder="Password"
           v-model.trim="v$.password.$model"
         />
-        <span class="login__input--error" v-if="v$.password.$error">
+        <span
+          for="password"
+          class="login__input--error"
+          v-if="v$.password.$error"
+        >
           {{ v$.password.$errors[0].$message }}</span
         >
       </div>
