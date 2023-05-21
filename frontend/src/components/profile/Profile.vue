@@ -8,7 +8,7 @@
     />
     <img
       v-else
-      src="../../images/avatar_default.png"
+      src="../../../src/images/avatar_default.png"
       class="profile-picture"
       alt="Profile Picture"
     />
@@ -41,7 +41,7 @@
       />
       <img
         v-else
-        src="../../images/avatar_default.png"
+        src="../../../src/images/avatar_default.png"
         class="profile-picture"
         alt="Profile Picture"
       />
@@ -129,7 +129,9 @@ const saveNewInfo = async (id) => {
   if (password.value !== '') {
     formData.append('password', password.value);
   }
+
   if (file.value !== null) {
+    console.log(file.value);
     formData.append('file', file.value);
   }
 

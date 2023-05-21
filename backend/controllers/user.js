@@ -105,14 +105,18 @@ exports.modifyUser = (req, res, next) => {
       .catch((error) => res.status(500).json(error));
   } else {
     const userId = req.params.id;
+
     const updatedProfile = {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      imageUrl: req.file
-        ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        : null,
     };
+
+    if (req.file) {
+      updatedProfile.imageUrl = `${req.protocol}://${req.get('host')}/images/${
+        req.file.filename
+      }`;
+    }
 
     User.update(updatedProfile, { where: { id: userId } })
       .then((result) => {

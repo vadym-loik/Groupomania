@@ -30,7 +30,7 @@ export const useCommentStore = defineStore({
         (comment) => comment.id === idToDelete
       );
 
-      console.log(index);
+      // console.log(index);
 
       if (index !== -1) {
         this.comments.splice(index, 1);

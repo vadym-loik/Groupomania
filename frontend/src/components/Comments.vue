@@ -1,8 +1,8 @@
 <template>
   <div class="comment">
-    <!-- <img
-      v-if="imageUrl"
-      :src="imageUrl"
+    <img
+      v-if="comment.user.imageUrl"
+      :src="comment.user.imageUrl"
       class="comment__avatar"
       alt="Profile Picture"
     />
@@ -11,7 +11,7 @@
       src="../../src/images/avatar_default.png"
       class="comment__avatar"
       alt="Profile Picture"
-    /> -->
+    />
     <div class="comment__wrap">
       <p class="comment__text">
         {{ comment.text }}
@@ -42,6 +42,7 @@ const props = defineProps({
     required: true,
   },
 });
+console.log(props.comment);
 
 async function deleteComment() {
   // console.log(props.comment.id);

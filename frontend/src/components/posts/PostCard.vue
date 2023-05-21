@@ -14,6 +14,7 @@
         alt="Profile Picture"
       />
       <MainTitle class="user-name">{{ post.user.name }}</MainTitle>
+      <div v-if="isNew" class="new-post">New</div>
       <i
         class="close fa-solid fa-xmark"
         v-if="post.userId === currentUser"
@@ -46,7 +47,7 @@ import MainTitle from '../MainTitle.vue';
 import CommentInput from '../CommentInput.vue';
 import Comment from '../Comments.vue';
 import Axios from '@/api';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useCommentStore } from '@/stores/commentStore';
 import { usePostStore } from '@/stores/postStore';
@@ -59,6 +60,8 @@ const authStore = useAuthStore();
 const { userId } = storeToRefs(authStore);
 const currentUser = userId;
 
+let isNew = ref(true);
+
 const props = defineProps({
   post: {
     type: Object,
@@ -70,6 +73,13 @@ const props = defineProps({
 // RENDER COMMENTS
 onMounted(async () => {
   await commentStore.getAllComments();
+  console.log(authStore.userId);
+  if (props.post.readers?.includes(';' + authStore.userId + ';')) {
+    isNew.value = false;
+  } else {
+    const newReaders = props.post.readers + ';' + authStore.userId + ';';
+    // update the post in beck to modify readers value of post with new readers
+  }
 });
 
 // DELETE ONE POST
@@ -140,6 +150,12 @@ async function deletePost() {
   &-img {
     max-width: 500px;
   }
+}
+
+.new-post {
+  position: absolute;
+  top: 0;
+  left: -40px;
 }
 
 .fa-xmark {

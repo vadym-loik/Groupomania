@@ -16,6 +16,11 @@ const Post = db.define(
       type: Sequelize.STRING,
       allowNull: true,
     },
+    readers: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
+    },
   },
   { tableName: 'post' }
 );

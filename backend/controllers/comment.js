@@ -21,7 +21,7 @@ exports.getAllCommentsOfPost = (req, res, next) => {
 //GET ALL COMMENTS
 exports.getAllComments = (req, res, next) => {
   try {
-    Comment.findAll()
+    Comment.findAll({ include: User })
       .then((comment) => {
         res.status(200).json(comment);
       })
