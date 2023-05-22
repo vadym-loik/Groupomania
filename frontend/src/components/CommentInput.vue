@@ -27,6 +27,7 @@ const commentStore = useCommentStore();
 
 const text = ref('');
 const { userId } = storeToRefs(authStore);
+const user = ref({});
 
 const props = defineProps({
   post: {
@@ -34,6 +35,14 @@ const props = defineProps({
     required: true,
   },
 });
+// console.log('line 37', props.post);
+
+async function getOneUser(id) {
+  await Axios.get(`/api/auth/profile/${id}`).then((res) => {
+    user.value = res.data.user;
+  });
+}
+getOneUser(authStore.userId);
 
 async function addNewComment() {
   if (text.value) {
@@ -41,7 +50,10 @@ async function addNewComment() {
       text: text.value,
       userId: userId.value,
       postId: props.post.id,
+      imageUrl: user.value.imageUrl,
     };
+
+    console.log('line 48', newComment);
 
     try {
       const res = await Axios.post('/api/comments/', newComment);
