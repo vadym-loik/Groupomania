@@ -1,8 +1,8 @@
 <template>
   <div class="comment">
     <img
-      v-if="comment.user.imageUrl"
-      :src="comment.user.imageUrl"
+      v-if="comment.imageUrl"
+      :src="comment.imageUrl"
       class="comment__avatar"
       alt="Profile Picture"
     />
@@ -42,6 +42,7 @@ const props = defineProps({
     required: true,
   },
 });
+// console.log('line 45', props.comment);
 
 async function deleteComment() {
   // console.log(props.comment.id);
@@ -69,8 +70,8 @@ async function deleteComment() {
 
   &__avatar {
     vertical-align: middle;
-    width: 70px;
-    height: 70px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
 
     margin-right: 10px;
