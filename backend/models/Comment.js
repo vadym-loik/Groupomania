@@ -16,6 +16,10 @@ const Comment = db.define(
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    imageUrl: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   },
   { tableName: 'comment' }
 );
