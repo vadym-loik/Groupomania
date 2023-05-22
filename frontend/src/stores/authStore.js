@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import router from '../router/index';
 import Axios from '../api';
-// import { useStorage } from '@vueuse/core';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('auth'),
     userId: null,
+    emailError: '',
+    passwordError: '',
   }),
   getters: {
     isLoggedIn: (state) => !!state.token,
@@ -29,13 +30,13 @@ export const useAuthStore = defineStore('auth', {
         password,
       });
 
-      const token = res.data.token;
-      localStorage.setItem('auth', token);
-      this.token = token;
+      // const token = res.data.token;
+      // localStorage.setItem('auth', token);
+      // this.token = token;
       alert('User was created successfully!');
-      router.push('/');
+      // router.push('/');
 
-      // router.push('/login');
+      router.push('/login');
     },
 
     // LOGIN
@@ -43,11 +44,24 @@ export const useAuthStore = defineStore('auth', {
       const res = await Axios.post('api/auth/login', {
         email,
         password,
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          const errors = error.response.data.errors;
+          console.log('line 50', errors);
+
+          if (errors.email) {
+            this.emailError = errors.email[0];
+          }
+          if (errors.password) {
+            this.passwordError = errors.password[0];
+          }
+        }
       });
 
       const token = res.data.token;
       localStorage.setItem('auth', token);
       this.token = token;
+
       router.push('/');
     },
 

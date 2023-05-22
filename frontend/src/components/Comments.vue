@@ -42,7 +42,6 @@ const props = defineProps({
     required: true,
   },
 });
-console.log(props.comment);
 
 async function deleteComment() {
   // console.log(props.comment.id);

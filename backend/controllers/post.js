@@ -43,9 +43,8 @@ exports.deletePost = (req, res) => {
   try {
     Post.findOne({ where: { id: req.params.id } }).then((post) => {
       const filename = path.basename(`/backend/images/${post.imageUrl}`);
-      console.log('line 44', filename);
 
-      if (filename) {
+      if (post.imageUrl) {
         // if filename is not null we delete the existing file
         fs.unlink(`images/${filename}`, (error) => {
           if (error) throw error;
@@ -53,6 +52,7 @@ exports.deletePost = (req, res) => {
       } else {
         console.log('This post has no file to delete.');
       }
+
       Post.destroy({ where: { id: req.params.id } })
         .then((post) => {
           console.log('Post deleted!');

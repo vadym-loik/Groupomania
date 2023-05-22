@@ -48,13 +48,15 @@ exports.login = (req, res, next) => {
     where: { email: req.body.email },
   }).then((user) => {
     if (!user) {
-      return res.status(401).json({ error: 'User not found!' });
+      return res.status(401).json({ errors: { email: ['User not found!'] } });
     }
     bcrypt
       .compare(req.body.password, user.password)
       .then((valid) => {
         if (!valid) {
-          return res.status(401).json({ error: 'Incorrect password!' });
+          return res
+            .status(401)
+            .json({ errors: { password: ['Incorrect password!'] } });
         }
         res.status(200).json({
           userId: user.id,
@@ -149,9 +151,9 @@ exports.deleteUser = (req, res, next) => {
   try {
     User.findOne({ where: { id: req.params.id } }).then((user) => {
       const filename = path.basename(`/backend/images/${user.imageUrl}`);
-      console.log('line 44', filename);
 
-      if (filename) {
+      if (user.imageUrl) {
+        console.log('line 157', user.imageUrl);
         // if filename is not null we delete the existing file
         fs.unlink(`images/${filename}`, (error) => {
           if (error) throw error;

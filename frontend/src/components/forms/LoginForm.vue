@@ -11,6 +11,9 @@
           placeholder="Email"
           v-model.trim="v$.userEmail.$model"
         />
+        <p v-if="authStore.emailError" class="error-message">
+          {{ authStore.emailError }}
+        </p>
         <span
           for="email"
           class="login__input--error"
@@ -27,6 +30,9 @@
           placeholder="Password"
           v-model.trim="v$.password.$model"
         />
+        <p v-if="authStore.passwordError" class="error-message">
+          {{ authStore.passwordError }}
+        </p>
         <span
           for="password"
           class="login__input--error"
@@ -63,6 +69,8 @@ const v$ = useVuelidate(rules, { userEmail, password });
 
 async function login() {
   await authStore.login(userEmail.value, password.value);
+  authStore.emailError = '';
+  authStore.passwordError = '';
 }
 </script>
 
@@ -92,6 +100,10 @@ async function login() {
     &::placeholder {
       color: inherit;
     }
+  }
+
+  .error-message {
+    color: red;
   }
 
   &__btn {

@@ -51,15 +51,7 @@ const inputFile = ref(null);
 const file = ref(null);
 
 function onFileChange(event) {
-  // file.value = event.target.files[0];
-
   file.value = inputFile.value.files[0];
-  // let input = event.target;
-  // if (input.files) {
-  //   let reader = new FileReader();
-  //   reader.readAsDataURL(input.files[0]);
-  //   console.log('line 60', reader);
-  // }
 
   console.log('line 62', file.value);
 }
@@ -96,6 +88,7 @@ async function createNewPost() {
 
   text.value = '';
   inputFile.value = null;
+  file.value = null;
 }
 </script>
 
