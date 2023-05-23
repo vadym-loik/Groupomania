@@ -73,12 +73,23 @@ const props = defineProps({
 // RENDER COMMENTS
 onMounted(async () => {
   await commentStore.getAllComments();
-  console.log(authStore.userId);
+
+  console.log(props.post.readers, authStore.userId);
   if (props.post.readers?.includes(';' + authStore.userId + ';')) {
     isNew.value = false;
   } else {
-    const newReaders = props.post.readers + ';' + authStore.userId + ';';
+    const newReader = props.post.readers + ';' + authStore.userId + ';';
+
     // update the post in beck to modify readers value of post with new readers
+    Axios.put(`/api/posts/${props.post.id}`, {
+      readers: newReader,
+    })
+      .then(() => {
+        console.log('Post updated!');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 });
 
@@ -153,6 +164,7 @@ async function deletePost() {
 }
 
 .new-post {
+  color: red;
   position: absolute;
   top: 0;
   left: -40px;
