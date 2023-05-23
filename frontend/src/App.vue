@@ -24,6 +24,7 @@ export default {
 <style lang="scss" scoped>
 * {
   font-family: 'Roboto Mono', monospace;
+  box-sizing: border-box;
 }
 
 #app {
@@ -32,6 +33,11 @@ export default {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  width: 100%;
+  height: auto;
 }
 
 .content {

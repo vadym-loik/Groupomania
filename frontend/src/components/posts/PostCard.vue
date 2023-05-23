@@ -74,7 +74,6 @@ const props = defineProps({
 onMounted(async () => {
   await commentStore.getAllComments();
 
-  console.log(props.post.readers, authStore.userId);
   if (props.post.readers?.includes(';' + authStore.userId + ';')) {
     isNew.value = false;
   } else {
@@ -154,12 +153,12 @@ async function deletePost() {
     margin-bottom: 10px;
   }
 
-  &-like {
-    margin-bottom: 10px;
+  &-img {
+    width: 100%;
   }
 
-  &-img {
-    max-width: 500px;
+  &-like {
+    margin-bottom: 10px;
   }
 }
 

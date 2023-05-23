@@ -175,7 +175,6 @@ function toggleProfile() {
   display: flex;
   position: relative;
   flex-direction: column;
-  max-width: 500px;
 
   align-items: center;
   background-color: #e6e1e1;

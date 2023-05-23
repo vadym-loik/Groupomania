@@ -22,10 +22,10 @@ import PostsList from '../components/posts/PostsList.vue';
 <style lang="scss" scoped>
 .home {
   position: relative;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   background-size: cover;
   background-position: center;
   background-color: #e6e1e1;
@@ -34,7 +34,7 @@ import PostsList from '../components/posts/PostsList.vue';
 
   &-title {
     text-align: center;
-    font-size: 26px;
+    font-size: medium;
   }
 }
 </style>

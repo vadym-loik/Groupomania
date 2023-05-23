@@ -102,11 +102,16 @@ async function createNewPost() {
 
   &__form {
     width: 100%;
-    padding-top: 10px;
+    padding: 10px;
   }
 
   &__label--title {
-    font-size: 24px;
+    font-size: medium;
+  }
+
+  &__add--text,
+  &__choose {
+    font-size: small;
   }
 
   &__text {

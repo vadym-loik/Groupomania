@@ -47,7 +47,6 @@ export const useAuthStore = defineStore('auth', {
       }).catch((error) => {
         if (error.response.status === 401) {
           const errors = error.response.data.errors;
-          console.log('line 50', errors);
 
           if (errors.email) {
             this.emailError = errors.email[0];
@@ -55,6 +54,8 @@ export const useAuthStore = defineStore('auth', {
           if (errors.password) {
             this.passwordError = errors.password[0];
           }
+
+          return 0;
         }
       });
 

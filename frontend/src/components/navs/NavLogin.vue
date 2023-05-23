@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'login' }" class="nav-login__link"
           >Login</router-link
         >
-        /
+
         <router-link :to="{ name: 'registration' }" class="nav-login__link">
           Registration</router-link
         >
@@ -26,10 +26,21 @@
   &__link {
     text-decoration: none;
     color: inherit;
+    font-size: medium;
+  }
+
+  &__link:not(:last-child) {
+    margin-bottom: 5px;
   }
 
   &__link:hover {
     color: $main-color;
+  }
+
+  &__wrap {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
   }
 }
 </style>
