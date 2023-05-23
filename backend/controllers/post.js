@@ -17,7 +17,7 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 //CREATE A POST
-exports.createPost = (req, res) => {
+exports.createPost = (req, res, next) => {
   const newPost = {
     text: req.body.text,
     userId: req.body.userId,
@@ -38,8 +38,41 @@ exports.createPost = (req, res) => {
   }
 };
 
+//READ POST
+exports.readPost = (req, res, next) => {
+  const postId = req.params.id;
+
+  Post.findOne({ where: { id: postId } }).then((post) => {
+    const readers = req.body.readers;
+
+    console.log('POSTID LINE 49', postId);
+    console.log('READERS LINE 50', readers);
+
+    if (post.readers.includes(readers)) {
+      return res.status(304).json({
+        message: 'User already read the post.',
+      });
+    } else {
+      post
+        .update({ readers: readers })
+        .then((post) => {
+          post.save().then(() => {
+            res.status(200).json({
+              message: 'User successfully added.',
+            });
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({
+            error: error.message || error,
+          });
+        });
+    }
+  });
+};
+
 //DELETE POST
-exports.deletePost = (req, res) => {
+exports.deletePost = (req, res, next) => {
   try {
     Post.findOne({ where: { id: req.params.id } }).then((post) => {
       const filename = path.basename(`/backend/images/${post.imageUrl}`);
