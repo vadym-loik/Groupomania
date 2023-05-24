@@ -16,14 +16,10 @@ const Comment = db.define(
       type: Sequelize.INTEGER,
       allowNull: false,
     },
-    imageUrl: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
   },
   { tableName: 'comment' }
 );
 
-// Comment.sync({ alter: true });
+// Comment.sync({ force: true });
 
 module.exports = Comment;
