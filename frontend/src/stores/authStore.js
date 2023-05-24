@@ -41,29 +41,33 @@ export const useAuthStore = defineStore('auth', {
 
     // LOGIN
     async login(email, password) {
+      let isAuthorized = true;
+
       const res = await Axios.post('api/auth/login', {
         email,
         password,
       }).catch((error) => {
+        isAuthorized = false;
         if (error.response.status === 401) {
           const errors = error.response.data.errors;
 
           if (errors.email) {
-            this.emailError = errors.email[0];
+            this.$state.emailError = errors.email[0];
           }
           if (errors.password) {
-            this.passwordError = errors.password[0];
+            this.$state.passwordError = errors.password[0];
           }
-
-          return 0;
+          return;
         }
       });
 
-      const token = res.data.token;
-      localStorage.setItem('auth', token);
-      this.token = token;
+      if (isAuthorized) {
+        const token = res.data.token;
+        localStorage.setItem('auth', token);
+        this.token = token;
 
-      router.push('/');
+        router.push('/');
+      }
     },
 
     // LOGOUT

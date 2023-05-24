@@ -1,9 +1,7 @@
 <template>
   <div class="post-form">
     <form class="post-form__form" @submit.prevent="createNewPost">
-      <MainTitle class="post-form__label--title" for="postContent"
-        >New post</MainTitle
-      >
+      <MainTitle class="post-form__title" for="postContent">New post</MainTitle>
       <div class="post-form__wrapper">
         <input
           class="post-form__text"
@@ -52,8 +50,7 @@ const file = ref(null);
 
 function onFileChange(event) {
   file.value = inputFile.value.files[0];
-
-  console.log('line 62', file.value);
+  // console.log('line 62', file.value);
 }
 
 async function createNewPost() {
@@ -105,8 +102,9 @@ async function createNewPost() {
     padding: 10px;
   }
 
-  &__label--title {
+  &__title {
     font-size: medium;
+    margin: 0;
   }
 
   &__add--text,
@@ -121,9 +119,8 @@ async function createNewPost() {
     height: 60px;
   }
 
-  &__choose,
-  &__button {
-    font-size: 16px;
+  &__choose {
+    font-size: small;
   }
 
   &__wrapper {

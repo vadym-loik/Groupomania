@@ -30,9 +30,9 @@
         alt="postImage"
       />
     </div>
-    <MainTitle>Comments</MainTitle>
+    <MainTitle class="comments-title">Comments</MainTitle>
     <CommentInput :post="post" />
-    <Comment
+    <Comments
       v-for="comment in commentStore.comments.filter(
         (comment) => comment.postId === props.post.id
       )"
@@ -45,7 +45,7 @@
 <script setup>
 import MainTitle from '../MainTitle.vue';
 import CommentInput from '../CommentInput.vue';
-import Comment from '../Comments.vue';
+import Comments from '../Comments.vue';
 import Axios from '@/api';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -60,27 +60,26 @@ const authStore = useAuthStore();
 const { userId } = storeToRefs(authStore);
 const currentUser = userId;
 
-let isNew = ref(true);
-
 const props = defineProps({
   post: {
     type: Object,
     required: true,
   },
 });
-// console.log(props.post);
+
+let isNew = ref(false);
 
 // RENDER COMMENTS
 onMounted(async () => {
-  await commentStore.getAllComments();
+  await commentStore.getAllComments(props.post.id);
 
-  if (props.post.readers?.includes(';' + authStore.userId + ';')) {
-    isNew.value = false;
-  } else {
+  console.log(props.post.readers);
+
+  if (!props.post.readers?.includes(';' + authStore.userId + ';')) {
     const newReader = props.post.readers + ';' + authStore.userId + ';';
 
     // update the post in beck to modify readers value of post with new readers
-    Axios.put(`/api/posts/${props.post.id}`, {
+    await Axios.put(`/api/posts/${props.post.id}`, {
       readers: newReader,
     })
       .then(() => {
@@ -89,6 +88,8 @@ onMounted(async () => {
       .catch((error) => {
         console.log(error);
       });
+
+    isNew.value = true;
   }
 });
 
@@ -124,13 +125,13 @@ async function deletePost() {
 }
 
 .post {
-  padding: 15px;
+  padding: 10px;
   border: 2px solid $main-color;
   border-radius: 8px;
   width: 100%;
   background-color: #fff;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 
   &-edit {
     position: absolute;
@@ -165,8 +166,17 @@ async function deletePost() {
 .new-post {
   color: red;
   position: absolute;
-  top: 0;
-  left: -40px;
+  top: -20px;
+  left: 0px;
+}
+
+.user-name,
+.comments-title {
+  font-size: medium;
+}
+
+.post-text {
+  font-size: small;
 }
 
 .fa-xmark {

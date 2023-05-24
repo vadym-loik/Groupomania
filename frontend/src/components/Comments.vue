@@ -1,16 +1,16 @@
 <template>
   <div class="comment">
     <img
-      v-if="comment.imageUrl"
-      :src="comment.imageUrl"
+      v-if="props.comment.user.imageUrl"
+      :src="props.comment.user.imageUrl"
       class="comment__avatar"
-      alt="Profile Picture"
+      alt="Profile avatar"
     />
     <img
       v-else
       src="../../src/images/avatar_default.png"
       class="comment__avatar"
-      alt="Profile Picture"
+      alt="Profile avatar"
     />
     <div class="comment__wrap">
       <p class="comment__text">
@@ -36,13 +36,14 @@ const commentStore = useCommentStore();
 const { userId } = storeToRefs(authStore);
 const currentUser = userId;
 
+// console.log('LINE 39', commentStore.comments[1].user.imageUrl);
 const props = defineProps({
   comment: {
     type: Object,
     required: true,
   },
 });
-// console.log('line 45', props.comment);
+// console.log('line 45', props.comment.user.imageUrl);
 
 async function deleteComment() {
   // console.log(props.comment.id);
@@ -50,7 +51,7 @@ async function deleteComment() {
 
   try {
     const res = await Axios.delete(`/api/comments/${props.comment.id}`);
-    console.log(res.data);
+    // console.log(res.data);
 
     commentStore.deleteComment(res.data);
   } catch (error) {
@@ -65,8 +66,7 @@ async function deleteComment() {
 .comment {
   display: flex;
   align-items: center;
-
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 
   &__avatar {
     vertical-align: middle;
@@ -83,6 +83,10 @@ async function deleteComment() {
     border-radius: 8px;
     padding: 10px 25px 10px 10px;
     position: relative;
+  }
+
+  &__text {
+    font-size: small;
   }
 }
 

@@ -10,8 +10,9 @@
           type="email"
           placeholder="Email"
           v-model.trim="v$.userEmail.$model"
+          @keyup.stop.prevent="cleanError"
         />
-        <p v-if="authStore.emailError" class="error-message">
+        <p v-if="authStore.emailError?.length > 0" class="error-message">
           {{ authStore.emailError }}
         </p>
         <span
@@ -67,10 +68,13 @@ const rules = {
 
 const v$ = useVuelidate(rules, { userEmail, password });
 
-async function login() {
-  await authStore.login(userEmail.value, password.value);
+function cleanError() {
   authStore.emailError = '';
   authStore.passwordError = '';
+}
+
+async function login() {
+  await authStore.login(userEmail.value, password.value);
 }
 </script>
 

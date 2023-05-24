@@ -1,14 +1,11 @@
 const Comment = require('../models/Comment');
-const Post = require('../models/Post');
+// const Post = require('../models/Post');
 const User = require('../models/User');
 
 //GET ALL COMMENTS BY POST
 exports.getAllCommentsOfPost = (req, res, next) => {
   try {
     Comment.findAll({
-      where: {
-        postId: req.params.postId,
-      },
       include: User,
     })
       .then((comment) => res.status(200).json(comment))
@@ -19,25 +16,25 @@ exports.getAllCommentsOfPost = (req, res, next) => {
 };
 
 //GET ALL COMMENTS
-exports.getAllComments = (req, res, next) => {
-  try {
-    Comment.findAll({ include: User })
-      .then((comment) => {
-        res.status(200).json(comment);
-      })
-      .catch((error) => res.status(400).json(error));
-  } catch {
-    (error) => res.status(500).json(error);
-  }
-};
+// exports.getAllComments = (req, res, next) => {
+//   try {
+//     Comment.findAll({ include: User })
+//       .then((comment) => {
+//         res.status(200).json(comment);
+//       })
+//       .catch((error) => res.status(400).json(error));
+//   } catch {
+//     (error) => res.status(500).json(error);
+//   }
+// };
 
 //CREATE COMMENT
 exports.createComment = (req, res, next) => {
   try {
-    let { text, userId, postId, imageUrl } = req.body;
+    let { text, userId, postId } = req.body;
     // let imageUrl = null;
 
-    Comment.create({ text, postId, userId, imageUrl })
+    Comment.create({ text, postId, userId })
       .then((newComment) => {
         console.log('Comment added!');
         res.status(201).json(newComment);

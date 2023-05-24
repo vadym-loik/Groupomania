@@ -26,8 +26,9 @@ const authStore = useAuthStore();
 const commentStore = useCommentStore();
 
 const text = ref('');
+authStore.getUserId();
 const { userId } = storeToRefs(authStore);
-const user = ref({});
+// const user = ref({});
 
 const props = defineProps({
   post: {
@@ -37,30 +38,20 @@ const props = defineProps({
 });
 // console.log('line 37', props.post);
 
-async function getOneUser(id) {
-  await Axios.get(`/api/auth/profile/${id}`).then((res) => {
-    user.value = res.data.user;
-  });
-}
-getOneUser(authStore.userId);
-
 async function addNewComment() {
   if (text.value) {
     const newComment = {
       text: text.value,
       userId: userId.value,
       postId: props.post.id,
-      imageUrl: user.value.imageUrl,
     };
-
-    console.log('line 48', newComment);
 
     try {
       const res = await Axios.post('/api/comments/', newComment);
       console.log(res.data);
 
-      commentStore.addComment(res.data);
-      commentStore.getAllComments();
+      commentStore.getAllComments(props.post.id);
+      // commentStore.addComment(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -78,10 +69,10 @@ async function addNewComment() {
   justify-content: space-around;
   border: 2px solid $main-color;
   border-radius: 8px;
-  padding: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 
   &__btn {
     width: 100px;
@@ -90,7 +81,6 @@ async function addNewComment() {
 
   &__content {
     width: 100%;
-    height: 40px;
     border: none;
   }
 }

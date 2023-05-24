@@ -8,9 +8,9 @@ export const useCommentStore = defineStore({
   }),
   getters: {},
   actions: {
-    async getAllComments() {
+    async getAllComments(postId) {
       try {
-        const res = await Axios.get('/api/comments/');
+        const res = await Axios.get(`/api/comments/${postId}`);
         this.comments = res.data;
       } catch (error) {
         console.log(error);
