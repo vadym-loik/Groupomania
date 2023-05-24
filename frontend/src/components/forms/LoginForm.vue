@@ -90,6 +90,7 @@ async function login() {
 
   &__title {
     text-align: center;
+    font-size: 20px;
   }
 
   &__input {
@@ -97,7 +98,7 @@ async function login() {
     width: 100%;
     border: 2px solid $main-color;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 14px;
     outline: none;
     line-height: inherit;
     padding: 8px 15px;
@@ -114,6 +115,7 @@ async function login() {
   &__btn {
     width: 100%;
     margin-top: 15px;
+    font-size: 14px;
   }
 
   &__input--wrapper {

@@ -30,7 +30,7 @@
   <!-- EDIT PROFILE SECTION -->
   <form v-if="!showProfile" class="edit-profile" @submit.prevent="saveNewInfo">
     <div class="edit-profile__container">
-      <label for="file" class="edit-profile__label"
+      <label for="fileId" class="edit-profile__label"
         >Change profile picture :</label
       >
       <img
@@ -49,20 +49,33 @@
         type="file"
         ref="inputFile"
         name="file"
-        id="file"
+        id="fileId"
         @change="onFileChange"
       />
 
-      <label for="name">Change name :</label>
-      <input type="text" name="name" v-model="name" />
+      <label for="nameId">Change name :</label>
+      <input
+        type="text"
+        name="name"
+        id="nameId"
+        autocomplete="name"
+        v-model="name"
+      />
 
-      <label for="email">Change e-mail :</label>
-      <input type="email" name="email" v-model="email" />
+      <label for="emailId">Change e-mail :</label>
+      <input
+        type="email"
+        name="email"
+        id="emailId"
+        autocomplete="email"
+        v-model="email"
+      />
 
-      <label for="password">Change password :</label>
+      <label for="passwordId">Change password :</label>
       <input
         type="password"
         name="password"
+        id="passwordId"
         placeholder="Enter new password"
         v-model="password"
       />

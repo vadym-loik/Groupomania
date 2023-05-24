@@ -115,6 +115,16 @@ exports.modifyUser = (req, res, next) => {
     };
 
     if (req.file) {
+      User.findOne({ where: { id: req.params.id } }).then((user) => {
+        const filename = path.basename(`/backend/images/${user.imageUrl}`);
+
+        if (filename) {
+          fs.unlink(`images/${filename}`, (error) => {
+            if (error) throw error;
+          });
+        }
+      });
+
       updatedProfile.imageUrl = `${req.protocol}://${req.get('host')}/images/${
         req.file.filename
       }`;

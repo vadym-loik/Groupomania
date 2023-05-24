@@ -6,6 +6,7 @@
         <input
           class="registration__input"
           type="text"
+          name="name"
           placeholder="Name"
           v-model.trim="v$.name.$model"
         />
@@ -17,6 +18,7 @@
         <input
           class="registration__input"
           type="email"
+          name="email"
           placeholder="Email"
           v-model.trim="v$.userEmail.$model"
         />
@@ -28,6 +30,7 @@
         <input
           class="registration__input"
           type="password"
+          name="password"
           placeholder="Password"
           v-model.trim="v$.password.$model"
         />
@@ -39,6 +42,7 @@
         <input
           class="registration__input"
           type="password"
+          name="confirm-password"
           placeholder="Confirm password"
           v-model.trim="v$.confirm_password.$model"
         />
@@ -93,6 +97,7 @@ async function signup() {
 .registration {
   &__title {
     text-align: center;
+    font-size: 20px;
   }
 
   &__input {
@@ -100,7 +105,7 @@ async function signup() {
     width: 100%;
     border: 2px solid $main-color;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 14px;
     outline: none;
     line-height: inherit;
     padding: 8px 15px;
@@ -113,6 +118,7 @@ async function signup() {
   &__btn {
     width: 100%;
     margin-top: 15px;
+    font-size: 14px;
   }
 
   &__input--wrapper {
@@ -125,6 +131,7 @@ async function signup() {
 
   &__have-account {
     margin-top: 10px;
+    font-size: 12px;
   }
 
   @media (min-width: 768px) {
