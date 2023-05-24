@@ -6,14 +6,11 @@
   />
 </template>
 
-<script>
-export default {
-  name: 'Logo',
-};
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .logo {
   width: 35%;
+  margin-left: 10px;
 }
 </style>

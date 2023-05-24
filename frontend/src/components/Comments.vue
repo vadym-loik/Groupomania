@@ -88,6 +88,12 @@ async function deleteComment() {
   &__text {
     font-size: small;
   }
+
+  @media (min-width: 768px) {
+    &__text {
+      font-size: 16px;
+    }
+  }
 }
 
 .fa-xmark {

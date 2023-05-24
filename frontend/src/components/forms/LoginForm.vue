@@ -30,8 +30,9 @@
           type="password"
           placeholder="Password"
           v-model.trim="v$.password.$model"
+          @keyup.stop.prevent="cleanError"
         />
-        <p v-if="authStore.passwordError" class="error-message">
+        <p v-if="authStore.passwordError?.length > 0" class="error-message">
           {{ authStore.passwordError }}
         </p>
         <span
@@ -121,6 +122,17 @@ async function login() {
 
   &__input--error {
     color: red;
+  }
+
+  @media (min-width: 768px) {
+    &__title {
+      font-size: 26px;
+    }
+
+    &__input,
+    &__btn {
+      font-size: 22px;
+    }
   }
 }
 </style>

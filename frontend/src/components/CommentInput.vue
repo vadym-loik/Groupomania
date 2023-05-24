@@ -76,12 +76,18 @@ async function addNewComment() {
 
   &__btn {
     width: 100px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
   }
 
   &__content {
     width: 100%;
     border: none;
+  }
+
+  @media (min-width: 768px) {
+    &__content {
+      font-size: 14px;
+    }
   }
 }
 </style>

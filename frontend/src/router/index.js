@@ -4,12 +4,20 @@ import Login from '../pages/Login.vue';
 import Registration from '../pages/Registration.vue';
 import HomePage from '../pages/HomePage.vue';
 import ProfilePage from '../pages/ProfilePage.vue';
+import { useAuthStore } from '../stores/authStore';
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomePage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/profile',
+    name: 'profile-page',
+    component: ProfilePage,
+    meta: { requiresAuth: true },
   },
   {
     path: '/login',
@@ -21,12 +29,6 @@ const routes = [
     name: 'registration',
     component: Registration,
   },
-
-  {
-    path: '/profile',
-    name: 'profile-page',
-    component: ProfilePage,
-  },
 ];
 
 const router = createRouter({
@@ -34,16 +36,19 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach(async (to) => {
-//   // redirect to login page if not logged in and trying to access a restricted page
-//   const publicPages = ['/login'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const auth = useAuthStore();
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
 
-//   if (authRequired && !auth.user) {
-//     auth.returnUrl = to.fullPath;
-//     return '/login';
-//   }
-// });
+  const isLogged = authStore.isLoggedIn;
+
+  if (
+    to.name !== 'login' &&
+    !isLogged &&
+    to.name !== 'registration' &&
+    !isLogged
+  )
+    next({ name: 'login' });
+  else next();
+});
 
 export default router;

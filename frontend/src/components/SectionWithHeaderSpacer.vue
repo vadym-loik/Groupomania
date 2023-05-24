@@ -13,5 +13,9 @@ export default {
 <style lang="scss" scoped>
 .section-spacer {
   padding-top: 90px;
+
+  @media (min-width: 768px) {
+    padding-top: 110px;
+  }
 }
 </style>

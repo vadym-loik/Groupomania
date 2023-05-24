@@ -30,6 +30,7 @@
         alt="postImage"
       />
     </div>
+    <hr />
     <MainTitle class="comments-title">Comments</MainTitle>
     <CommentInput :post="post" />
     <Comments
@@ -72,8 +73,6 @@ let isNew = ref(false);
 // RENDER COMMENTS
 onMounted(async () => {
   await commentStore.getAllComments(props.post.id);
-
-  console.log(props.post.readers);
 
   if (!props.post.readers?.includes(';' + authStore.userId + ';')) {
     const newReader = props.post.readers + ';' + authStore.userId + ';';
@@ -187,5 +186,25 @@ async function deletePost() {
 
 .close {
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .user-name,
+  .comments-title {
+    font-size: 22px;
+  }
+
+  .post {
+    margin-bottom: 25px;
+
+    &-text {
+      font-size: 18px;
+    }
+  }
+
+  .new-post {
+    font-size: 20px;
+    top: -25px;
+  }
 }
 </style>

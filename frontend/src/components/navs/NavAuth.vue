@@ -50,6 +50,7 @@ const authStore = useAuthStore();
   &__link {
     text-decoration: none;
     color: inherit;
+    transition: color 0.5s ease;
   }
 
   &__link:not(:last-child) {
@@ -58,6 +59,24 @@ const authStore = useAuthStore();
 
   &__link:hover {
     color: $main-color;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-wrap {
+    flex-direction: row;
+    margin: 0;
+  }
+
+  .nav-auth {
+    &__link {
+      font-size: 26px;
+    }
+
+    &__link:not(:last-child) {
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
   }
 }
 

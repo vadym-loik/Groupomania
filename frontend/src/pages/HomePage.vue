@@ -36,5 +36,11 @@ import PostsList from '../components/posts/PostsList.vue';
     text-align: center;
     font-size: medium;
   }
+
+  @media (min-width: 768px) {
+    &-title {
+      font-size: 26px;
+    }
+  }
 }
 </style>

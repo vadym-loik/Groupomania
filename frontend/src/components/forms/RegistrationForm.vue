@@ -126,5 +126,20 @@ async function signup() {
   &__have-account {
     margin-top: 10px;
   }
+
+  @media (min-width: 768px) {
+    &__title {
+      font-size: 26px;
+    }
+
+    &__input,
+    &__btn {
+      font-size: 22px;
+    }
+
+    &__have-account {
+      font-size: 18px;
+    }
+  }
 }
 </style>

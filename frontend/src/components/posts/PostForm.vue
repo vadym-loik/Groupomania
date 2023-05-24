@@ -117,6 +117,7 @@ async function createNewPost() {
     border: 2px solid $main-color;
     border-radius: 8px;
     height: 60px;
+    padding: 5px;
   }
 
   &__choose {
@@ -130,10 +131,26 @@ async function createNewPost() {
   &__wrap {
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
   &__button {
     width: 100px;
+  }
+
+  @media (min-width: 768px) {
+    &__title {
+      font-size: 26px;
+    }
+
+    &__text {
+      font-size: 14px;
+    }
+
+    &__add--text,
+    &__choose {
+      font-size: 18px;
+    }
   }
 }
 </style>

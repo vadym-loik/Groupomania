@@ -42,5 +42,21 @@
     flex-direction: column;
     margin-right: 10px;
   }
+
+  @media (min-width: 768px) {
+    &__wrap {
+      flex-direction: row;
+      margin: 0;
+    }
+
+    &__link {
+      font-size: 26px;
+    }
+
+    &__link:not(:last-child) {
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+  }
 }
 </style>
