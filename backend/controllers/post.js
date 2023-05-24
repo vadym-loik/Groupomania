@@ -45,9 +45,6 @@ exports.readPost = (req, res, next) => {
   Post.findOne({ where: { id: postId } }).then((post) => {
     const readers = req.body.readers;
 
-    console.log('POSTID LINE 49', postId);
-    console.log('READERS LINE 50', readers);
-
     if (post.readers.includes(readers)) {
       return res.status(304).json({
         message: 'User already read the post.',
