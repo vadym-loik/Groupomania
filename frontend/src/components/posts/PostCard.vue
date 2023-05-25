@@ -101,7 +101,6 @@ async function deletePost() {
     const res = await Axios.delete(`/api/posts/${props.post.id}`);
     console.log(res);
 
-    // postStore.deletePost(res.data);
     postStore.getAllPosts();
   } catch (error) {
     console.log(error);

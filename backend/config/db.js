@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 
+//relationships between tables
 User.hasMany(Post, { foreignKey: 'userId', onDelete: 'cascade' });
 User.hasMany(Comment, { foreignKey: 'userId', onDelete: 'cascade' });
 

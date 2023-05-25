@@ -4,11 +4,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SectionSpacer',
-};
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .section-spacer {

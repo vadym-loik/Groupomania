@@ -24,11 +24,9 @@ import { useCommentStore } from '../stores/commentStore';
 
 const authStore = useAuthStore();
 const commentStore = useCommentStore();
-
 const text = ref('');
 authStore.getUserId();
 const { userId } = storeToRefs(authStore);
-// const user = ref({});
 
 const props = defineProps({
   post: {
@@ -36,7 +34,6 @@ const props = defineProps({
     required: true,
   },
 });
-// console.log('line 37', props.post);
 
 async function addNewComment() {
   if (text.value) {
@@ -51,7 +48,6 @@ async function addNewComment() {
       console.log(res.data);
 
       commentStore.getAllComments(props.post.id);
-      // commentStore.addComment(res.data);
     } catch (error) {
       console.log(error);
     }

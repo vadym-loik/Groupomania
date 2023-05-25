@@ -14,8 +14,7 @@ import { usePostStore } from '@/stores/postStore';
 
 const postStore = usePostStore();
 
-// console.log(postStore.posts);
-
+//render posts
 onMounted(async () => {
   await postStore.getAllPosts();
 });

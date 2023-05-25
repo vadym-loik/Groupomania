@@ -43,16 +43,16 @@ const postStore = usePostStore();
 const authStore = useAuthStore();
 authStore.getUserId();
 const { userId } = storeToRefs(authStore);
-// console.log(userId.value);
 const text = ref('');
 const inputFile = ref(null);
 const file = ref(null);
 
+//get file from input
 function onFileChange(event) {
   file.value = inputFile.value.files[0];
-  // console.log('line 62', file.value);
 }
 
+//create new post
 async function createNewPost() {
   if (!file.value) {
     try {

@@ -67,6 +67,7 @@ const rules = {
   password: { required, minlength: minLength(8) },
 };
 
+//email and password validation
 const v$ = useVuelidate(rules, { userEmail, password });
 
 function cleanError() {

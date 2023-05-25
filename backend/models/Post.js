@@ -1,6 +1,7 @@
 const db = require('../config/sequelize');
 const { Sequelize } = require('sequelize');
 
+//post model
 const Post = db.define(
   'post',
   {

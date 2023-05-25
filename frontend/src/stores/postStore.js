@@ -22,13 +22,5 @@ export const usePostStore = defineStore({
 
       this.posts.reverse();
     },
-
-    // addNewPost(post) {
-    //   this.posts.push(post);
-    // },
-
-    // deletePost(post) {
-    //   this.posts.splice(post, 1);
-    // },
   },
 });

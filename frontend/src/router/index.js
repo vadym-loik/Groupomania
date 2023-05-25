@@ -6,6 +6,7 @@ import HomePage from '../pages/HomePage.vue';
 import ProfilePage from '../pages/ProfilePage.vue';
 import { useAuthStore } from '../stores/authStore';
 
+//routes for every page
 const routes = [
   {
     path: '/',
@@ -36,6 +37,7 @@ const router = createRouter({
   routes,
 });
 
+//protection for routes
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
 

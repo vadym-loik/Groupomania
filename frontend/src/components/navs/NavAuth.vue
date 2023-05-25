@@ -23,14 +23,6 @@
 
 <script setup>
 import { useAuthStore } from '../../stores/authStore';
-import { ref } from 'vue';
-
-let isMenuOpen = ref(false);
-
-function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value;
-  console.log('WORKING');
-}
 
 const authStore = useAuthStore();
 </script>

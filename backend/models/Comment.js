@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/sequelize');
 
+//comment model
 const Comment = db.define(
   'comments',
   {

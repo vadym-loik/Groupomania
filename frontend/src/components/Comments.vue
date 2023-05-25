@@ -36,22 +36,19 @@ const commentStore = useCommentStore();
 const { userId } = storeToRefs(authStore);
 const currentUser = userId;
 
-// console.log('LINE 39', commentStore.comments[1].user.imageUrl);
 const props = defineProps({
   comment: {
     type: Object,
     required: true,
   },
 });
-// console.log('line 45', props.comment.user.imageUrl);
 
+//delete comment function
 async function deleteComment() {
-  // console.log(props.comment.id);
   confirm('Do you want to delete this comment?');
 
   try {
     const res = await Axios.delete(`/api/comments/${props.comment.id}`);
-    // console.log(res.data);
 
     commentStore.deleteComment(res.data);
   } catch (error) {

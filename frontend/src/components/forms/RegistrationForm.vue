@@ -85,6 +85,7 @@ const rules = {
   confirm_password: { required, sameAs: sameAs(password) },
 };
 
+//validation for inputs
 const v$ = useVuelidate(rules, { name, userEmail, password, confirm_password });
 
 async function signup() {

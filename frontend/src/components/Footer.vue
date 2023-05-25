@@ -4,11 +4,7 @@
   </footer>
 </template>
 
-<script>
-export default {
-  name: 'Footer',
-};
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 @import '../assets/scss/variables.scss';
@@ -18,7 +14,7 @@ export default {
   flex-direction: column;
   background: $secondary-color;
   height: 30px;
-  /* position: fixed; */
+  position: fixed;
   left: 0px;
   bottom: 0px;
   width: 100%;

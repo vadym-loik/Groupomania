@@ -42,8 +42,6 @@ exports.signup = (req, res, next) => {
 
 // LOGIN
 exports.login = (req, res, next) => {
-  // const { email, password } = req.body;
-
   User.findOne({
     where: { email: req.body.email },
   }).then((user) => {
@@ -67,7 +65,7 @@ exports.login = (req, res, next) => {
               isAdmin: user.isAdmin,
             },
             'RANDOM_TOKEN_SECRET',
-            { expiresIn: '24h' }
+            { expiresIn: '1h' }
           ),
         });
       })
@@ -118,9 +116,11 @@ exports.modifyUser = (req, res, next) => {
       User.findOne({ where: { id: req.params.id } }).then((user) => {
         const filename = path.basename(`/backend/images/${user.imageUrl}`);
 
-        fs.unlink(`images/${filename}`, (error) => {
-          if (error) throw error;
-        });
+        if (filename !== 'null') {
+          fs.unlink(`images/${filename}`, (error) => {
+            if (error) throw error;
+          });
+        }
       });
 
       updatedProfile.imageUrl = `${req.protocol}://${req.get('host')}/images/${

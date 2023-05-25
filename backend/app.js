@@ -7,6 +7,7 @@ const commentRoutes = require('./routes/comment');
 const db = require('./config/db');
 const cors = require('cors');
 
+//check DB connection
 try {
   db.authenticate();
   console.log('Connection has been established successfully.');
@@ -15,25 +16,16 @@ try {
 }
 
 const app = express();
+
+//helmet helps secure Express apps by setting HTTP response headers
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
   })
 );
-app.use(cors());
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader(
-//     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
-//   );
-//   res.setHeader(
-//     'Access-Control-Allow-Methods',
-//     'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-//   );
-//   next();
-// });
+//cors module for headers
+app.use(cors());
 
 // for parsing json objects
 app.use(express.json({ limit: '50mb' }));

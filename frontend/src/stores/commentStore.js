@@ -22,15 +22,11 @@ export const useCommentStore = defineStore({
     },
 
     deleteComment(id) {
-      // console.log(this.comments);
       const idToDelete = id;
-      // console.log(idToDelete);
 
       const index = this.comments.findIndex(
         (comment) => comment.id === idToDelete
       );
-
-      // console.log(index);
 
       if (index !== -1) {
         this.comments.splice(index, 1);

@@ -22,10 +22,6 @@ import PostsList from '../components/posts/PostsList.vue';
 <style lang="scss" scoped>
 .home {
   position: relative;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; */
   background-size: cover;
   background-position: center;
   background-color: #e6e1e1;

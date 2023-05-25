@@ -4,11 +4,7 @@
   </section>
 </template>
 
-<script>
-export default {
-  name: 'AuthSection',
-};
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .auth-section {

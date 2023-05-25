@@ -1,3 +1,4 @@
+// A simple module to validate a password
 const pwSchema = require('../models/Password');
 
 module.exports = (req, res, next) => {

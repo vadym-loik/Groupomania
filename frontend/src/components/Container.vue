@@ -4,11 +4,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'container',
-};
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .container {
@@ -18,14 +14,5 @@ export default {
   @media (min-width: 768px) {
     max-width: 700px;
   }
-
-  /* @media (min-width: 1100px) {
-    max-width: 1200px;
-  } */
 }
-
-/* .container {
-  max-width: 1100px;
-  margin: 0 auto;
-} */
 </style>

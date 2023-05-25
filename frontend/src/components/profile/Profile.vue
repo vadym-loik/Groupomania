@@ -104,7 +104,6 @@ const authStore = useAuthStore();
 const showProfile = ref(true);
 const editProfile = ref(false);
 const user = ref({});
-
 const email = ref('');
 const name = ref('');
 const password = ref('');
@@ -126,7 +125,6 @@ onMounted(() => {
 // get avatar
 function onFileChange(event) {
   file.value = inputFile.value.files[0];
-  console.log(file.value);
 }
 
 //update user info
