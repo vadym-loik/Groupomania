@@ -17,10 +17,10 @@ import Container from '../components/Container.vue';
 
 <style lang="scss" scoped>
 .profile--wrap {
-  background-size: cover;
+  /* background-size: cover;
   background-position: center;
-  min-height: calc(100vh - 30px);
-  z-index: 1;
+  min-height: calc(89vh - 30px);
+  z-index: 1; */
   padding: 10px;
 
   @media (min-width: 768px) {

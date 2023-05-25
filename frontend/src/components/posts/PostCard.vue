@@ -161,6 +161,10 @@ async function deletePost() {
   }
 }
 
+.post:last-child {
+  margin-bottom: 40px;
+}
+
 .new-post {
   color: red;
   position: absolute;
