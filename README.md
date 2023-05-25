@@ -15,15 +15,15 @@ Installation:
 
 - FRONTEND:
 
-  - cd frontend;
-  - npm install;
-  - npm run dev;
+  - cd frontend
+  - npm install
+  - npm run dev
 
 - BACKEND:
 
-  - cd backend;
-  - npm install;
-  - nodemon server;
+  - cd backend
+  - npm install
+  - nodemon server
 
 - Open a browser: http://localhost:8000
 
