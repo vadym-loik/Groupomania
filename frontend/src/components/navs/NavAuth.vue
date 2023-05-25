@@ -62,7 +62,7 @@ const authStore = useAuthStore();
 
   .nav-auth {
     &__link {
-      font-size: 26px;
+      font-size: 24px;
     }
 
     &__link:not(:last-child) {
