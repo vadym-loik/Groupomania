@@ -14,14 +14,16 @@ Installation:
 - Open a terminal from the root of the project
 
 - FRONTEND:
-  cd frontend
-  npm install
-  npm run dev
+
+  - cd frontend;
+  - npm install;
+  - npm run dev;
 
 - BACKEND:
-  cd backend
-  npm install
-  nodemon server
+
+  - cd backend;
+  - npm install;
+  - nodemon server;
 
 - Open a browser: http://localhost:8000
 
