@@ -2,7 +2,7 @@
 
 Prerequisites:
 
-- Frontend: Vue.js (Vue3)
+- Frontend: Vue.js (Vue3, Composition API)
 - Backend: Node.js (with Express.js)
 - ORM: Sequelize
 - Database: MariaDB
