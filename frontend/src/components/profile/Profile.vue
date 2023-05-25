@@ -21,7 +21,7 @@
       <Button class="profile-edit__btn" @click.prevent="toggleProfile"
         >Edit</Button
       >
-      <Button type="button" class="delete-profile" @click="deleteProfile"
+      <Button type="button" class="profile-delete__btn" @click="deleteProfile"
         >Delete</Button
       >
     </div>
@@ -230,6 +230,18 @@ function toggleProfile() {
 
   &-edit__btn {
     margin-bottom: 10px;
+  }
+
+  @media (min-width: 768px) {
+    .profile {
+      margin: 15px 0 0 0;
+    }
+
+    &-info p,
+    &-delete__btn,
+    &-edit__btn {
+      font-size: 18px;
+    }
   }
 }
 

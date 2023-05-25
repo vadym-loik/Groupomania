@@ -22,5 +22,9 @@ import Container from '../components/Container.vue';
   min-height: calc(100vh - 30px);
   z-index: 1;
   padding: 10px;
+
+  @media (min-width: 768px) {
+    padding: 0;
+  }
 }
 </style>

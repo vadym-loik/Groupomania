@@ -118,11 +118,9 @@ exports.modifyUser = (req, res, next) => {
       User.findOne({ where: { id: req.params.id } }).then((user) => {
         const filename = path.basename(`/backend/images/${user.imageUrl}`);
 
-        if (filename) {
-          fs.unlink(`images/${filename}`, (error) => {
-            if (error) throw error;
-          });
-        }
+        fs.unlink(`images/${filename}`, (error) => {
+          if (error) throw error;
+        });
       });
 
       updatedProfile.imageUrl = `${req.protocol}://${req.get('host')}/images/${
@@ -131,7 +129,7 @@ exports.modifyUser = (req, res, next) => {
     }
 
     User.update(updatedProfile, { where: { id: userId } })
-      .then((result) => {
+      .then(() => {
         res.status(200).json({
           message: 'Profile updated successfully',
           newProfileInfo: updatedProfile,

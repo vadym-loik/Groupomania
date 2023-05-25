@@ -65,7 +65,7 @@ const authStore = useAuthStore();
 @media (min-width: 768px) {
   .nav-wrap {
     flex-direction: row;
-    margin: 0;
+    margin: 0 10px 0 0;
   }
 
   .nav-auth {
