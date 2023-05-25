@@ -97,9 +97,7 @@ async function deletePost() {
   confirm('Are you sure that you want to delete this post?');
 
   try {
-    console.log(props.post.id);
     const res = await Axios.delete(`/api/posts/${props.post.id}`);
-    console.log(res);
 
     postStore.getAllPosts();
   } catch (error) {

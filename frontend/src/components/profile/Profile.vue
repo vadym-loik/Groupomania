@@ -142,7 +142,6 @@ const saveNewInfo = async (id) => {
   }
 
   if (file.value !== null) {
-    console.log(file.value);
     formData.append('file', file.value);
   }
 
@@ -154,7 +153,6 @@ const saveNewInfo = async (id) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       }
     );
-    console.log(res);
   } catch (error) {
     console.log(error);
   }

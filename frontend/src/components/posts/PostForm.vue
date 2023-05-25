@@ -59,7 +59,6 @@ async function createNewPost() {
       const post = { text: text.value, userId: userId.value };
 
       const res = await Axios.post('/api/posts/', post);
-      console.log(res);
 
       postStore.getAllPosts();
     } catch (error) {
@@ -75,7 +74,6 @@ async function createNewPost() {
       const res = await Axios.post('/api/posts/', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log(res);
 
       postStore.getAllPosts();
     } catch (error) {
