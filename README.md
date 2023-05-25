@@ -32,4 +32,4 @@ Project description:
 - This project simulates the operation of a corporate social network called GROUPOMANIA
 - The framework chosen for the frontend is vue.js
 - The backend runs with Node.js/Express.js and the ORM Sequelize
-- the database is MariaDB
+- The database is MariaDB
