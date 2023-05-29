@@ -161,7 +161,6 @@ exports.deleteUser = (req, res, next) => {
       const filename = path.basename(`/backend/images/${user.imageUrl}`);
 
       if (user.imageUrl) {
-        console.log('line 157', user.imageUrl);
         // if filename is not null we delete the existing file
         fs.unlink(`images/${filename}`, (error) => {
           if (error) throw error;

@@ -162,13 +162,14 @@ const saveNewInfo = async (id) => {
 
 //delete user profile
 async function deleteProfile() {
-  confirm('Delete your profile?');
-  await Axios.delete(`/api/auth/profile/${authStore.userId}`).then((res) =>
-    console.log(res)
-  );
-  localStorage.removeItem('auth');
-  authStore.logout();
-  router.push('/registration');
+  if (confirm('Delete your profile?')) {
+    await Axios.delete(`/api/auth/profile/${authStore.userId}`).then((res) =>
+      console.log(res)
+    );
+    localStorage.removeItem('auth');
+    authStore.logout();
+    router.push('/registration');
+  }
 }
 
 //toggle function for switching between profile section and edit section
