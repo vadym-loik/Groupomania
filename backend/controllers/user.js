@@ -65,7 +65,7 @@ exports.login = (req, res, next) => {
               isAdmin: user.isAdmin,
             },
             'RANDOM_TOKEN_SECRET',
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
           ),
         });
       })
