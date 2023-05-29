@@ -110,6 +110,10 @@ async function createNewPost() {
     font-size: small;
   }
 
+  &__add--text {
+    margin-right: 10px;
+  }
+
   &__text {
     width: 100%;
     border: 2px solid $main-color;
