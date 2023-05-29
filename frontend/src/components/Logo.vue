@@ -12,7 +12,7 @@
 
 <style lang="scss" scoped>
 .logo {
-  max-width: 200px;
+  max-width: 70%;
   margin-left: 10px;
 }
 </style>
