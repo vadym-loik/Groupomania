@@ -45,6 +45,7 @@
           name="confirm-password"
           placeholder="Confirm password"
           v-model.trim="v$.confirm_password.$model"
+          required
         />
         <span
           class="registration__input--error"
