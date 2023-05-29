@@ -70,7 +70,7 @@ const props = defineProps({
 
 let isNew = ref(false);
 
-// RENDER COMMENTS
+// RENDER COMMENTS AND ADD USER TO READERS LIST
 onMounted(async () => {
   await commentStore.getAllComments(props.post.id);
 

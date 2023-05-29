@@ -7,6 +7,7 @@
           class="registration__input"
           type="text"
           name="name"
+          autocomplete="name"
           placeholder="Name"
           v-model.trim="v$.name.$model"
         />
@@ -19,6 +20,7 @@
           class="registration__input"
           type="email"
           name="email"
+          autocomplete="email"
           placeholder="Email"
           v-model.trim="v$.userEmail.$model"
         />
