@@ -94,14 +94,14 @@ onMounted(async () => {
 
 // DELETE ONE POST
 async function deletePost() {
-  confirm('Are you sure that you want to delete this post?');
+  if (confirm('Are you sure that you want to delete this post?')) {
+    try {
+      const res = await Axios.delete(`/api/posts/${props.post.id}`);
 
-  try {
-    const res = await Axios.delete(`/api/posts/${props.post.id}`);
-
-    postStore.getAllPosts();
-  } catch (error) {
-    console.log(error);
+      postStore.getAllPosts();
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 </script>
