@@ -231,7 +231,7 @@ function toggleProfile() {
 
   @media (min-width: 768px) {
     .profile {
-      margin: 15px 0 0 0;
+      margin: 0 10px;
     }
 
     &-info p,
